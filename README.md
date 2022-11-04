@@ -24,3 +24,20 @@ npm run dev
 ```
 
 Aplicația va fi disponibilă la adresa `http://localhost:3000`.
+
+### Verificare cod
+
+Pe măsură ce lucrezi la cod, este recomandat să rulezi comenzile
+
+```sh
+npm run format
+```
+
+pentru a formata automat codul cu [Prettier](https://prettier.io/), și
+
+```sh
+npm run lint
+```
+
+pentru a verifica cu [ESLint](https://eslint.org/) că nu există potențiale probleme
+sau încălcări ale bunelor practici.
