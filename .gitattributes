@@ -1,0 +1,2 @@
+# Automatically detect text files and store them using Linux file endings.
+* text=auto eol=lf
