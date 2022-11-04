@@ -1,0 +1,13 @@
+# EditorConfig helps maintain a consistent formatting style across editors and IDEs.
+#
+# More information: https://editorconfig.org
+
+# This is the top-most EditorConfig file
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+
+insert_final_newline = true
+trim_trailing_whitespace = true
