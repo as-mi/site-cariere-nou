@@ -1,8 +1,12 @@
 import "../styles/globals.css";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Script from 'next/script'
+import Script from 'next/script';
 import type { AppProps } from "next/app";
+import { config } from '@fortawesome/fontawesome-svg-core';
+import '@fortawesome/fontawesome-svg-core/styles.css';
+config.autoAddCss = false;
+
 // import "../public/assets/vendor/aos/aos.css";
 import "../public/assets/vendor/bootstrap/css/bootstrap.min.css";
 import "../public/assets/vendor/bootstrap-icons/bootstrap-icons.css";

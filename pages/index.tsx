@@ -31,18 +31,18 @@ export default function Home() {
       <header id="header" className="fixed-top">
         <div className="container d-flex align-items-center">
 
-          <h1 className="logo me-auto"><a href="#"><Image src="/assets/img/logo.png" priority width={120} height={120}  alt="" className="img-fluid"/></a></h1>
+          <h1 className="logo me-auto"><a href="#"><Image src="/assets/img/cariere-white.png" priority width={120} height={120}  alt="" className="img-fluid"/></a></h1>
         
           {/* <a href="index.html" className="logo me-auto"><Image src="/assets/img/logo.png" priority width={120} height={120}  alt="" className="img-fluid"/></a> */}
 
           <nav id="navbar" className="navbar">
             <ul>
-              <li><a className="nav-link scrollto active" href="#hero">Home</a></li>
-              <li><a className="nav-link scrollto" href="#about">About</a></li>
-              <li><a className="nav-link scrollto" href="#services">Services</a></li>
-              <li><a className="nav-link   scrollto" href="#portfolio">Portfolio</a></li>
-              <li><a className="nav-link scrollto" href="#team">Team</a></li>
-              <li className="dropdown"><a href="#"><span>Drop Down</span> <i className="bi bi-chevron-down"></i></a>
+              <li><a className="nav-link scrollto active" href="#hero">Acasă</a></li>
+              <li><a className="nav-link scrollto" href="#about">Despre Cariere</a></li>
+              <li><a className="nav-link scrollto" href="#services">Detalii Eveniment</a></li>
+              <li><a className="nav-link   scrollto" href="#portfolio">Parteneri</a></li>
+              <li><a className="nav-link scrollto" href="#team">Program</a></li>
+              {/* <li className="dropdown"><a href="#"><span>Drop Down</span> <i className="bi bi-chevron-down"></i></a>
                 <ul>
                   <li><a href="#">Drop Down 1</a></li>
                   <li className="dropdown"><a href="#"><span>Deep Drop Down</span> <i className="bi bi-chevron-right"></i></a>
@@ -58,9 +58,7 @@ export default function Home() {
                   <li><a href="#">Drop Down 3</a></li>
                   <li><a href="#">Drop Down 4</a></li>
                 </ul>
-              </li>
-              <li><a className="nav-link scrollto" href="#contact">Contact</a></li>
-              <li><a className="getstarted scrollto" href="#about">Get Started</a></li>
+              </li> */}
             </ul>
             <i className="bi bi-list mobile-nav-toggle"></i>
           </nav>
@@ -74,8 +72,9 @@ export default function Home() {
         <div className="container">
           <div className="row">
             <div className="col-lg-6 d-flex flex-column justify-content-center pt-4 pt-lg-0 order-2 order-lg-1" data-aos="fade-up" data-aos-delay="200">
-              <h1 >Site ul nou cariere cioaie</h1>
-              <h2>We are team of talented designers making websites with Bootstrap</h2>
+              <h3>Înscrie-te la târgul de job-uri!</h3>
+              <h1 >Cariere <small>2022</small></h1>
+              <h2>28.02 - 02.03</h2>
               <div className="d-flex justify-content-center justify-content-lg-start">
                 <a href="#about" className="btn-get-started scrollto">Get Started</a>
                 <a href="https://www.youtube.com/watch?v=jDDaplaOz7Q" className="glightbox btn-watch-video"><i className="bi bi-play-circle"></i><span>Watch Video</span></a>
@@ -120,7 +119,7 @@ export default function Home() {
           <div className="container" data-aos="fade-up">
 
             <div className="section-title">
-              <h2>About Us</h2>
+              <h3>Despre Cariere</h3>
             </div>
 
             <div className="row content">
@@ -337,96 +336,8 @@ export default function Home() {
 
             <div className="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
 
-              <div className="col-lg-4 col-md-6 portfolio-item filter-app">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-1.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>App 1</h4>
-                  <p>App</p>
-                  <a href="/assets/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="App 1"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
 
-              <div className="col-lg-4 col-md-6 portfolio-item filter-web">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-2.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>Web 3</h4>
-                  <p>Web</p>
-                  <a href="/assets/img/portfolio/portfolio-2.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="Web 3"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item filter-app">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-3.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>App 2</h4>
-                  <p>App</p>
-                  <a href="/assets/img/portfolio/portfolio-3.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="App 2"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item filter-card">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-4.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>Card 2</h4>
-                  <p>Card</p>
-                  <a href="/assets/img/portfolio/portfolio-4.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="Card 2"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item filter-web">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-5.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>Web 2</h4>
-                  <p>Web</p>
-                  <a href="/assets/img/portfolio/portfolio-5.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="Web 2"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item filter-app">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-6.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>App 3</h4>
-                  <p>App</p>
-                  <a href="/assets/img/portfolio/portfolio-6.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="App 3"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item filter-card">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-7.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>Card 1</h4>
-                  <p>Card</p>
-                  <a href="/assets/img/portfolio/portfolio-7.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="Card 1"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item filter-card">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-8.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>Card 3</h4>
-                  <p>Card</p>
-                  <a href="/assets/img/portfolio/portfolio-8.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="Card 3"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
-              <div className="col-lg-4 col-md-6 portfolio-item filter-web">
-                <div className="portfolio-img"><Image src="/assets/img/portfolio/portfolio-9.jpg" className="img-fluid" width={120} height={120}  alt=""/></div>
-                <div className="portfolio-info">
-                  <h4>Web 3</h4>
-                  <p>Web</p>
-                  <a href="/assets/img/portfolio/portfolio-9.jpg" data-gallery="portfolioGallery" className="portfolio-lightbox preview-link" title="Web 3"><i className="bx bx-plus"></i></a>
-                  <a href="portfolio-details.html" className="details-link" title="More Details"><i className="bx bx-link"></i></a>
-                </div>
-              </div>
-
+              
             </div>
 
           </div>
@@ -746,7 +657,7 @@ export default function Home() {
           <div className="col-lg-3 col-md-6 footer-links">
             <h4>Useful Links</h4>
             <ul>
-              <li><i className="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+              <li><i className="bx bx-chevron-right"></i> <a href="#">Acasă</a></li>
               <li><i className="bx bx-chevron-right"></i> <a href="#">About us</a></li>
               <li><i className="bx bx-chevron-right"></i> <a href="#">Services</a></li>
               <li><i className="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
