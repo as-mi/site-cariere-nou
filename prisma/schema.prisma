@@ -6,11 +6,105 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
+model Account {
+  id                Int     @id @default(autoincrement())
+  userId            Int
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           Int      @id @default(autoincrement())
+  sessionToken String   @unique
+  userId       Int
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum Role {
+  ADMIN
+  PARTICIPANT
+  RECRUITER
+}
+
 model User {
-  id   Int    @id @default(autoincrement())
-  name String
+  id            Int                         @id @default(autoincrement())
+  name          String
+  email         String                      @unique
+  emailVerified DateTime?
+  phoneNumber   String
+  accounts      Account[]
+  sessions      Session[]
+  resumes       Resume[]
+  applications  ParticipantApplyToCompany[]
+  role          Role
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+enum PackageType {
+  GOLD
+  SILVER
+  BRONZE
+}
+
+model Company {
+  id           Int                         @id @default(autoincrement())
+  name         String
+  packageType  PackageType
+  logo         Image                       @relation(fields: [logoImageId], references: [id])
+  logoImageId  Int                         @unique
+  applications ParticipantApplyToCompany[]
+}
+
+model Image {
+  id            Int      @id @default(autoincrement())
+  fileName      String
+  contentType   String
+  width         Int
+  height        Int
+  data          Bytes
+  parentCompany Company?
+}
+
+model Resume {
+  id          Int    @id @default(autoincrement())
+  userId      Int
+  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileName    String
+  contentType String
+  data        Bytes
+}
+
+model ParticipantApplyToCompany {
+  id              Int      @id @default(autoincrement())
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          Int
+  company         Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
+  companyId       Int
+  applicationTime DateTime
+
+  @@unique([userId, companyId])
 }

@@ -1,3 +1,0 @@
-# Ignore local SQLite database files
-/*.db
-/*.db-journal
