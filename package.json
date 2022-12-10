@@ -11,6 +11,7 @@
     "format:check": "prettier --check ."
   },
   "dependencies": {
+    "@prisma/client": "^4.7.1",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.8",
@@ -19,6 +20,7 @@
     "eslint-config-next": "13.0.2",
     "next": "13.0.2",
     "prettier": "^2.7.1",
+    "prisma": "^4.7.1",
     "react": "18.2.0",
     "react-bootstrap": "^2.7.0",
     "react-dom": "18.2.0",
