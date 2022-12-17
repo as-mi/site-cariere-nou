@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { Container, Row, Col } from "react-bootstrap";
 
+
 const HeadComp = () => {
   return (
     <Head>
@@ -61,6 +62,7 @@ const NavBar = () => {
           </a>
         </li>
         {/* <li className="dropdown"><a href="#"><span>Drop Down</span> <i className="bi bi-chevron-down"></i></a>
+
                 <ul>
                   <li><a href="#">Drop Down 1</a></li>
                   <li className="dropdown"><a href="#"><span>Deep Drop Down</span> <i className="bi bi-chevron-right"></i></a>
@@ -77,6 +79,7 @@ const NavBar = () => {
                   <li><a href="#">Drop Down 4</a></li>
                 </ul>
               </li> */}
+
       </ul>
       <i className="bi bi-list mobile-nav-toggle"></i>
     </nav>
@@ -91,6 +94,7 @@ export default function Home() {
       <header id="header" className="fixed-top">
         <div className="container ">
           {/* <a href="index.html" className="logo me-auto"><Image src="/assets/img/logo.png" priority width={120} height={120}  alt="" className="img-fluid"/></a> */}
+
         </div>
       </header>
 
@@ -356,43 +360,6 @@ export default function Home() {
                   do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
 
-                <div className="skills-content">
-                  <div className="progress">
-                    <span className="skill">
-                      HTML <i className="val">100%</i>
-                    </span>
-                    <div className="progress-bar-wrap">
-                      {/* <div className="progress-bar" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div> */}
-                    </div>
-                  </div>
-
-                  <div className="progress">
-                    <span className="skill">
-                      CSS <i className="val">90%</i>
-                    </span>
-                    <div className="progress-bar-wrap">
-                      {/* <div className="progress-bar" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div> */}
-                    </div>
-                  </div>
-
-                  <div className="progress">
-                    <span className="skill">
-                      JavaScript <i className="val">75%</i>
-                    </span>
-                    <div className="progress-bar-wrap">
-                      {/* <div className="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div> */}
-                    </div>
-                  </div>
-
-                  <div className="progress">
-                    <span className="skill">
-                      Photoshop <i className="val">55%</i>
-                    </span>
-                    <div className="progress-bar-wrap">
-                      {/* <div className="progress-bar" role="progressbar" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div> */}
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -565,15 +532,9 @@ export default function Home() {
                   data-aos="zoom-in"
                   data-aos-delay="100"
                 >
-                  <div className="pic">
-                    <Image
-                      src="/assets/img/team/team-1.jpg"
-                      className="img-fluid"
-                      width={120}
-                      height={120}
-                      alt=""
-                    />
-                  </div>
+
+                  <div className="pic"></div>
+
                   <div className="member-info">
                     <h4>Walter White</h4>
                     <span>Chief Executive Officer</span>
@@ -606,15 +567,9 @@ export default function Home() {
                   data-aos="zoom-in"
                   data-aos-delay="200"
                 >
-                  <div className="pic">
-                    <Image
-                      src="/assets/img/team/team-2.jpg"
-                      className="img-fluid"
-                      width={120}
-                      height={120}
-                      alt=""
-                    />
-                  </div>
+
+                  <div className="pic"></div>
+
                   <div className="member-info">
                     <h4>Sarah Jhonson</h4>
                     <span>Product Manager</span>
@@ -647,15 +602,10 @@ export default function Home() {
                   data-aos="zoom-in"
                   data-aos-delay="300"
                 >
-                  <div className="pic">
-                    <Image
-                      src="/assets/img/team/team-3.jpg"
-                      className="img-fluid"
-                      width={120}
-                      height={120}
-                      alt=""
-                    />
-                  </div>
+
+                  <div className="pic"></div>
+
+
                   <div className="member-info">
                     <h4>William Anderson</h4>
                     <span>CTO</span>
@@ -688,15 +638,8 @@ export default function Home() {
                   data-aos="zoom-in"
                   data-aos-delay="400"
                 >
-                  <div className="pic">
-                    <Image
-                      src="/assets/img/team/team-4.jpg"
-                      className="img-fluid"
-                      width={120}
-                      height={120}
-                      alt=""
-                    />
-                  </div>
+                 <div className="pic"></div>
+
                   <div className="member-info">
                     <h4>Amanda Jepson</h4>
                     <span>Accountant</span>
@@ -739,112 +682,22 @@ export default function Home() {
             </div>
 
             <div className="row">
-              <div className="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-                <div className="box">
-                  <h3>Free Plan</h3>
-                  <h4>
-                    <sup>$</sup>0<span>per month</span>
-                  </h4>
-                  <ul>
-                    <li>
-                      <i className="bx bx-check"></i> Quam adipiscing vitae
-                      proin
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Nec feugiat nisl pretium
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Nulla at volutpat diam
-                      uteera
-                    </li>
-                    <li className="na">
-                      <i className="bx bx-x"></i>{" "}
-                      <span>Pharetra massa massa ultricies</span>
-                    </li>
-                    <li className="na">
-                      <i className="bx bx-x"></i>{" "}
-                      <span>Massa ultricies mi quis hendrerit</span>
-                    </li>
-                  </ul>
-                  <a href="#" className="buy-btn">
-                    Get Started
-                  </a>
-                </div>
-              </div>
 
               <div
                 className="col-lg-4 mt-4 mt-lg-0"
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
-                <div className="box featured">
-                  <h3>Business Plan</h3>
-                  <h4>
-                    <sup>$</sup>29<span>per month</span>
-                  </h4>
-                  <ul>
-                    <li>
-                      <i className="bx bx-check"></i> Quam adipiscing vitae
-                      proin
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Nec feugiat nisl pretium
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Nulla at volutpat diam
-                      uteera
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Pharetra massa massa
-                      ultricies
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Massa ultricies mi quis
-                      hendrerit
-                    </li>
-                  </ul>
-                  <a href="#" className="buy-btn">
-                    Get Started
-                  </a>
-                </div>
+
+                
               </div>
 
               <div
                 className="col-lg-4 mt-4 mt-lg-0"
                 data-aos="fade-up"
                 data-aos-delay="300"
-              >
-                <div className="box">
-                  <h3>Developer Plan</h3>
-                  <h4>
-                    <sup>$</sup>49<span>per month</span>
-                  </h4>
-                  <ul>
-                    <li>
-                      <i className="bx bx-check"></i> Quam adipiscing vitae
-                      proin
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Nec feugiat nisl pretium
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Nulla at volutpat diam
-                      uteera
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Pharetra massa massa
-                      ultricies
-                    </li>
-                    <li>
-                      <i className="bx bx-check"></i> Massa ultricies mi quis
-                      hendrerit
-                    </li>
-                  </ul>
-                  <a href="#" className="buy-btn">
-                    Get Started
-                  </a>
-                </div>
-              </div>
+              ></div>
+
             </div>
           </div>
         </section>
@@ -1061,6 +914,7 @@ export default function Home() {
                     </div>
                     <div className="form-group col-md-6">
                       <label htmlFor="name">Your Email</label>
+
                       <input
                         type="email"
                         className="form-control"
@@ -1068,10 +922,12 @@ export default function Home() {
                         id="email"
                         required
                       />
+
                     </div>
                   </div>
                   <div className="form-group">
                     <label htmlFor="name"> Subject </label>
+
                     <input
                       type="text"
                       className="form-control"
@@ -1088,6 +944,7 @@ export default function Home() {
                       rows={10}
                       required
                     ></textarea>
+
                   </div>
                   <div className="my-3">
                     <div className="loading">Loading</div>
@@ -1117,8 +974,10 @@ export default function Home() {
                   noster magna
                 </p>
                 <form action="" method="post">
+
                   <input type="email" name="email" />
                   <input type="submit" value="Subscribe" />
+
                 </form>
               </div>
             </div>
