@@ -15,6 +15,19 @@ trebuie să actualizezi package-urile instalate folosind comanda:
 npm install
 ```
 
+### Configurare autentificare prin Google
+
+Aplicația oferă suport pentru autentificarea cu contul de Google, [prin intermediul protocolului OAuth2](https://developers.google.com/identity/protocols/oauth2).
+
+Pentru a putea folosi această funcționalitate, trebuie să creezi un fișier `.env.local` în acest director, în care să configurezi variabilele de mediu `GOOGLE_CLIENT_ID` și `GOOGLE_CLIENT_SECRET`:
+
+```sh
+GOOGLE_CLIENT_ID=<client ID>
+GOOGLE_CLIENT_SECRET=<client secret>
+```
+
+Acestea pot fi găsite în proiectul asociat din [Google API Console](https://console.developers.google.com/), în zona de _API & Services_ > _Credentials_.
+
 ### Rulare server de dezvoltare
 
 Pentru a porni un server de dezvoltare local, trebuie folosită comanda:
