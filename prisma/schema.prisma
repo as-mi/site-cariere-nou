@@ -48,12 +48,18 @@ model User {
   name          String
   email         String                      @unique
   emailVerified DateTime?
-  phoneNumber   String
+  role          Role
   accounts      Account[]
   sessions      Session[]
   resumes       Resume[]
   applications  ParticipantApplyToCompany[]
-  role          Role
+  profile       Profile?
+}
+
+model Profile {
+  user        User   @relation(fields: [userId], references: [id], onUpdate: Cascade, onDelete: Cascade)
+  userId      Int    @id
+  phoneNumber String
 }
 
 model VerificationToken {

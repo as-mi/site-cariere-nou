@@ -1,8 +1,8 @@
 import { Col, Container, Row } from "react-bootstrap";
 
-import { PrismaClient, User } from "@prisma/client";
+import { User } from "@prisma/client";
 
-const prisma = new PrismaClient();
+import prisma from "../../lib/prisma";
 
 type UserDetailsPageProps = {
   userId: number;
