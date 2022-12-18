@@ -5,7 +5,10 @@ const LoginForm = () => {
   const { data: session } = useSession();
 
   const text = session ? (
-    <>You&apos;re currently signed in as {session.user?.email}</>
+    <>
+      <p>You&apos;re currently signed in as {session.user.email}</p>
+      <p>User ID: {session.user.id}</p>
+    </>
   ) : (
     <>Not signed in</>
   );
