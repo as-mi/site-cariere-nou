@@ -1,6 +1,7 @@
 {
   "editor.formatOnSave": true,
   "files.associations": {
-    ".env.*": "properties"
+    ".env.*": "properties",
+    "globals.css": "tailwindcss"
   }
 }
