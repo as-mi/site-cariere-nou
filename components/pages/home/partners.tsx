@@ -7,7 +7,7 @@ type PartnersSectionProps = {
 const PartnersSection: React.FC<PartnersSectionProps> = ({ t }) => (
   <section className="bg-black px-3 py-16 text-white">
     <header className="mb-10">
-      <h2 className="text-center text-3xl font-bold uppercase">
+      <h2 className="text-center font-display text-3xl font-bold uppercase">
         {t("partnersSection.title")}
       </h2>
     </header>
