@@ -1,3 +1,15 @@
 {
-  "about": "About Cariere"
+  "teaser": "Cariere is back this year with plenty of opportunities for students",
+  "about": "About Cariere",
+  "aboutSection": {
+    "title": "About Cariere",
+    "objectives": "Objectives"
+  },
+  "partnersSection": {
+    "title": "Our partners"
+  },
+  "footer": {
+    "allRightsReserved": "All rights reserved.",
+    "madeWithLove": "Site made with 💙 by the ASMI volunteers"
+  }
 }
