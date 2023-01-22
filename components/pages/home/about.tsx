@@ -7,13 +7,13 @@ type AboutSectionProps = { t: any };
 const AboutSection: React.FC<AboutSectionProps> = ({ t }) => (
   <section className="bg-white px-3 py-16" id="about">
     <header className="mb-10">
-      <h2 className="text-center text-2xl font-bold uppercase text-green-800">
+      <h2 className="text-center font-display text-2xl font-bold uppercase text-green-800">
         {t("aboutSection.title")}
       </h2>
     </header>
     <div className="flex flex-wrap items-center justify-center">
       <section className="bg-zinc-100 p-10 md:max-w-sm lg:max-w-prose">
-        <h3 className="mb-2 text-2xl font-bold text-green-800">
+        <h3 className="mb-2 font-display text-2xl font-bold text-green-800">
           {t("aboutSection.objectives")}
         </h3>
         <p>{t("aboutSection.description")}</p>
