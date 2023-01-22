@@ -1,5 +1,4 @@
 import { useSession, signIn, signOut } from "next-auth/react";
-import { Button, Card, Container } from "react-bootstrap";
 
 const LoginForm = () => {
   const { data: session } = useSession();
@@ -11,27 +10,37 @@ const LoginForm = () => {
   );
 
   const button = session ? (
-    <Button onClick={() => signOut()}>Sign out</Button>
+    <button
+      onClick={() => signOut()}
+      className="rounded-full bg-red-700 py-1 px-4 text-white"
+    >
+      Sign out
+    </button>
   ) : (
-    <Button onClick={() => signIn()}>Sign in</Button>
+    <button
+      onClick={() => signIn()}
+      className="rounded-full bg-blue-700 py-1 px-4 text-white"
+    >
+      Sign in
+    </button>
   );
 
   return (
-    <Card style={{ maxWidth: "32em" }}>
-      <Card.Body>
-        <Card.Title>Login Form</Card.Title>
-        <Card.Text>{text}</Card.Text>
+    <div className="max-w-prose text-center">
+      <div>
+        <div className="font-display text-3xl font-bold">Login Form</div>
+        <div className="my-3">{text}</div>
         {button}
-      </Card.Body>
-    </Card>
+      </div>
+    </div>
   );
 };
 
 const LoginPage = () => {
   return (
-    <Container className="mt-3">
+    <main className="mt-3">
       <LoginForm />
-    </Container>
+    </main>
   );
 };
 
