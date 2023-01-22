@@ -1,5 +1,3 @@
-import { Col, Container, Row } from "react-bootstrap";
-
 import { User } from "@prisma/client";
 
 import prisma from "../../lib/prisma";
@@ -15,14 +13,14 @@ const UserDetailsPage = ({ userId, user }: UserDetailsPageProps) => {
   }
 
   return (
-    <Container>
-      <Row>
-        <Col>
+    <div>
+      <div>
+        <div>
           <h1>User #{userId}</h1>
           <h2>Name: {user.name}</h2>
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 };
 
