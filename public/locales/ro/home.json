@@ -1,3 +1,24 @@
 {
-  "about": "Despre Cariere"
+  "teaser": "Cariere revine și anul acesta cu o mulțime de oportunități pentru studenți",
+  "about": "Despre Cariere",
+  "aboutSection": {
+    "title": "Despre Cariere",
+    "objectives": "Obiective",
+    "description": "Cariere este un târg de joburi și internship-uri care oferă un sprijin în dezvoltarea pe plan profesional a studenților, realizând o legătură între aceștia (participanți) și o parte din cele mai cunoscute companii din piața IT din Romania."
+  },
+  "partnersSection": {
+    "title": "Partenerii noștri",
+    "comingSoon": "Vom anunța firmele participante la ediția de anul acesta în curând. Urmărește paginile noastre de social media pentru a fi la curent cu toate actualizările."
+  },
+  "contactSection": {
+    "telephone": "Telefon",
+    "e-mail": "E-mail",
+    "usefulLinks": "Link-uri utile",
+    "contactUs": "Contactează-ne!",
+    "weWillReplyASAP": "Îți vom răspunde pe cât de repede posibil."
+  },
+  "footer": {
+    "allRightsReserved": "Toate drepturile rezervate.",
+    "madeWithLove": "Site dezvoltat cu 💙 de voluntarii ASMI"
+  }
 }

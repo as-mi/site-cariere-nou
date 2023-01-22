@@ -1,21 +1,22 @@
 import type { GetStaticProps } from "next";
 import Head from "next/head";
-import Image from "next/image";
 
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-const NavBar = () => (
-  <header className="fixed px-2 py-3">
-    <nav>
-      <Image
-        src="/assets/images/logos/cariere-small-white.png"
-        alt="Logo Cariere"
-        width={98}
-        height={40}
-      />
-    </nav>
-  </header>
+import NavBar from "../components/pages/home/navbar";
+import HeroSection from "../components/pages/home/hero";
+import LogosSection from "../components/pages/home/logos";
+import AboutSection from "../components/pages/home/about";
+import ContactSection from "../components/pages/home/contact";
+import Footer from "../components/pages/home/footer";
+import ScrollToTopButton from "../components/pages/home/scroll-to-top";
+import PartnersSection from "../components/pages/home/partners";
+
+const PlaceholderSection = () => (
+  <section className="flex min-h-screen items-center justify-center">
+    <p className="text-5xl font-medium">Placeholder</p>
+  </section>
 );
 
 const Home: React.FC = () => {
@@ -35,26 +36,17 @@ const Home: React.FC = () => {
       <NavBar />
 
       <main>
-        <section className="min-h-screen bg-black pt-32 text-white">
-          <div className="text-center">
-            {/** TODO: replace with Cariere v12 logo */}
-            <Image
-              className="mx-auto"
-              src="/assets/images/logos/cariere-white.png"
-              alt="Cariere v10.0"
-              width={350}
-              height={112.66}
-            />
-
-            <a className="mt-16 inline-block rounded-full bg-white px-5 py-2 font-medium text-black">
-              {t("about")}
-            </a>
-          </div>
-        </section>
-        <section className="flex min-h-screen items-center justify-center">
-          <p className="text-5xl font-medium">Placeholder</p>
-        </section>
+        <HeroSection t={t} />
+        <LogosSection />
+        <AboutSection t={t} />
+        <PartnersSection t={t} />
+        <ContactSection t={t} />
+        {/* <PlaceholderSection /> */}
       </main>
+
+      <Footer />
+
+      <ScrollToTopButton />
     </>
   );
 };
