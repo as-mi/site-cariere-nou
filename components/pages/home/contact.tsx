@@ -25,7 +25,9 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     rel="noreferrer"
     className="inline-block rounded-full bg-green-800 text-white hover:bg-green-700"
   >
-    <FontAwesomeIcon icon={icon} title={title} className={className} />
+    <span title={title}>
+      <FontAwesomeIcon icon={icon} className={className} />
+    </span>
   </a>
 );
 

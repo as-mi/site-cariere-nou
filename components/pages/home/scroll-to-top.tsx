@@ -15,11 +15,9 @@ const ScrollToTopButton: React.FC = () => {
       onClick={handleClick}
       className="fixed bottom-4 right-4 rounded-full bg-green-800 p-2 text-white"
     >
-      <FontAwesomeIcon
-        icon={faArrowUp}
-        title={t("scrollToTop") || undefined}
-        className="h-6 w-6"
-      />
+      <span title={t("scrollToTop") || undefined}>
+        <FontAwesomeIcon icon={faArrowUp} className="h-6 w-6" />
+      </span>
     </button>
   );
 };
