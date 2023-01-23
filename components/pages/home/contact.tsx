@@ -36,7 +36,7 @@ type ContactSectionProps = {
 };
 
 const ContactSection: React.FC<ContactSectionProps> = ({ t }) => (
-  <section className=" bg-zinc-100 p-12 ">
+  <section id="contact" className="bg-zinc-100 p-12">
     <div className="mx-auto flex max-w-5xl flex-col sm:flex-row sm:flex-wrap sm:items-start sm:justify-around">
       <address className="mb-5 flex-1 not-italic">
         <div className="mb-5">

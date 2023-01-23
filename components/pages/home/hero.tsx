@@ -21,7 +21,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ t }) => {
   };
 
   return (
-    <section className="relative min-h-screen bg-black pt-32 text-white md:pt-40 lg:pt-48">
+    <section
+      id="hero"
+      className="relative min-h-screen bg-black pt-32 text-white md:pt-40 lg:pt-48"
+    >
       <Image
         alt=""
         aria-hidden
