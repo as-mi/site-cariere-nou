@@ -21,7 +21,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ t }) => {
   };
 
   return (
-    <section className="min-h-screen bg-black pt-32 text-white md:pt-40 lg:pt-48">
+    <section className="relative min-h-screen bg-black pt-32 text-white md:pt-40 lg:pt-48">
       <Image
         alt=""
         aria-hidden
@@ -31,7 +31,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ t }) => {
         fill
         sizes="100vw"
         className="z-0 object-cover"
-        priority
         // TODO: this image is pretty high-resolution,
         // but Next.js's implicit compression makes it pretty blurry.
         // We should try finding a compromise between performance and quality.
@@ -43,6 +42,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ t }) => {
           src={logoCariere}
           alt="Cariere v12.0"
           className="mx-auto w-full max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
+          priority
         />
 
         <p className="mx-auto mt-16 max-w-sm px-3 text-lg">{t("teaser")}</p>

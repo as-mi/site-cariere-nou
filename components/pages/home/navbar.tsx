@@ -10,7 +10,6 @@ const NavBar: React.FC = () => (
         alt="Logo Cariere"
         width={98}
         height={40}
-        priority
         // TODO: need to determine why Next.js's built-in compression algorithm
         // makes this image look very blurry
         unoptimized
