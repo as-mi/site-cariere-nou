@@ -5,7 +5,7 @@ import aboutUsImage from "../../../images/about-us.png";
 type AboutSectionProps = { t: any };
 
 const AboutSection: React.FC<AboutSectionProps> = ({ t }) => (
-  <section className="bg-white px-3 py-16" id="about">
+  <section id="about" className="bg-white px-3 py-16">
     <header className="mb-10">
       <h2 className="text-center font-display text-2xl font-bold uppercase text-green-800">
         {t("aboutSection.title")}
