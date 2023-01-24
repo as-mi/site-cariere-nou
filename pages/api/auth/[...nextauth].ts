@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { AuthOptions } from "next-auth";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../lib/prisma";
@@ -26,7 +26,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   providers.push(googleProvider);
 }
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   // Configure the Prisma database adapter,
   // which will be used to persist user and authentication data.
   adapter: PrismaAdapter(prisma),
