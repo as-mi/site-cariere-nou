@@ -1,0 +1,11 @@
+[Unit]
+Description=cariere.asmi.ro web app
+
+[Service]
+ExecStart=/var/www/cariere/deployment/scripts/start.sh
+WorkingDirectory=/var/www/cariere/
+User=cariere
+Group=cariere
+
+[Install]
+WantedBy=multi-user.target
