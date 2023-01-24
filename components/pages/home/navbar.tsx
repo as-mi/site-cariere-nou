@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useTranslation } from "next-i18next";
 
+import Link from "next/link";
 import Image from "next/image";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -92,6 +93,11 @@ const NavBar: React.FC = () => {
                   </a>
                 </li>
               ))}
+              <li className="md:inline-block">
+                <Link href="/profile" className="block px-5 py-3">
+                  Contul meu
+                </Link>
+              </li>
             </ul>
           </nav>
         </div>
