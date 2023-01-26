@@ -4,7 +4,8 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 
 import { convertHtmlToText, initI18n, renderEmail } from "../lib/emails";
-import VerifyEmail from "../emails/verify-email";
+import VerifyEmailAddressEmail from "../emails/verify-email";
+import ResetPasswordEmail from "../emails/reset-password";
 
 type EmailsPreviewPageProps = {
   renderedEmail: string;
@@ -58,13 +59,23 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     let node: JSX.Element;
     try {
+      let props;
       switch (emailSlug) {
         case "verify-email":
-          const props = {
+          props = {
             name: "Nume Prenume",
-            verifyUrl: "http://localhost:3000/auth/verify",
+            verifyEmailUrl:
+              "http://localhost:3000/auth/verify-email?id=1&token=1234",
           };
-          node = await renderEmail(VerifyEmail, props, i18n);
+          node = await renderEmail(VerifyEmailAddressEmail, props, i18n);
+          break;
+        case "reset-password":
+          props = {
+            name: "Nume Prenume",
+            resetPasswordUrl:
+              "http://localhost:3000/auth/reset-password?id=1&token=1234",
+          };
+          node = await renderEmail(ResetPasswordEmail, props, i18n);
           break;
         default:
           throw new Error(`Unknown e-mail: '${emailSlug}'`);

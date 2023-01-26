@@ -19,7 +19,7 @@ import Layout from "../../components/pages/auth/layout";
 import Input from "../../components/forms/input";
 
 type RegistrationFormProps = {
-  onRegistrationSuccess: () => void;
+  onSuccess: () => void;
 };
 
 type RegistrationData = {
@@ -30,9 +30,7 @@ type RegistrationData = {
   consent: boolean;
 };
 
-const RegistrationForm: React.FC<RegistrationFormProps> = ({
-  onRegistrationSuccess,
-}) => {
+const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
   const { t, i18n } = useTranslation("register");
   const { t: commonT, i18n: commonI18n } = useTranslation("common");
 
@@ -66,7 +64,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
 
       if (response.ok) {
         setError("");
-        onRegistrationSuccess();
+        onSuccess();
       } else {
         let errorData;
         try {
@@ -232,9 +230,7 @@ const RegistrationPage: NextPageWithLayout = () => {
         {registrationSucceeded ? (
           <RegistrationSuccessMessage />
         ) : (
-          <RegistrationForm
-            onRegistrationSuccess={() => setRegistrationSucceeded(true)}
-          />
+          <RegistrationForm onSuccess={() => setRegistrationSucceeded(true)} />
         )}
       </div>
     </>
