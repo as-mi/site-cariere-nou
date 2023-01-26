@@ -4,8 +4,11 @@ import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import prisma from "../../../lib/prisma";
 
 import GoogleProvider from "next-auth/providers/google";
+import CredentialsProvider from "next-auth/providers/credentials";
 
 import { Role } from "@prisma/client";
+
+import { authenticateUser } from "../../../lib/accounts";
 
 const providers = [];
 
@@ -24,6 +27,55 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   });
 
   providers.push(googleProvider);
+}
+
+if (true) {
+  const credentialsProvider = CredentialsProvider({
+    id: "credentials",
+    name: "Credentials",
+    credentials: {
+      email: { label: "E-mail", type: "email" },
+      password: { label: "Password", type: "password" },
+    },
+    async authorize(credentials) {
+      if (!credentials) {
+        return null;
+      }
+
+      console.log(
+        "Tring to authenticate user with e-mail `%s`",
+        credentials.email
+      );
+
+      let user;
+      try {
+        user = await authenticateUser(credentials);
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log(
+            "Failed to authenticate user `%s`: %s",
+            credentials.email,
+            error.message
+          );
+        } else {
+          console.error(
+            "Unexpected error was thrown during authentication:",
+            error
+          );
+        }
+
+        return null;
+      }
+
+      return {
+        id: user.id.toString(),
+        email: user.email,
+        name: user.name,
+      };
+    },
+  });
+
+  providers.push(credentialsProvider);
 }
 
 export const authOptions: AuthOptions = {

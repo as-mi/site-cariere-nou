@@ -1,0 +1,19 @@
+{
+  "pageTitle": "Înregistrare",
+  "backToEmailLoginPage": "Înapoi la formularul de autentificare",
+  "registrationForm": {
+    "email": "Adresă de e-mail",
+    "name": "Nume complet",
+    "password": "Parolă",
+    "passwordConfirmation": "Confirmă parola",
+    "passwordsMustMatch": "Parolele nu corespund",
+    "consent": "Sunt de acord cu prelucrarea datelor mele personale de către ASMI",
+    "consentRequired": "Trebuie să îți dai consimțământul înainte de crearea contului",
+    "submit": "Înregistrează-te"
+  },
+  "registrationError": "Eroare la crearea contului: {{errorMessage}}",
+  "registrationSuccess": {
+    "title": "Înregistrarea s-a efectuat cu succes!",
+    "verifyEmailMessage": "Înainte de a te putea conecta în cont, va trebui să accesezi link-ul de confirmare trimis pe adresa ta de e-mail."
+  }
+}
