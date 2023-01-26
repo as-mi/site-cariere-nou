@@ -184,7 +184,7 @@ const SetNewPasswordPage: NextPageWithLayout<SetNewPasswordPageProps> = ({
 
   const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
 
-  const [passwordUpdated, setPasswordUpdated] = useState(true);
+  const [passwordUpdated, setPasswordUpdated] = useState(false);
 
   return (
     <>
