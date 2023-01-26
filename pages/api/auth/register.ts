@@ -19,7 +19,6 @@ type SuccessResponse = "OK";
 type ErrorResponse = {
   error: string;
   message: string;
-  detail?: string;
 };
 
 type ResponseData = SuccessResponse | ErrorResponse;
@@ -128,8 +127,8 @@ export default async function handler(
   const subject = i18n.t("verifyEmail.subject", { ns: "emails" });
 
   const baseUrl = process.env.NEXTAUTH_URL;
-  const verifyUrl = `${baseUrl}/auth/verify-email?id=${user.id}&token=${emailVerificationToken}`;
-  const props = { name: data.name, verifyUrl };
+  const verifyEmailUrl = `${baseUrl}/auth/verify-email?id=${user.id}&token=${emailVerificationToken}`;
+  const props = { name: data.name, verifyEmailUrl };
   const html = await renderEmailToHtml(VerifyEmail, props, i18n);
   const text = convertHtmlToText(html);
 
@@ -157,6 +156,8 @@ export default async function handler(
     });
     return;
   }
+
+  console.log("Verification e-mail was sent successfully");
 
   res.status(200).send("OK");
 }

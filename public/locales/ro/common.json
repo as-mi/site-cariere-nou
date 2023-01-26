@@ -7,6 +7,7 @@
     "errorCode": "eroare cod {{code}}",
     "networkError": "Eroare de rețea",
     "user-exists": "există deja un utilizator înregistrat cu același e-mail",
+    "user-not-found": "utilizatorul nu a fost găsit",
     "email-sending-failed": "nu s-a putut trimite e-mail-ul",
     "email-not-verified": "adresa de e-mail nu a fost încă confirmată"
   }

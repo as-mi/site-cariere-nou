@@ -10,7 +10,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { NextPageWithLayout } from "../_app";
 import Layout from "../../components/pages/auth/layout";
 import prisma from "../../lib/prisma";
-import { useRouter } from "next/router";
 
 enum Status {
   INVALID_URL,
@@ -31,8 +30,6 @@ const VerifyEmailPage: NextPageWithLayout<VerifyEmailPageProps> = ({
 
   const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
 
-  const router = useRouter();
-
   const failureStatus =
     status === Status.INVALID_URL ||
     status === Status.INVALID_USER_ID ||
@@ -46,36 +43,32 @@ const VerifyEmailPage: NextPageWithLayout<VerifyEmailPageProps> = ({
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <main>
-        <h1 className="mb-2 font-display text-xl font-bold">
-          {t("pageTitle")}
-        </h1>
-        {failureStatus && (
-          <div className="space-y-2">
-            <p className="font-semibold">
-              {status === Status.INVALID_URL && t("invalidUrl")}
-              {status === Status.INVALID_USER_ID && t("invalidUserId")}
-              {status === Status.INVALID_TOKEN && t("invalidToken")}
-            </p>
-            <p>{t("pleaseRecheckUrl")}</p>
-            <p>{t("manuallyCopyUrl")}</p>
-          </div>
-        )}
-        {successStatus && (
-          <>
-            <p className="font-semibold">
-              {status === Status.EMAIL_ALREADY_VERIFIED && t("alreadyVerified")}
-              {status === Status.TOKEN_VERIFIED && t("tokenVerified")}
-            </p>
-            <Link
-              href="/"
-              className="mt-3 block font-semibold text-green-700 underline"
-            >
-              {t("backToHomePage")}
-            </Link>
-          </>
-        )}
-      </main>
+      <h1 className="mb-2 font-display text-xl font-bold">{t("pageTitle")}</h1>
+      {failureStatus && (
+        <div className="space-y-2">
+          <p className="font-semibold">
+            {status === Status.INVALID_URL && t("invalidUrl")}
+            {status === Status.INVALID_USER_ID && t("invalidUserId")}
+            {status === Status.INVALID_TOKEN && t("invalidToken")}
+          </p>
+          <p>{t("pleaseRecheckUrl")}</p>
+          <p>{t("manuallyCopyUrl")}</p>
+        </div>
+      )}
+      {successStatus && (
+        <>
+          <p className="font-semibold">
+            {status === Status.EMAIL_ALREADY_VERIFIED && t("alreadyVerified")}
+            {status === Status.TOKEN_VERIFIED && t("tokenVerified")}
+          </p>
+          <Link
+            href="/"
+            className="mt-3 block font-semibold text-green-700 underline"
+          >
+            {t("backToHomePage")}
+          </Link>
+        </>
+      )}
     </>
   );
 };
@@ -84,10 +77,9 @@ export default VerifyEmailPage;
 
 VerifyEmailPage.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
-export const getServerSideProps: GetServerSideProps = async ({
-  query,
-  locale,
-}) => {
+export const getServerSideProps: GetServerSideProps<
+  VerifyEmailPageProps
+> = async ({ query, locale }) => {
   const { id, token } = query;
 
   let status;
