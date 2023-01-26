@@ -1,0 +1,12 @@
+{
+  "pageTitle": "Autentificare prin e-mail",
+  "backToLoginPage": "Înapoi la opțiunile de autentificare",
+  "loginForm": {
+    "error": "Eroare la autentificare",
+    "email": "Adresă de e-mail",
+    "password": "Parolă",
+    "submit": "Autentifică-te"
+  },
+  "register": "Nu ai încă cont?",
+  "resetPassword": "Mi-am uitat parola"
+}

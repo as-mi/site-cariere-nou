@@ -1,3 +1,11 @@
 {
-  "scrollToTop": "Derulează în sus"
+  "scrollToTop": "Derulează în sus",
+  "forms": {
+    "required": "Câmp obligatoriu"
+  },
+  "errors": {
+    "errorCode": "eroare cod {{code}}",
+    "neworkError": "Eroare de rețea",
+    "user-exists": "există deja un utilizator înregistrat cu același e-mail"
+  }
 }

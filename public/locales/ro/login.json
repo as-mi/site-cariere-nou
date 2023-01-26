@@ -1,0 +1,15 @@
+{
+  "pageTitle": "Autentificare",
+  "loginForm": {
+    "title": "Intră în cont",
+    "warnings": {
+      "authenticationRequired": "Trebuie să te autentifici înainte de a putea accesa această pagină."
+    }
+  },
+  "authenticationProviders": {
+    "notAvailable": "Nu este disponibilă momentan",
+    "google": "Autentificare cu Google",
+    "facebook": "Autentificare cu Facebook",
+    "email": "Autentificare prin e-mail"
+  }
+}

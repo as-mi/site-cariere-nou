@@ -1,10 +1,10 @@
 import type { GetServerSideProps } from "next";
 
 import Link from "next/link";
-
-import { unstable_getServerSession } from "next-auth/next";
-import { authOptions } from "./api/auth/[...nextauth]";
 import { signOut, useSession } from "next-auth/react";
+import { unstable_getServerSession } from "next-auth/next";
+
+import { authOptions } from "./api/auth/[...nextauth]";
 
 const ProfilePage: React.FC = () => {
   const { data: session } = useSession();
@@ -13,7 +13,7 @@ const ProfilePage: React.FC = () => {
     signOut({ callbackUrl: "/" });
   };
 
-  if (!session) {
+  if (!session || !session.user) {
     return <p>Access denied, not logged in</p>;
   }
 
@@ -57,7 +57,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   if (!session) {
     return {
       redirect: {
-        destination: "/login?authenticationRequired&redirectUrl=/profile",
+        destination: "/auth/login?authenticationRequired&callbackUrl=/profile",
         permanent: false,
       },
     };
