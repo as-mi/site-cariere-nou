@@ -33,7 +33,7 @@ type RegistrationData = {
 const RegistrationForm: React.FC<RegistrationFormProps> = ({
   onRegistrationSuccess,
 }) => {
-  const { t } = useTranslation("register");
+  const { t, i18n } = useTranslation("register");
   const { t: commonT, i18n: commonI18n } = useTranslation("common");
 
   const [submitting, setSubmitting] = useState(false);
@@ -57,6 +57,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
       const options = {
         method: "POST",
         headers: {
+          "Accept-Language": i18n.language,
           "Content-Type": "application/json",
         },
         body,

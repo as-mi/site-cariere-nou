@@ -1,0 +1,10 @@
+{
+  "verifyEmail": {
+    "subject": "Verificare adresă de e-mail",
+    "hello": "Salut {{name}},",
+    "thanksForCreatingAccount": "Ne bucurăm că ai decis să-ți creezi un cont în platforma noastră. Îți poți confirma adresa de e-mail urmând link-ul de mai jos:",
+    "doNothingIfUnsolicited": "Dacă nu ai solicitat trimiterea acestui e-mail, nu trebuie să faci nimic.",
+    "goodLuck": "Mult succes,",
+    "teamCariere": "Echipa Cariere v12"
+  }
+}

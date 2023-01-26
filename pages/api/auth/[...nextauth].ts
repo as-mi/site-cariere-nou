@@ -49,7 +49,7 @@ if (true) {
 
       let user;
       try {
-        user = await authenticateUser(credentials);
+        user = await authenticateUser(credentials.email, credentials.password);
       } catch (error) {
         if (error instanceof Error) {
           console.log(
@@ -65,6 +65,12 @@ if (true) {
         }
 
         return null;
+      }
+
+      console.log("Successfully authenticated user with ID %d", user.id);
+
+      if (user.emailVerified === null) {
+        throw new Error("email-not-verified");
       }
 
       return {
@@ -85,6 +91,18 @@ export const authOptions: AuthOptions = {
   // Here we configure the authentication providers,
   // which are the different ways the user can choose to log in.
   providers,
+  // Configure the way session tokens are generated and stored
+  session: {
+    // Generated session tokens as JSON Web Tokens and store them on the client side, not in the database.
+    // This is to work around bugs such as https://github.com/nextauthjs/next-auth/issues/6435
+    strategy: "jwt",
+    // Stay logged in for 5 days by default
+    maxAge: 5 * 24 * 60 * 60,
+  },
+  // Override some of the built-in NextAuth pages
+  pages: {
+    signIn: "/auth/login",
+  },
 };
 
 export default NextAuth(authOptions);

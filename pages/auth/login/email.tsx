@@ -23,7 +23,7 @@ type Credentials = {
 
 const EmailLoginPage: NextPageWithLayout = () => {
   const { t } = useTranslation("emailLogin");
-  const { t: commonT } = useTranslation("common");
+  const { t: commonT, i18n: commonI18n } = useTranslation("common");
 
   const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
 
@@ -46,6 +46,7 @@ const EmailLoginPage: NextPageWithLayout = () => {
 
   const onSubmit: SubmitHandler<Credentials> = async (data) => {
     setSubmitting(true);
+    setError("");
 
     try {
       const options = {
@@ -56,9 +57,21 @@ const EmailLoginPage: NextPageWithLayout = () => {
       const result = await signIn("credentials", options);
 
       if (result === undefined || !result.ok) {
-        setError(t("loginForm.error")!);
+        let errorMessage;
+        if (result) {
+          const errorMessageKey = `errors.${result.error}`;
+          if (commonI18n.exists(errorMessageKey)) {
+            errorMessage = commonT(errorMessageKey);
+          }
+        }
+
+        let errorText = t("loginForm.error")!;
+        if (errorMessage) {
+          errorText += ": " + errorMessage;
+        }
+        setError(errorText);
       } else {
-        console.log(result);
+        router.push(callbackUrl);
       }
     } catch (e) {
       console.error(e);

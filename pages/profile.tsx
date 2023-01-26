@@ -28,7 +28,6 @@ const ProfilePage: React.FC = () => {
         <div className="mt-3 flex flex-row space-x-3">
           <Link
             href="/"
-            as="button"
             className="rounded-md bg-green-700 px-3 py-2 text-white"
           >
             Înapoi la pagina principală

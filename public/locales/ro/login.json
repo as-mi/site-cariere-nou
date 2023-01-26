@@ -2,6 +2,10 @@
   "pageTitle": "Autentificare",
   "loginForm": {
     "title": "Intră în cont",
+    "errors": {
+      "authenticationError": "Eroare la autentificare. Vă rugăm să încercați să vă conectați din nou.",
+      "accountNotLinked": "Contul asociat acestei adrese de e-mail a fost deja creat folosind o altă metodă de autentificare."
+    },
     "warnings": {
       "authenticationRequired": "Trebuie să te autentifici înainte de a putea accesa această pagină."
     }
