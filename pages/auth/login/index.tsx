@@ -30,6 +30,8 @@ const LoginPage: NextPageWithLayout<PageProps> = ({ availableProviders }) => {
   const router = useRouter();
   const query = queryString.stringify(router.query);
 
+  const error = router.query["error"];
+
   const isAuthenticationBeingRequired = !!router.query.hasOwnProperty(
     "authenticationRequired"
   );
@@ -56,8 +58,15 @@ const LoginPage: NextPageWithLayout<PageProps> = ({ availableProviders }) => {
           <h1 className="font-display text-3xl font-bold">
             {t("loginForm.title")}
           </h1>
-          <div className={`${isAuthenticationBeingRequired ? "" : "hidden"}`}>
-            <p className="my-3 rounded-lg bg-amber-300 py-3 text-sm text-black">
+          <div className={error ? "" : "hidden"}>
+            <p className="my-3 rounded-lg bg-red-200 px-3 py-3 text-sm font-semibold text-black">
+              {error === "OAuthAccountNotLinked"
+                ? t("loginForm.errors.accountNotLinked")
+                : t("loginForm.errors.authenticationError")}
+            </p>
+          </div>
+          <div className={isAuthenticationBeingRequired ? "" : "hidden"}>
+            <p className="my-3 rounded-lg bg-amber-300 px-3 py-3 text-sm font-semibold text-black">
               {t("loginForm.warnings.authenticationRequired")}
             </p>
           </div>

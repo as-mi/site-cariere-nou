@@ -1,0 +1,11 @@
+{
+  "pageTitle": "Confirmare adresă de e-mail",
+  "invalidUrl": "Link-ul de confirmare este invalid.",
+  "invalidUserId": "Nu am putut găsi utilizatorul asociat acestui link de confirmare.",
+  "invalidToken": "Token-ul de confirmare este incorect.",
+  "pleaseRecheckUrl": "Te rog să verifici că ai accesat această adresă prin intermediul link-ului din mail-ul trimis de aplicație.",
+  "manuallyCopyUrl": "Poți încerca să copiezi și să introduci manual link-ul în bara de adrese a browser-ului tău dacă problema persistă.",
+  "alreadyVerified": "Această adresă de e-mail a fost deja confirmată.",
+  "tokenVerified": "Adresa de e-mail a fost confirmată cu succes.",
+  "backToHomePage": "Înapoi la pagina principală"
+}
