@@ -11,7 +11,7 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({ t }) => (
         {t("partnersSection.title")}
       </h2>
     </header>
-    <p className="mx-auto max-w-xs text-xl sm:max-w-prose sm:py-10">
+    <p className="mx-auto max-w-xs text-center text-xl sm:max-w-prose sm:py-10">
       {t("partnersSection.comingSoon")}
     </p>
   </section>
