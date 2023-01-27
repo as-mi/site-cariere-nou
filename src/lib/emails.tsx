@@ -1,11 +1,11 @@
 import i18n from "i18next";
 import { I18nextProvider } from "react-i18next";
 
-import roCommon from "../public/locales/ro/common.json";
-import roEmails from "../public/locales/ro/emails.json";
+import roCommon from "../../public/locales/ro/common.json";
+import roEmails from "../../public/locales/ro/emails.json";
 
-import enCommon from "../public/locales/en/common.json";
-import enEmails from "../public/locales/en/emails.json";
+import enCommon from "../../public/locales/en/common.json";
+import enEmails from "../../public/locales/en/emails.json";
 
 import { renderToStaticMarkup } from "react-dom/server";
 

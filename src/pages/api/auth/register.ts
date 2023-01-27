@@ -4,15 +4,15 @@ import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 
-import prisma from "../../../lib/prisma";
+import prisma from "~/lib/prisma";
 
 import {
   convertHtmlToText,
   initI18n,
   Language,
   renderEmailToHtml,
-} from "../../../lib/emails";
-import VerifyEmail from "../../../emails/verify-email";
+} from "~/lib/emails";
+import VerifyEmail from "~/emails/verify-email";
 
 type SuccessResponse = "OK";
 

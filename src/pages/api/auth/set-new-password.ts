@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
 import bcrypt from "bcrypt";
 
-import prisma from "../../../lib/prisma";
+import prisma from "~/lib/prisma";
 
 type SuccessResponse = "OK";
 
@@ -75,6 +75,7 @@ export default async function handler(
   );
 
   try {
+    // TODO: also invalidate password reset token
     await prisma.user.update({
       where: { id: user.id },
       data: { passwordHash: newPasswordHash },

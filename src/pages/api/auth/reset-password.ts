@@ -3,13 +3,13 @@ import { z } from "zod";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 
-import prisma from "../../../lib/prisma";
+import prisma from "~/lib/prisma";
 import {
   convertHtmlToText,
   initI18n,
   Language,
   renderEmailToHtml,
-} from "../../../lib/emails";
+} from "~/lib/emails";
 import ResetPasswordEmail from "../../../emails/reset-password";
 
 type SuccessResponse = "OK";

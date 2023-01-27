@@ -1,14 +1,13 @@
-import NextAuth, { AuthOptions } from "next-auth";
-
-import { PrismaAdapter } from "@next-auth/prisma-adapter";
-import prisma from "../../../lib/prisma";
+import { AuthOptions } from "next-auth";
 
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { Role } from "@prisma/client";
 
-import { authenticateUser } from "../../../lib/accounts";
+import prisma from "./prisma";
+import { authenticateUser } from "./accounts";
 
 const providers = [];
 
@@ -104,5 +103,3 @@ export const authOptions: AuthOptions = {
     signIn: "/auth/login",
   },
 };
-
-export default NextAuth(authOptions);

@@ -2,6 +2,7 @@
  * @type {import('next-i18next').UserConfig}
  */
 module.exports = {
+  localePath: "./src/locales",
   i18n: {
     localeDetection: false,
     defaultLocale: "ro",
