@@ -7,9 +7,9 @@ import Link from "next/link";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { NextPageWithLayout } from "../_app";
-import Layout from "../../components/pages/auth/layout";
-import prisma from "../../lib/prisma";
+import { NextPageWithLayout } from "~/pages/_app";
+import Layout from "~/components/pages/auth/layout";
+import prisma from "~/lib/prisma";
 
 enum Status {
   INVALID_URL,

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
 import { unstable_getServerSession } from "next-auth/next";
 
-import { authOptions } from "./api/auth/[...nextauth]";
+import { authOptions } from "~/lib/next-auth-options";
 
 const ProfilePage: React.FC = () => {
   const { data: session } = useSession();

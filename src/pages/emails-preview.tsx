@@ -4,8 +4,8 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 
 import { convertHtmlToText, initI18n, renderEmail } from "../lib/emails";
-import VerifyEmailAddressEmail from "../emails/verify-email";
-import ResetPasswordEmail from "../emails/reset-password";
+import VerifyEmailAddressEmail from "~/emails/verify-email";
+import ResetPasswordEmail from "~/emails/reset-password";
 
 type EmailsPreviewPageProps = {
   renderedEmail: string;

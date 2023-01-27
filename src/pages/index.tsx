@@ -4,14 +4,14 @@ import Head from "next/head";
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import NavBar from "../components/pages/home/navbar";
-import HeroSection from "../components/pages/home/hero";
-import LogosSection from "../components/pages/home/logos";
-import AboutSection from "../components/pages/home/about";
-import ContactSection from "../components/pages/home/contact";
-import Footer from "../components/pages/home/footer";
-import ScrollToTopButton from "../components/pages/home/scroll-to-top";
-import PartnersSection from "../components/pages/home/partners";
+import NavBar from "~/components/pages/home/navbar";
+import HeroSection from "~/components/pages/home/hero";
+import LogosSection from "~/components/pages/home/logos";
+import AboutSection from "~/components/pages/home/about";
+import ContactSection from "~/components/pages/home/contact";
+import Footer from "~/components/pages/home/footer";
+import ScrollToTopButton from "~/components/pages/home/scroll-to-top";
+import PartnersSection from "~/components/pages/home/partners";
 
 const PlaceholderSection = () => (
   <section className="flex min-h-screen items-center justify-center">

@@ -12,9 +12,9 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import queryString from "query-string";
 
-import { NextPageWithLayout } from "../../_app";
-import Layout from "../../../components/pages/auth/layout";
-import Input from "../../../components/forms/input";
+import { NextPageWithLayout } from "~/pages/_app";
+import Layout from "~/components/pages/auth/layout";
+import Input from "~/components/forms/input";
 
 type Credentials = {
   email: string;
