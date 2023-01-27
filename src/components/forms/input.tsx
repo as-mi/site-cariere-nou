@@ -47,7 +47,9 @@ const Input = <IFormValues extends FieldValues>({
         }`}
       />
       {errors[name]?.type === "required" && (
-        <div className="pt-1 pl-2 text-sm">{t("forms.required")}</div>
+        <div role="alert" className="pt-1 pl-2 text-sm">
+          {t("forms.required")}
+        </div>
       )}
       {additionalErrorMessages}
     </div>
