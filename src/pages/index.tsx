@@ -19,7 +19,7 @@ const PlaceholderSection = () => (
   </section>
 );
 
-const Home: React.FC = () => {
+const HomePage: React.FC = () => {
   const { t } = useTranslation("home");
 
   return (
@@ -51,7 +51,7 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default HomePage;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
   return {

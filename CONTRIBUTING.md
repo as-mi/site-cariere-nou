@@ -85,6 +85,14 @@ npm run lint
 pentru a verifica cu [ESLint](https://eslint.org/) că nu există potențiale probleme
 sau încălcări ale bunelor practici.
 
+## Rulare teste
+
+Pentru a rula testele automate folosind [Jest](https://jestjs.io/), folosește comanda:
+
+```sh
+npm run test
+```
+
 ## Gestionare bază de date folosind Prisma
 
 Aplicația interacționează cu baza de date folosind biblioteca [Prisma](https://www.prisma.io/). Odată cu instalarea dependințelor prin `npm install`, se instalează și interfața din linia de comandă a Prisma, care poate fi accesată rulând `npx prisma`.
