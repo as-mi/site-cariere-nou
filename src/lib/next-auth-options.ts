@@ -76,6 +76,7 @@ if (true) {
         id: user.id.toString(),
         email: user.email,
         name: user.name,
+        role: user.role,
       };
     },
   });
@@ -97,6 +98,36 @@ export const authOptions: AuthOptions = {
     strategy: "jwt",
     // Stay logged in for 5 days by default
     maxAge: 5 * 24 * 60 * 60,
+  },
+  // Update some of the built-in callbacks
+  callbacks: {
+    async jwt({ token, user }) {
+      if (!token.role) {
+        if (!user?.role) {
+          throw new Error("User object has no role set on JWT creation");
+        }
+
+        // Save user role in the issued token
+        token.role = user.role as Role;
+      }
+
+      return token;
+    },
+    async session({ session, token, user }) {
+      const role = token.role ?? user.role;
+      if (!role) {
+        throw new Error("Unable to determine user's role in session callback");
+      }
+
+      // Provide user's role in client-side session object
+      session.user.role = role;
+
+      // TODO: leaving this field undefined results in a Next.js error.
+      // Need to find a better way to treat this scenario.
+      session.user.image = null;
+
+      return session;
+    },
   },
   // Override some of the built-in NextAuth pages
   pages: {

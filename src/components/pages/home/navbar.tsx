@@ -7,12 +7,18 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 
-import logoCariereSmall from "../../../images/logos/cariere-small-white.png";
+import { Role } from "@prisma/client";
+
+import useRole from "~/hooks/use-role";
+
+import logoCariereSmall from "~/images/logos/cariere-small-white.png";
 
 const NavBar: React.FC = () => {
   const { t } = useTranslation("home");
 
   const [navMenuShown, setNavMenuShown] = useState(false);
+
+  const role = useRole();
 
   const showNavMenu = () => {
     setNavMenuShown(true);
@@ -93,11 +99,20 @@ const NavBar: React.FC = () => {
                   </a>
                 </li>
               ))}
-              <li className="md:inline-block">
-                <Link href="/profile" className="block px-5 py-3">
-                  Contul meu
-                </Link>
-              </li>
+              {(!role || role === Role.PARTICIPANT) && (
+                <li className="md:inline-block">
+                  <Link href="/profile" className="block px-5 py-3">
+                    Contul meu
+                  </Link>
+                </li>
+              )}
+              {role === Role.ADMIN && (
+                <li className="md:inline-block">
+                  <Link href="/admin" className="block px-5 py-3">
+                    Panou de administrare
+                  </Link>
+                </li>
+              )}
             </ul>
           </nav>
         </div>
