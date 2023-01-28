@@ -13,6 +13,13 @@ import Layout from "~/components/pages/admin/layout";
 import { authOptions } from "~/lib/next-auth-options";
 import { redirectToLoginPage } from "~/lib/authorization";
 
+const links = [
+  { href: "/admin/users", label: "Utilizatori" },
+  { href: "/admin/companies", label: "Companii" },
+  { href: "/admin/positions", label: "Posturi" },
+  { href: "/admin/resumes", label: "CV-uri" },
+];
+
 const AdminHomePage: NextPageWithLayout = () => {
   const { data: session } = useSession();
 
@@ -25,34 +32,37 @@ const AdminHomePage: NextPageWithLayout = () => {
   }
 
   return (
-    <>
+    <div className="mx-auto mt-6 max-w-xs xs:mt-12 sm:mt-20">
       <header>
-        <h2>Salut, {session.user.name}</h2>
+        <h2 className="font-display text-2xl xs:text-3xl">
+          Salut, {session.user.name}
+        </h2>
+        <p className="py-2">
+          Bine ai venit în interfața de administrare a platformei Cariere.
+        </p>
       </header>
       <nav>
-        <ul>
-          <li>
-            <Link href="/admin/users">Utilizatori</Link>
-          </li>
-          <li>
-            <Link href="/admin/companies">Companii</Link>
-          </li>
-          <li>
-            <Link href="/admin/internships">Stagii</Link>
-          </li>
-          <li>
-            <Link href="/admin/resumes">CV-uri</Link>
-          </li>
+        <h3 className="mt-3 font-display text-xl xs:text-2xl">
+          Panouri de control
+        </h3>
+        <ul className="flex flex-col">
+          {links.map((link, index) => (
+            <li key={index}>
+              <Link href={link.href} className="block p-3">
+                {link.label}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
-    </>
+    </div>
   );
 };
 
 export default AdminHomePage;
 
 AdminHomePage.getLayout = (page: ReactElement) => (
-  <Layout title="Dashboard" showSidebar={false}>
+  <Layout title="Dashboard" renderSidebar={false}>
     {page}
   </Layout>
 );
