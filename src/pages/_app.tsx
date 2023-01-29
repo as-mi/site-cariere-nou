@@ -7,6 +7,8 @@ import { appWithTranslation } from "next-i18next";
 
 import { Open_Sans, Jost } from "@next/font/google";
 
+import { trpc } from "~/lib/trpc";
+
 import "../styles/globals.css";
 
 const openSans = Open_Sans({
@@ -49,4 +51,4 @@ const App: React.FC<AppPropsWithLayout> = ({
   );
 };
 
-export default appWithTranslation(App);
+export default trpc.withTRPC(appWithTranslation(App));
