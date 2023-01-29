@@ -102,6 +102,19 @@ export const authOptions: AuthOptions = {
   // Update some of the built-in callbacks
   callbacks: {
     async jwt({ token, user }) {
+      if (!token.id) {
+        if (!user?.id) {
+          throw new Error("User object has no ID set on JWT creation");
+        }
+
+        const id = parseInt(user.id);
+        if (Number.isNaN(id)) {
+          throw new Error("User ID is not a number on JWT creation");
+        }
+
+        token.id = id;
+      }
+
       if (!token.role) {
         if (!user?.role) {
           throw new Error("User object has no role set on JWT creation");
@@ -114,6 +127,14 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async session({ session, token, user }) {
+      const id = token.id ?? parseInt(user.id);
+      if (!id || Number.isNaN(id)) {
+        throw new Error("Unable to determine user's ID in session callback");
+      }
+
+      // Provide user's ID in client-side session object
+      session.user.id = id;
+
       const role = token.role ?? user.role;
       if (!role) {
         throw new Error("Unable to determine user's role in session callback");

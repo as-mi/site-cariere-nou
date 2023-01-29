@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 
+import { hashPassword } from "~/lib/accounts";
 import prisma from "~/lib/prisma";
 
 import {
@@ -30,8 +30,6 @@ const registerSchema = z
     password: z.string(),
   })
   .strict();
-
-const BCRYPT_NUM_ROUNDS = 10;
 
 export default async function handler(
   req: NextApiRequest,
@@ -92,7 +90,7 @@ export default async function handler(
   // Generate a random token for verifying the ownership of the e-mail address
   const emailVerificationToken = crypto.randomBytes(16).toString("hex");
 
-  const passwordHash = await bcrypt.hash(data.password, BCRYPT_NUM_ROUNDS);
+  const passwordHash = await hashPassword(data.password);
 
   let user;
   try {
