@@ -1,15 +1,18 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 import { User } from "@prisma/client";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import prisma from "~/lib/prisma";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { trpc } from "~/lib/trpc";
 
 type PageProps = {
   usersCount: number;
@@ -20,13 +23,33 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
   usersCount,
   users,
 }) => {
+  const router = useRouter();
+
+  const userDeleteMutation = trpc.admin.userDelete.useMutation();
+
   const handleUserResetPassword = (userId: number) => {
     console.log("Reset password for user %d", userId);
   };
 
   const handleUserDelete = (userId: number) => {
-    console.log("Delete user %d", userId);
+    if (window.confirm("Sigur vrei să ștergi acest utilizator?")) {
+      userDeleteMutation.mutate({ id: userId });
+    }
   };
+
+  useEffect(() => {
+    if (userDeleteMutation.error) {
+      alert(
+        `Eroare la ștergerea utilizatorului: ${userDeleteMutation.error.message}`
+      );
+    }
+  }, [userDeleteMutation.error]);
+
+  useEffect(() => {
+    if (userDeleteMutation.isSuccess) {
+      router.push("/admin/users");
+    }
+  }, [userDeleteMutation.isSuccess, router]);
 
   return (
     <>
@@ -71,10 +94,8 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
                 <td className="px-3">{user.email}</td>
                 <td className="px-3">{user.name}</td>
                 <td className="px-3">{user.role.toLowerCase()}</td>
-                <td className="px-3">
-                  <Link href={`/admin/users/${user.id}/edit`} className="block">
-                    Editează
-                  </Link>
+                <td className="flex flex-col px-3">
+                  <Link href={`/admin/users/${user.id}/edit`}>Editează</Link>
                   <button
                     onClick={() => handleUserResetPassword(user.id)}
                     className="block"

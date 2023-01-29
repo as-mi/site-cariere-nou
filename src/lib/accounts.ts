@@ -4,6 +4,11 @@ import { User } from "@prisma/client";
 
 import prisma from "./prisma";
 
+const BCRYPT_NUM_ROUNDS = 10;
+
+export const hashPassword = (plaintextPassword: string): Promise<string> =>
+  bcrypt.hash(plaintextPassword, BCRYPT_NUM_ROUNDS);
+
 export const authenticateUser = async (
   email: string,
   password: string

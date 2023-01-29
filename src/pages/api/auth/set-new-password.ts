@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import bcrypt from "bcrypt";
 
 import prisma from "~/lib/prisma";
+import { hashPassword } from "~/lib/accounts";
 
 type SuccessResponse = "OK";
 
@@ -20,8 +20,6 @@ const setNewPasswordSchema = z
     newPassword: z.string(),
   })
   .strict();
-
-const BCRYPT_NUM_ROUNDS = 10;
 
 export default async function handler(
   req: NextApiRequest,
@@ -68,11 +66,8 @@ export default async function handler(
     return;
   }
 
-  // Salt and encrypt the new password
-  const newPasswordHash = await bcrypt.hash(
-    data.newPassword,
-    BCRYPT_NUM_ROUNDS
-  );
+  // Encrypt the new password
+  const newPasswordHash = await hashPassword(data.newPassword);
 
   try {
     // TODO: also invalidate password reset token
