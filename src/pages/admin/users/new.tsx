@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Link from "next/link";
@@ -26,15 +26,13 @@ type AddUserFieldValues = {
 };
 
 const AdminNewUserPage: NextPageWithLayout = () => {
-  const mutation = trpc.admin.userCreate.useMutation();
-
   const router = useRouter();
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
+  const mutation = trpc.admin.userCreate.useMutation({
+    onSuccess: () => {
       router.push("/admin/users");
-    }
-  }, [mutation.isSuccess, router]);
+    },
+  });
 
   const {
     register,
