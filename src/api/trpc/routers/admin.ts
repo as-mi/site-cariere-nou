@@ -83,14 +83,28 @@ export const adminRouter = router({
     .mutation(async ({ input }) => {
       const { id, name, email, password, role } = input;
 
-      const passwordHash = password ? await hashPassword(password) : "";
+      const user = await prisma.user.findUnique({ where: { id } });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      let emailVerified = undefined;
+      if (user.email !== email) {
+        emailVerified = new Date();
+      }
+
+      let passwordHash = undefined;
+      if (password) {
+        passwordHash = await hashPassword(password);
+      }
 
       await prisma.user.update({
         where: { id },
         data: {
           name,
           email,
-          emailVerified: new Date(),
+          emailVerified,
           passwordHash,
           role,
         },
