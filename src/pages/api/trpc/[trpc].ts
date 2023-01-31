@@ -1,7 +1,7 @@
 import * as trpcNext from "@trpc/server/adapters/next";
 
-import { appRouter } from "~/server/routers/_app";
-import { createContext } from "~/server/context";
+import { appRouter } from "~/api/trpc/routers/_app";
+import { createContext } from "~/api/trpc/context";
 
 /**
  * Next.js API handler which forwards requests to tRPC.
