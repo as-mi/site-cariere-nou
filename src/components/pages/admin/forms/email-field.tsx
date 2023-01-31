@@ -1,9 +1,9 @@
 import { FieldValues } from "react-hook-form";
 
-import InputField, { InputFieldPropsWithoutType } from "./input-field";
+import InputField, { SpecializedInputFieldProps } from "./input-field";
 
 const EmailField = <IFormValues extends FieldValues>(
-  props: InputFieldPropsWithoutType<IFormValues>
+  props: SpecializedInputFieldProps<IFormValues>
 ) => <InputField type="email" {...props} />;
 
 export default EmailField;

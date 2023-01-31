@@ -65,9 +65,12 @@ enum PackageType {
 model Company {
   id           Int                         @id @default(autoincrement())
   name         String
+  slug         String                      @unique
+  siteUrl      String
   packageType  PackageType
   logo         Image                       @relation(fields: [logoImageId], references: [id])
   logoImageId  Int                         @unique
+  description  String
   applications ParticipantApplyToCompany[]
 }
 

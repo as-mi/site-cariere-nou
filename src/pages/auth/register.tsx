@@ -50,12 +50,12 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
         name: data.name,
         email: data.email,
         password: data.password,
+        language: i18n.language,
       };
       const body = JSON.stringify(payload);
       const options = {
         method: "POST",
         headers: {
-          "Accept-Language": i18n.language,
           "Content-Type": "application/json",
         },
         body,

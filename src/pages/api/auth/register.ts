@@ -1,95 +1,51 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { z } from "zod";
-import nodemailer from "nodemailer";
-import crypto from "crypto";
 
-import { hashPassword } from "~/lib/accounts";
+import { Role } from "@prisma/client";
 import prisma from "~/lib/prisma";
 
+import { generateEmailVerificationToken, hashPassword } from "~/lib/accounts";
+
+import { sendVerificationEmail } from "~/lib/emails";
+
+import { createHandler } from "~/api/handler";
 import {
-  convertHtmlToText,
-  initI18n,
-  Language,
-  renderEmailToHtml,
-} from "~/lib/emails";
-import VerifyEmail from "~/emails/verify-email";
-
-type SuccessResponse = "OK";
-
-type ErrorResponse = {
-  error: string;
-  message: string;
-};
-
-type ResponseData = SuccessResponse | ErrorResponse;
+  BadRequestError,
+  InternalServerError,
+  MethodNotAllowedError,
+} from "~/api/errors";
 
 const registerSchema = z
   .object({
     name: z.string().trim(),
     email: z.string().trim(),
     password: z.string(),
+    language: z.enum(["ro", "en"]).default("ro"),
   })
   .strict();
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
-) {
-  if (req.method !== "POST") {
-    res.status(400).json({
-      error: "invalid-method",
-      message: "only POST requests are allowed",
-    });
-    return;
-  }
+type RegisterData = z.infer<typeof registerSchema>;
 
-  const parseResult = registerSchema.safeParse(req.body);
-
-  if (!parseResult.success) {
-    res.status(400).json({
-      error: "invalid-payload",
-      message: "failed to parse request body",
-    });
-    return;
-  }
-
-  let preferredLanguage: Language;
-  switch (req.headers["Accept-Language"]) {
-    case "en":
-      preferredLanguage = "en";
-    case "ro":
-      preferredLanguage = "ro";
-    default:
-      preferredLanguage = "ro";
-      break;
-  }
-
-  const data = parseResult.data;
-
+const register = async (data: RegisterData) => {
   try {
     const user = await prisma.user.findFirst({
       where: { email: data.email },
     });
 
     if (user) {
-      res.status(400).json({
-        error: "user-exists",
-        message:
-          "another user with the same e-mail has already been registered",
-      });
-      return;
+      throw new BadRequestError(
+        "user-exists",
+        "another user with the same e-mail has already been registered"
+      );
     }
   } catch {
-    res.status(500).json({
-      error: "user-lookup-failed",
-      message: "failed to check if another user exists with same e-mail",
-    });
-    return;
+    throw new InternalServerError(
+      "user-lookup-failed",
+      "failed to check if another user exists with same e-mail"
+    );
   }
 
-  // Generate a random token for verifying the ownership of the e-mail address
-  const emailVerificationToken = crypto.randomBytes(16).toString("hex");
-
+  const emailVerificationToken = generateEmailVerificationToken();
   const passwordHash = await hashPassword(data.password);
 
   let user;
@@ -100,46 +56,22 @@ export default async function handler(
         email: data.email,
         emailVerificationToken,
         passwordHash,
-        role: "PARTICIPANT",
+        role: Role.PARTICIPANT,
       },
     });
   } catch {
-    res.status(500).json({
-      error: "user-create-failed",
-      message: "failed to create new user",
-    });
-    return;
+    throw new InternalServerError(
+      "user-create-failed",
+      "failed to create new user"
+    );
   }
 
-  console.log("Sending a verification e-mail to `%s`", data.email);
+  try {
+    await sendVerificationEmail(user, data.language, emailVerificationToken);
 
-  const options = process.env.EMAIL_CONNECTION_STRING;
-
-  const transporter = nodemailer.createTransport(options);
-
-  const from = process.env.EMAIL_FROM;
-  const to = data.email;
-
-  const i18n = await initI18n(preferredLanguage);
-
-  const subject = i18n.t("verifyEmail.subject", { ns: "emails" });
-
-  const baseUrl = process.env.NEXTAUTH_URL;
-  const verifyEmailUrl = `${baseUrl}/auth/verify-email?id=${user.id}&token=${emailVerificationToken}`;
-  const props = { name: data.name, verifyEmailUrl };
-  const html = await renderEmailToHtml(VerifyEmail, props, i18n);
-  const text = convertHtmlToText(html);
-
-  const info = await transporter.sendMail({
-    from,
-    to,
-    subject,
-    html,
-    text,
-  });
-
-  if (info.accepted.length < 1) {
-    console.error("Failed to send verification e-mail: %o", info);
+    console.log("Verification e-mail was sent successfully");
+  } catch (e) {
+    console.error("Failed to send verification e-mail: %o", e);
 
     console.log("Rolling back user creation");
     try {
@@ -148,14 +80,29 @@ export default async function handler(
       console.error("Failed to delete user with ID `%d`", user.id);
     }
 
-    res.status(500).json({
-      error: "email-sending-failed",
-      message: "failed to send e-mail message",
-    });
-    return;
+    throw new InternalServerError(
+      "email-sending-failed",
+      "failed to send e-mail message"
+    );
+  }
+};
+
+async function handler(req: NextApiRequest, res: NextApiResponse) {
+  if (req.method !== "POST") {
+    throw new MethodNotAllowedError();
   }
 
-  console.log("Verification e-mail was sent successfully");
+  const parseResult = registerSchema.safeParse(req.body);
 
-  res.status(200).send("OK");
+  if (!parseResult.success) {
+    throw new BadRequestError();
+  }
+
+  const data = parseResult.data;
+
+  await register(data);
+
+  res.status(201).end();
 }
+
+export default createHandler(handler);

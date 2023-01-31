@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 
 import { GetServerSideProps } from "next";
 import Link from "next/link";
@@ -25,7 +25,11 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
 }) => {
   const router = useRouter();
 
-  const userDeleteMutation = trpc.admin.userDelete.useMutation();
+  const userDeleteMutation = trpc.admin.userDelete.useMutation({
+    onSuccess: () => router.push("/admin/users"),
+    onError: (error) =>
+      alert(`Eroare la ștergerea utilizatorului: ${error.message}`),
+  });
 
   const handleUserResetPassword = (userId: number) => {
     console.log("Reset password for user %d", userId);
@@ -36,20 +40,6 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
       userDeleteMutation.mutate({ id: userId });
     }
   };
-
-  useEffect(() => {
-    if (userDeleteMutation.error) {
-      alert(
-        `Eroare la ștergerea utilizatorului: ${userDeleteMutation.error.message}`
-      );
-    }
-  }, [userDeleteMutation.error]);
-
-  useEffect(() => {
-    if (userDeleteMutation.isSuccess) {
-      router.push("/admin/users");
-    }
-  }, [userDeleteMutation.isSuccess, router]);
 
   return (
     <>

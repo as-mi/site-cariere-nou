@@ -1,8 +1,10 @@
-import type { GetStaticProps } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
+
+import _ from "lodash";
 
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
@@ -11,15 +13,19 @@ import AboutSection from "~/components/pages/home/about";
 import ContactSection from "~/components/pages/home/contact";
 import Footer from "~/components/pages/home/footer";
 import ScrollToTopButton from "~/components/pages/home/scroll-to-top";
-import PartnersSection from "~/components/pages/home/partners";
+import PartnersSection, {
+  CompaniesByPackageType,
+  Company,
+} from "~/components/pages/home/partners";
 
-const PlaceholderSection = () => (
-  <section className="flex min-h-screen items-center justify-center">
-    <p className="text-5xl font-medium">Placeholder</p>
-  </section>
-);
+import prisma from "~/lib/prisma";
+import { PackageType } from "@prisma/client";
 
-const HomePage: React.FC = () => {
+type PageProps = {
+  companiesByPackageType: CompaniesByPackageType;
+};
+
+const HomePage: NextPage<PageProps> = ({ companiesByPackageType }) => {
   const { t } = useTranslation("home");
 
   return (
@@ -39,9 +45,11 @@ const HomePage: React.FC = () => {
         <HeroSection t={t} />
         <LogosSection />
         <AboutSection t={t} />
-        <PartnersSection t={t} />
+        <PartnersSection
+          t={t}
+          companiesByPackageType={companiesByPackageType}
+        />
         <ContactSection t={t} />
-        {/* <PlaceholderSection /> */}
       </main>
 
       <Footer />
@@ -53,10 +61,31 @@ const HomePage: React.FC = () => {
 
 export default HomePage;
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
+  const companies = await prisma.company.findMany({
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      packageType: true,
+      logo: {
+        select: {
+          id: true,
+          width: true,
+          height: true,
+        },
+      },
+    },
+  });
+
+  const companiesByPackageType = _.groupBy(companies, "packageType") as Partial<
+    Record<PackageType, Company[]>
+  >;
+
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "ro", ["common", "home"])),
+      companiesByPackageType,
     },
   };
 };

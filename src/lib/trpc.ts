@@ -1,20 +1,11 @@
 import { httpBatchLink } from "@trpc/client";
 import { createTRPCNext } from "@trpc/next";
-import { AppRouter } from "~/server/routers/_app";
 
-const getBaseUrl = () => {
-  if (typeof window !== "undefined") {
-    // Browser should use relative path
-    return "";
-  }
+// We use `import type` because we want to ensure that
+// we don't pull in back end code into the client bundle
+import type { AppRouter } from "~/api/trpc/routers/_app";
 
-  if (process.env.NEXTAUTH_URL) {
-    return process.env.NEXTAUTH_URL;
-  }
-
-  // Assume localhost
-  return `http://localhost:${process.env.PORT ?? 3000}`;
-};
+import { getBaseUrl } from "./base-url";
 
 export const trpc = createTRPCNext<AppRouter>({
   config() {

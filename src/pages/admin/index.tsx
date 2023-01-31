@@ -3,7 +3,7 @@ import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 
-import { unstable_getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 
 import { Role } from "@prisma/client";
@@ -11,7 +11,7 @@ import { Role } from "@prisma/client";
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import { authOptions } from "~/lib/next-auth-options";
-import { redirectToLoginPage } from "~/lib/authorization";
+import { redirectToLoginPage } from "~/lib/auth";
 
 const links = [
   { href: "/admin/users", label: "Utilizatori" },
@@ -68,11 +68,7 @@ AdminHomePage.getLayout = (page: ReactElement) => (
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   const returnUrl = context.resolvedUrl;
 
