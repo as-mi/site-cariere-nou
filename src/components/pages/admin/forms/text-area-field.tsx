@@ -2,41 +2,30 @@ import { FieldValues } from "react-hook-form";
 
 import { CommonFieldProps, useFieldId } from "./common";
 
-export interface InputFieldProps<IFormValues extends FieldValues>
+export interface TextAreaFieldProps<IFormValues extends FieldValues>
   extends CommonFieldProps<IFormValues> {
-  type: "text" | "email" | "password" | "file";
   placeholder?: string;
   hint?: string;
-  accept?: string;
 }
 
-export type SpecializedInputFieldProps<IFormValues extends FieldValues> = Omit<
-  InputFieldProps<IFormValues>,
-  "type" | "accept"
->;
-
-const InputField = <IFormValues extends FieldValues>({
-  type,
+const TextAreaField = <IFormValues extends FieldValues>({
   name,
   label,
   placeholder,
   hint,
-  accept,
   required,
   register,
   errors,
-}: InputFieldProps<IFormValues>) => {
+}: TextAreaFieldProps<IFormValues>) => {
   const inputId = useFieldId(name);
   return (
     <div>
       <label htmlFor={inputId} className="block">
         {label}
       </label>
-      <input
+      <textarea
         id={inputId}
-        type={type}
         placeholder={placeholder}
-        accept={accept}
         {...register(name, { required })}
         className="block bg-zinc-800 text-white"
       />
@@ -51,4 +40,4 @@ const InputField = <IFormValues extends FieldValues>({
   );
 };
 
-export default InputField;
+export default TextAreaField;

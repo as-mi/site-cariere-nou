@@ -8,8 +8,12 @@ const createJestConfig = nextJest({
 // Add any custom config to be passed to Jest
 /** @type {import('jest').Config} */
 const customJestConfig = {
-  // Only look for test files in the `./src/__tests__` subdirectory
-  testMatch: ["<rootDir>/src/__tests__/**/*.[jt]s?(x)"],
+  testMatch: [
+    // Only look for test files in the `./src/__tests__` subdirectory
+    "<rootDir>/src/__tests__/**/*.[jt]s?(x)",
+    // Ignore Playwright end-to-end tests
+    "!**/playwright/**",
+  ],
   // Run the setup file to import additional useful packages
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
   moduleNameMapper: {

@@ -99,13 +99,11 @@ const NavBar: React.FC = () => {
                   </a>
                 </li>
               ))}
-              {(!role || role === Role.PARTICIPANT) && (
-                <li className="md:inline-block">
-                  <Link href="/profile" className="block px-5 py-3">
-                    Contul meu
-                  </Link>
-                </li>
-              )}
+              <li className="md:inline-block">
+                <Link href="/profile" className="block px-5 py-3">
+                  Contul meu
+                </Link>
+              </li>
               {role === Role.ADMIN && (
                 <li className="md:inline-block">
                   <Link href="/admin" className="block px-5 py-3">

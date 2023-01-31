@@ -2,10 +2,10 @@ import type { GetServerSideProps } from "next";
 
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import { unstable_getServerSession } from "next-auth/next";
+import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "~/lib/next-auth-options";
-import { redirectToLoginPage } from "~/lib/authorization";
+import { redirectToLoginPage } from "~/lib/auth";
 
 const ProfilePage: React.FC = () => {
   const { data: session } = useSession();
@@ -52,11 +52,7 @@ const ProfilePage: React.FC = () => {
 export default ProfilePage;
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await unstable_getServerSession(
-    context.req,
-    context.res,
-    authOptions
-  );
+  const session = await getServerSession(context.req, context.res, authOptions);
 
   const returnUrl = context.resolvedUrl;
 
