@@ -1,9 +1,17 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import {
+  GetServerSidePropsContext,
+  NextApiRequest,
+  NextApiResponse,
+} from "next";
+
 import { getServerSession as originalGetServerSession } from "next-auth";
 
 import { authOptions } from "./next-auth-options";
 
-export const getServerSession = (req: NextApiRequest, res: NextApiResponse) =>
+type Request = GetServerSidePropsContext["req"] | NextApiRequest;
+type Response = GetServerSidePropsContext["res"] | NextApiResponse;
+
+export const getServerSession = (req: Request, res: Response) =>
   originalGetServerSession(req, res, authOptions);
 
 export const redirectToLoginPage = (returnUrl: string) => ({

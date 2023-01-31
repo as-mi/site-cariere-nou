@@ -5,21 +5,21 @@ import prisma from "~/lib/prisma";
 import { hashPassword } from "~/lib/accounts";
 import { PackageType, Role } from "@prisma/client";
 
-const ZodId = z.number().int();
-const ZodEmail = z.string().email();
+import { ZodId } from "../schema";
+
 const ZodAllRoles = z.enum([Role.PARTICIPANT, Role.RECRUITER, Role.ADMIN]);
 
 const UserReadInput = z.object({ id: ZodId });
 const UserCreateInput = z.object({
   name: z.string(),
-  email: ZodEmail,
+  email: z.string(),
   password: z.string(),
   role: ZodAllRoles,
 });
 const UserUpdateInput = z.object({
   id: ZodId,
   name: z.string(),
-  email: ZodEmail,
+  email: z.string(),
   password: z.string().optional(),
   role: ZodAllRoles,
 });

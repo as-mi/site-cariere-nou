@@ -6,6 +6,7 @@
   "errors": {
     "errorCode": "eroare cod {{code}}",
     "networkError": "Eroare de rețea",
+    "not-authenticated": "Accesul interzis, nu ești autentificat",
     "user-exists": "există deja un utilizator înregistrat cu același e-mail",
     "user-not-found": "utilizatorul nu a fost găsit",
     "email-sending-failed": "nu s-a putut trimite e-mail-ul",

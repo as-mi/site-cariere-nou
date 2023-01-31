@@ -1,0 +1,17 @@
+{
+  "pageTitle": "Profilul meu",
+  "editProfile": "Editează-ți profilul",
+  "fields": {
+    "name": "Nume complet",
+    "phoneNumber": "Telefon",
+    "role": "Rol"
+  },
+  "profileUpdateForm": {
+    "cancel": "Anulează",
+    "submit": "Salvează"
+  },
+  "resumeUploadForm": {
+    "cancel": "Anulează",
+    "submit": "Încarcă"
+  }
+}
