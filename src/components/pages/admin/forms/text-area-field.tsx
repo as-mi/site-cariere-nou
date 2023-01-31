@@ -6,6 +6,7 @@ export interface TextAreaFieldProps<IFormValues extends FieldValues>
   extends CommonFieldProps<IFormValues> {
   placeholder?: string;
   hint?: string;
+  className?: string;
 }
 
 const TextAreaField = <IFormValues extends FieldValues>({
@@ -16,6 +17,7 @@ const TextAreaField = <IFormValues extends FieldValues>({
   required,
   register,
   errors,
+  className,
 }: TextAreaFieldProps<IFormValues>) => {
   const inputId = useFieldId(name);
   return (
@@ -27,7 +29,7 @@ const TextAreaField = <IFormValues extends FieldValues>({
         id={inputId}
         placeholder={placeholder}
         {...register(name, { required })}
-        className="block bg-zinc-800 text-white"
+        className={`block bg-zinc-800 text-white ${className}`}
       />
       {hint && <div className="mt-1 text-sm">{hint}</div>}
       {errors[name] &&

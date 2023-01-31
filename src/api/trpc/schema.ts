@@ -1,3 +1,3 @@
 import { z } from "zod";
 
-export const ZodId = z.number().int();
+export const EntityId = z.number().int();

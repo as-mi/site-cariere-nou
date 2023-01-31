@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { TFunction, useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-import { signOut, useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
@@ -19,6 +19,7 @@ import { Role } from "@prisma/client";
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 import { trpc } from "~/lib/trpc";
+import useRole from "~/hooks/use-role";
 
 type Profile = {
   phoneNumber: string;
@@ -42,8 +43,7 @@ type ProfileDisplayProps = {
 };
 
 const ProfileDisplay: React.FC<ProfileDisplayProps> = ({ t, user }) => {
-  const session = useSession();
-  const role = session.data?.user.role;
+  const role = useRole();
 
   return (
     <>
@@ -255,6 +255,8 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
     signOut({ callbackUrl: "/" });
   };
 
+  const role = useRole();
+
   return (
     <div className="min-h-screen bg-black px-4 py-8">
       <Head>
@@ -304,44 +306,46 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
             Dezautentificare
           </button>
         </div>
-        <section className="mt-5">
-          <h2 className="font-display text-xl font-semibold">CV-uri</h2>
-          <div className="my-3">
-            {showResumeUploadForm ? (
-              <ResumeUploadForm
-                t={t}
-                onCancel={() => setShowResumeUploadForm(false)}
-                onSuccess={() => {
-                  router.push("/profile");
-                  setShowResumeUploadForm(false);
-                }}
-              />
-            ) : (
-              <button
-                onClick={() => setShowResumeUploadForm(true)}
-                className="rounded-md bg-blue-600 px-3 py-2 text-center text-white"
-              >
-                <FontAwesomeIcon icon={faUpload} className="mr-2 h-4 w-4" />{" "}
-                Adaugă un CV
-              </button>
-            )}
-          </div>
-          <div>
-            {user.resumes.length === 0 ? (
-              "Nu ai încărcat încă niciun CV."
-            ) : (
-              <ul>
-                {user.resumes.map((resume, index) => (
-                  <li key={index} className="p-3">
-                    CV-ul numărul {index + 1}: &nbsp;&nbsp; &quot;
-                    {resume.fileName}
-                    &quot;
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </section>
+        {role == Role.PARTICIPANT && (
+          <section className="mt-5">
+            <h2 className="font-display text-xl font-semibold">CV-uri</h2>
+            <div className="my-3">
+              {showResumeUploadForm ? (
+                <ResumeUploadForm
+                  t={t}
+                  onCancel={() => setShowResumeUploadForm(false)}
+                  onSuccess={() => {
+                    router.push("/profile");
+                    setShowResumeUploadForm(false);
+                  }}
+                />
+              ) : (
+                <button
+                  onClick={() => setShowResumeUploadForm(true)}
+                  className="rounded-md bg-blue-600 px-3 py-2 text-center text-white"
+                >
+                  <FontAwesomeIcon icon={faUpload} className="mr-2 h-4 w-4" />{" "}
+                  Adaugă un CV
+                </button>
+              )}
+            </div>
+            <div>
+              {user.resumes.length === 0 ? (
+                "Nu ai încărcat încă niciun CV."
+              ) : (
+                <ul>
+                  {user.resumes.map((resume, index) => (
+                    <li key={index} className="p-3">
+                      CV-ul numărul {index + 1}: &nbsp;&nbsp; &quot;
+                      {resume.fileName}
+                      &quot;
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </section>
+        )}
       </main>
     </div>
   );
