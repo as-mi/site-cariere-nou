@@ -48,11 +48,33 @@ const AdminHomePage: NextPageWithLayout = () => {
         <ul className="flex flex-col">
           {links.map((link, index) => (
             <li key={index}>
-              <Link href={link.href} className="block p-3">
+              <Link
+                href={link.href}
+                className="block p-3 hover:bg-white hover:bg-opacity-20 active:bg-opacity-30"
+              >
                 {link.label}
               </Link>
             </li>
           ))}
+        </ul>
+        <h3 className="mt-3 font-display text-xl xs:text-2xl">Alte pagini</h3>
+        <ul className="flex flex-col">
+          <li>
+            <Link
+              href="/"
+              className="block p-3 hover:bg-white hover:bg-opacity-20 active:bg-opacity-30"
+            >
+              Pagina principală
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/profile"
+              className="block p-3 hover:bg-white hover:bg-opacity-20"
+            >
+              Contul meu
+            </Link>
+          </li>
         </ul>
       </nav>
     </div>
