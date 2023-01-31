@@ -8,12 +8,14 @@ export interface SelectFieldProps<
   T extends string,
   IFormValues extends FieldValues
 > extends CommonFieldProps<IFormValues> {
+  hint?: string;
   options: Option<T>[];
 }
 
 const SelectField = <T extends string, IFormValues extends FieldValues>({
   name,
   label,
+  hint,
   options,
   required,
   register,
@@ -36,6 +38,7 @@ const SelectField = <T extends string, IFormValues extends FieldValues>({
           </option>
         ))}
       </select>
+      {hint && <div className="mt-1 text-sm">{hint}</div>}
       {errors[name] && <div>{errors[name]?.message as string}</div>}
     </div>
   );

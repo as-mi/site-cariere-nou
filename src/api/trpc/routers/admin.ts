@@ -5,16 +5,50 @@ import prisma from "~/lib/prisma";
 import { hashPassword } from "~/lib/accounts";
 import { PackageType, Role } from "@prisma/client";
 
+const ZodId = z.number().int();
+const ZodEmail = z.string().email();
+const ZodAllRoles = z.enum([Role.PARTICIPANT, Role.RECRUITER, Role.ADMIN]);
+
+const UserReadInput = z.object({ id: ZodId });
+const UserCreateInput = z.object({
+  name: z.string(),
+  email: ZodEmail,
+  password: z.string(),
+  role: ZodAllRoles,
+});
+const UserUpdateInput = z.object({
+  id: ZodId,
+  name: z.string(),
+  email: ZodEmail,
+  password: z.string().optional(),
+  role: ZodAllRoles,
+});
+const UserDeleteInput = z.object({ id: ZodId });
+
+const CompanyCreateInput = z.object({
+  name: z.string(),
+  slug: z.string().transform((val) => val.toLowerCase()),
+  siteUrl: z.string().default(""),
+  packageType: z.enum([
+    PackageType.BRONZE,
+    PackageType.SILVER,
+    PackageType.GOLD,
+  ]),
+  logoImageId: ZodId,
+  description: z.string().default(""),
+});
+const CompanyDeleteInput = z.object({
+  id: ZodId,
+});
+
 export const adminRouter = router({
+  userRead: adminProcedure.input(UserReadInput).query(async ({ input }) => {
+    const { id } = input;
+    const user = await prisma.user.findUnique({ where: { id } });
+    return user;
+  }),
   userCreate: adminProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        email: z.string(),
-        password: z.string(),
-        role: z.enum([Role.PARTICIPANT, Role.RECRUITER, Role.ADMIN]),
-      })
-    )
+    .input(UserCreateInput)
     .mutation(async ({ input }) => {
       const { name, email, password, role } = input;
 
@@ -30,12 +64,26 @@ export const adminRouter = router({
         },
       });
     }),
+  userUpdate: adminProcedure
+    .input(UserUpdateInput)
+    .mutation(async ({ input }) => {
+      const { id, name, email, password, role } = input;
+
+      const passwordHash = password ? await hashPassword(password) : "";
+
+      await prisma.user.update({
+        where: { id },
+        data: {
+          name,
+          email,
+          emailVerified: new Date(),
+          passwordHash,
+          role,
+        },
+      });
+    }),
   userDelete: adminProcedure
-    .input(
-      z.object({
-        id: z.number().int(),
-      })
-    )
+    .input(UserDeleteInput)
     .mutation(async ({ input, ctx: { user } }) => {
       const { id } = input;
       if (user!.id === id) {
@@ -52,20 +100,7 @@ export const adminRouter = router({
     await res.revalidate("/");
   }),
   companyCreate: adminProcedure
-    .input(
-      z.object({
-        name: z.string(),
-        slug: z.string().transform((val) => val.toLowerCase()),
-        siteUrl: z.string().default(""),
-        packageType: z.enum([
-          PackageType.BRONZE,
-          PackageType.SILVER,
-          PackageType.GOLD,
-        ]),
-        logoImageId: z.number().int(),
-        description: z.string().default(""),
-      })
-    )
+    .input(CompanyCreateInput)
     .mutation(async ({ input, ctx: { res } }) => {
       await prisma.company.create({
         data: input,
@@ -75,11 +110,7 @@ export const adminRouter = router({
       await res.revalidate("/");
     }),
   companyDelete: adminProcedure
-    .input(
-      z.object({
-        id: z.number().int(),
-      })
-    )
+    .input(CompanyDeleteInput)
     .mutation(async ({ input }) => {
       const { id } = input;
 
