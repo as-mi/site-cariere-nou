@@ -17,18 +17,24 @@ const isAuthenticated = t.middleware(({ next, ctx }) => {
   return next({ ctx });
 });
 
-const isAdmin = t.middleware(({ next, ctx }) => {
-  if (ctx.user?.role !== Role.ADMIN) {
-    throw new TRPCError({
-      code: "FORBIDDEN",
-      message: "Not authorized to perform this request",
-    });
-  }
+const createIsRoleMiddleware = (role: Role) =>
+  t.middleware(({ next, ctx }) => {
+    if (ctx.user?.role !== role) {
+      throw new TRPCError({
+        code: "FORBIDDEN",
+        message: "Not authorized to perform this request",
+      });
+    }
 
-  return next({ ctx });
-});
+    return next({ ctx });
+  });
+const isParticipant = createIsRoleMiddleware(Role.PARTICIPANT);
+const isAdmin = createIsRoleMiddleware(Role.ADMIN);
 
 // Export the router and procedure helpers
 export const router = t.router;
 export const publicProcedure = t.procedure;
+export const participantProcedure = t.procedure
+  .use(isAuthenticated)
+  .use(isParticipant);
 export const adminProcedure = t.procedure.use(isAuthenticated).use(isAdmin);
