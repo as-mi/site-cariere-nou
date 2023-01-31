@@ -5,40 +5,54 @@ import prisma from "~/lib/prisma";
 import { hashPassword } from "~/lib/accounts";
 import { PackageType, Role } from "@prisma/client";
 
-import { ZodId } from "../schema";
+import { EntityId } from "../schema";
 
-const ZodAllRoles = z.enum([Role.PARTICIPANT, Role.RECRUITER, Role.ADMIN]);
+const AllRoles = z.enum([Role.PARTICIPANT, Role.RECRUITER, Role.ADMIN]);
+const AllPackageTypes = z.enum([
+  PackageType.BRONZE,
+  PackageType.SILVER,
+  PackageType.GOLD,
+]);
 
-const UserReadInput = z.object({ id: ZodId });
+const UserReadInput = z.object({ id: EntityId });
 const UserCreateInput = z.object({
   name: z.string(),
   email: z.string(),
   password: z.string(),
-  role: ZodAllRoles,
+  role: AllRoles,
 });
 const UserUpdateInput = z.object({
-  id: ZodId,
+  id: EntityId,
   name: z.string(),
   email: z.string(),
   password: z.string().optional(),
-  role: ZodAllRoles,
+  role: AllRoles,
 });
-const UserDeleteInput = z.object({ id: ZodId });
+const UserDeleteInput = z.object({ id: EntityId });
 
+const CompanySlug = z.string().transform((val) => val.toLowerCase());
+
+const CompanyReadInput = z.object({
+  id: EntityId,
+});
 const CompanyCreateInput = z.object({
   name: z.string(),
-  slug: z.string().transform((val) => val.toLowerCase()),
+  slug: CompanySlug,
   siteUrl: z.string().default(""),
-  packageType: z.enum([
-    PackageType.BRONZE,
-    PackageType.SILVER,
-    PackageType.GOLD,
-  ]),
-  logoImageId: ZodId,
+  packageType: AllPackageTypes,
+  logoImageId: EntityId,
+  description: z.string().default(""),
+});
+const CompanyUpdateInput = z.object({
+  id: EntityId,
+  name: z.string(),
+  slug: CompanySlug,
+  siteUrl: z.string().default(""),
+  packageType: AllPackageTypes,
   description: z.string().default(""),
 });
 const CompanyDeleteInput = z.object({
-  id: ZodId,
+  id: EntityId,
 });
 
 export const adminRouter = router({
@@ -99,11 +113,45 @@ export const adminRouter = router({
   revalidateHomePage: adminProcedure.mutation(async ({ ctx: { res } }) => {
     await res.revalidate("/");
   }),
+  companyRead: adminProcedure
+    .input(CompanyReadInput)
+    .query(async ({ input }) => {
+      const { id } = input;
+      const user = await prisma.company.findUnique({ where: { id } });
+      return user;
+    }),
   companyCreate: adminProcedure
     .input(CompanyCreateInput)
     .mutation(async ({ input, ctx: { res } }) => {
+      const { name, slug, siteUrl, packageType, logoImageId, description } =
+        input;
       await prisma.company.create({
-        data: input,
+        data: {
+          name,
+          slug,
+          siteUrl,
+          packageType,
+          logoImageId,
+          description,
+        },
+      });
+
+      // Revalidate the home page to update the companies section
+      await res.revalidate("/");
+    }),
+  companyUpdate: adminProcedure
+    .input(CompanyUpdateInput)
+    .mutation(async ({ input, ctx: { res } }) => {
+      const { id, name, slug, siteUrl, packageType, description } = input;
+      await prisma.company.update({
+        where: { id },
+        data: {
+          name,
+          slug,
+          siteUrl,
+          packageType,
+          description,
+        },
       });
 
       // Revalidate the home page to update the companies section

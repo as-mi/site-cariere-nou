@@ -142,7 +142,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   }
 
   const userId = parseInt(id);
-  if (Number.isNaN(id)) {
+  if (Number.isNaN(userId)) {
     return {
       notFound: true,
     };

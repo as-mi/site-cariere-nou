@@ -2,14 +2,12 @@ import { ReactElement, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { PackageType } from "@prisma/client";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import {
-  FileField,
   SelectField,
   SubmitButton,
   TextAreaField,
@@ -17,83 +15,58 @@ import {
 } from "~/components/pages/admin/forms";
 
 import { trpc } from "~/lib/trpc";
+import { GetServerSideProps } from "next";
 
-type AddCompanyFieldValues = {
+type PageProps = {
+  companyId: number;
+};
+
+type EditCompanyFieldValues = {
   name: string;
   slug: string;
   siteUrl: string;
   packageType: PackageType;
-  logo: FileList;
   description: string;
 };
 
-const AdminNewCompanyPage: NextPageWithLayout = () => {
-  const mutation = trpc.admin.companyCreate.useMutation();
+const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
+  const [successfullySaved, setSuccessfullySaved] = useState(false);
 
-  const [isUploadingImage, setIsUploadingImage] = useState(false);
-  const [fileUploadError, setFileUploadError] = useState("");
+  const query = trpc.admin.companyRead.useQuery({ id: companyId });
 
-  const router = useRouter();
+  const mutation = trpc.admin.companyUpdate.useMutation({
+    onSuccess: () => setSuccessfullySaved(true),
+  });
 
-  useEffect(() => {
-    if (mutation.isSuccess) {
-      router.push("/admin/companies");
-    }
-  }, [mutation.isSuccess, router]);
+  // const [isUploadingImage, setIsUploadingImage] = useState(false);
+  // const [fileUploadError, setFileUploadError] = useState("");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<AddCompanyFieldValues>();
+  } = useForm<EditCompanyFieldValues>();
 
-  const onSubmit: SubmitHandler<AddCompanyFieldValues> = async (data) => {
-    let logoImageId: number | undefined;
-    try {
-      const formData = new FormData();
-      formData.append("file", data.logo[0]);
-
-      const options = {
-        method: "POST",
-        body: formData,
-      };
-      const response = await fetch("/api/images/upload", options);
-      if (!response.ok) {
-        throw new Error(
-          `Failed to upload image: status code ${response.status}`
-        );
-      }
-
-      const { id } = await response.json();
-
-      if (!id) {
-        throw new Error("Failed to upload image, back end returned no ID");
-      }
-
-      if (typeof id !== "number") {
-        throw new Error(
-          "Back end did not return an image ID of the expected type"
-        );
-      }
-
-      logoImageId = id;
-    } catch (e) {
-      if (e instanceof Error) {
-        setFileUploadError(e.message);
-      } else {
-        setFileUploadError("Failed to upload logo");
-      }
-      return;
-    }
+  const onSubmit: SubmitHandler<EditCompanyFieldValues> = async (data) => {
+    setSuccessfullySaved(false);
 
     const payload = {
+      id: companyId,
       ...data,
-      logo: undefined,
-      logoImageId,
     };
-
     mutation.mutate(payload);
   };
+
+  useEffect(() => {
+    if (query.data) {
+      reset(query.data);
+    }
+  }, [query.data, reset]);
+
+  if (!query.data) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <>
@@ -141,14 +114,15 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             errors={errors}
           />
 
-          <FileField
+          {/* TODO: allow editing company logo */}
+          {/* <FileField
             name="logo"
             label="Logo"
             accept="image/png, image/jpeg"
             required
             register={register}
             errors={errors}
-          />
+          /> */}
 
           <TextAreaField
             name="description"
@@ -160,24 +134,48 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
         </div>
 
         <SubmitButton
-          label="Adaugă"
-          disabled={isUploadingImage || mutation.isLoading}
+          label="Salvează"
+          disabled={mutation.isLoading}
           className="mt-6"
         />
 
-        {fileUploadError && (
-          <div className="my-3 text-red-400">{fileUploadError}</div>
-        )}
         {mutation.error && (
           <div className="mt-3 text-red-400">{mutation.error.message}</div>
+        )}
+        {successfullySaved && (
+          <div className="mt-3 text-green-400">Salvat cu succes!</div>
         )}
       </form>
     </>
   );
 };
 
-export default AdminNewCompanyPage;
+export default AdminEditCompanyPage;
 
-AdminNewCompanyPage.getLayout = (page: ReactElement) => (
-  <Layout title="Adaugă o nouă companie">{page}</Layout>
+AdminEditCompanyPage.getLayout = (page: ReactElement) => (
+  <Layout title="Editează o companie existentă">{page}</Layout>
 );
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  params,
+}) => {
+  const id = params?.id;
+  if (typeof id !== "string") {
+    return {
+      notFound: true,
+    };
+  }
+
+  const companyId = parseInt(id);
+  if (Number.isNaN(companyId)) {
+    return {
+      notFound: true,
+    };
+  }
+
+  return {
+    props: {
+      companyId,
+    },
+  };
+};
