@@ -28,7 +28,7 @@ type AddCompanyFieldValues = {
 };
 
 const AdminNewCompanyPage: NextPageWithLayout = () => {
-  const mutation = trpc.admin.companyCreate.useMutation();
+  const mutation = trpc.admin.company.create.useMutation();
 
   const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [fileUploadError, setFileUploadError] = useState("");
@@ -48,6 +48,8 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
   } = useForm<AddCompanyFieldValues>();
 
   const onSubmit: SubmitHandler<AddCompanyFieldValues> = async (data) => {
+    setIsUploadingImage(true);
+
     let logoImageId: number | undefined;
     try {
       const formData = new FormData();
@@ -85,6 +87,8 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
       }
       return;
     }
+
+    setIsUploadingImage(false);
 
     const payload = {
       ...data,

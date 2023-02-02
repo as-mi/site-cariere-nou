@@ -32,9 +32,9 @@ type EditCompanyFieldValues = {
 const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
   const [successfullySaved, setSuccessfullySaved] = useState(false);
 
-  const query = trpc.admin.companyRead.useQuery({ id: companyId });
+  const query = trpc.admin.company.read.useQuery({ id: companyId });
 
-  const mutation = trpc.admin.companyUpdate.useMutation({
+  const mutation = trpc.admin.company.update.useMutation({
     onSuccess: () => setSuccessfullySaved(true),
   });
 

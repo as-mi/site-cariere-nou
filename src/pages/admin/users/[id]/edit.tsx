@@ -32,9 +32,9 @@ type EditUserFieldValues = {
 const AdminEditUserPage: NextPageWithLayout<PageProps> = ({ userId }) => {
   const [successfullySaved, setSuccessfullySaved] = useState(false);
 
-  const query = trpc.admin.userRead.useQuery({ id: userId });
+  const query = trpc.admin.user.read.useQuery({ id: userId });
 
-  const mutation = trpc.admin.userUpdate.useMutation({
+  const mutation = trpc.admin.user.update.useMutation({
     onSuccess: () => setSuccessfullySaved(true),
   });
 

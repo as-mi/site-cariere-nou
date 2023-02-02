@@ -25,7 +25,7 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
 }) => {
   const router = useRouter();
 
-  const userDeleteMutation = trpc.admin.userDelete.useMutation({
+  const userDeleteMutation = trpc.admin.user.delete.useMutation({
     onSuccess: () => router.push("/admin/users"),
     onError: (error) =>
       alert(`Eroare la ștergerea utilizatorului: ${error.message}`),
