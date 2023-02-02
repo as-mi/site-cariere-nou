@@ -28,7 +28,7 @@ type AddUserFieldValues = {
 const AdminNewUserPage: NextPageWithLayout = () => {
   const router = useRouter();
 
-  const mutation = trpc.admin.userCreate.useMutation({
+  const mutation = trpc.admin.user.create.useMutation({
     onSuccess: () => {
       router.push("/admin/users");
     },

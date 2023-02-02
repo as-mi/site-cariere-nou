@@ -32,10 +32,10 @@ const AdminCompaniesPage: NextPageWithLayout<PageProps> = ({
 
   const router = useRouter();
 
-  const companyDeleteMutation = trpc.admin.companyDelete.useMutation({
+  const companyDeleteMutation = trpc.admin.company.delete.useMutation({
     onSuccess: () => router.push("/admin/companies"),
     onError: (error) =>
-      alert(`Eroare la ștergerea utilizatorului: ${error.message}`),
+      alert(`Eroare la ștergerea companiei: ${error.message}`),
   });
 
   useEffect(() => {
