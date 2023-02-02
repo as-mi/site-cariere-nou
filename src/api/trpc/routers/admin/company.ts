@@ -1,18 +1,10 @@
-import { NextApiResponse } from "next";
 import { z } from "zod";
 
+import { revalidateCompanyPage, revalidateHomePage } from "~/api/revalidation";
 import prisma from "~/lib/prisma";
 
 import { adminProcedure, router } from "../..";
 import { AllPackageTypes, EntityId } from "../../schema";
-
-const revalidateHomePage = async (res: NextApiResponse) => {
-  await res.revalidate("/");
-};
-
-const revalidateCompanyPage = async (res: NextApiResponse, slug: string) => {
-  await res.revalidate(`/companies/${slug}`);
-};
 
 const Slug = z.string().transform((val) => val.toLowerCase());
 
@@ -40,6 +32,15 @@ const DeleteInput = z.object({
 });
 
 export const companyRouter = router({
+  getAll: adminProcedure.query(async () => {
+    const companies = await prisma.company.findMany({
+      select: {
+        id: true,
+        name: true,
+      },
+    });
+    return companies;
+  }),
   read: adminProcedure.input(ReadInput).query(async ({ input }) => {
     const { id } = input;
     const user = await prisma.company.findUnique({ where: { id } });

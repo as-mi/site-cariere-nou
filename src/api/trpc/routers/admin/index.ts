@@ -1,12 +1,16 @@
 import { adminProcedure, router } from "../..";
 
+import { revalidateHomePage } from "~/api/revalidation";
+
 import { userRouter } from "./user";
 import { companyRouter } from "./company";
+import { positionRouter } from "./positions";
 
 export const adminRouter = router({
   user: userRouter,
   company: companyRouter,
+  position: positionRouter,
   revalidateHomePage: adminProcedure.mutation(async ({ ctx: { res } }) => {
-    await res.revalidate("/");
+    await revalidateHomePage(res);
   }),
 });
