@@ -36,9 +36,9 @@ enum Role {
 }
 
 model User {
-  id                     Int                         @id @default(autoincrement())
+  id                     Int                          @id @default(autoincrement())
   name                   String
-  email                  String                      @unique
+  email                  String                       @unique
   emailVerified          DateTime?
   emailVerificationToken String?
   passwordHash           String?
@@ -46,7 +46,7 @@ model User {
   role                   Role
   accounts               Account[]
   resumes                Resume[]
-  applications           ParticipantApplyToCompany[]
+  applications           ParticipantApplyToPosition[]
   profile                Profile?
 }
 
@@ -63,15 +63,15 @@ enum PackageType {
 }
 
 model Company {
-  id           Int                         @id @default(autoincrement())
-  name         String
-  slug         String                      @unique
-  siteUrl      String
-  packageType  PackageType
-  logo         Image                       @relation(fields: [logoImageId], references: [id])
-  logoImageId  Int                         @unique
-  description  String
-  applications ParticipantApplyToCompany[]
+  id          Int         @id @default(autoincrement())
+  name        String
+  slug        String      @unique
+  siteUrl     String
+  packageType PackageType
+  logo        Image       @relation(fields: [logoImageId], references: [id])
+  logoImageId Int         @unique
+  description String
+  positions   Position[]
 }
 
 model Image {
@@ -85,21 +85,31 @@ model Image {
 }
 
 model Resume {
-  id          Int    @id @default(autoincrement())
-  userId      Int
-  user        User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  fileName    String
-  contentType String
-  data        Bytes
+  id           Int                          @id @default(autoincrement())
+  userId       Int
+  user         User                         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fileName     String
+  contentType  String
+  data         Bytes
+  applications ParticipantApplyToPosition[]
 }
 
-model ParticipantApplyToCompany {
-  id              Int      @id @default(autoincrement())
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          Int
-  company         Company  @relation(fields: [companyId], references: [id], onDelete: Cascade)
-  companyId       Int
-  applicationTime DateTime
+model Position {
+  id           Int                          @id @default(autoincrement())
+  companyId    Int
+  company      Company                      @relation(fields: [companyId], references: [id])
+  title        String
+  description  String
+  applications ParticipantApplyToPosition[]
+}
 
-  @@unique([userId, companyId])
+model ParticipantApplyToPosition {
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  resumeId   Int
+  resume     Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+  positionId Int
+  position   Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+
+  @@id([userId, resumeId, positionId])
 }
