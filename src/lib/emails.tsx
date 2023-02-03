@@ -80,6 +80,74 @@ export const convertHtmlToText = (renderedEmail: string): string => {
   });
 };
 
+declare let global: {
+  // Cache the e-mail transporter in a global variable,
+  // to reuse it whenever possible.
+  transporter: nodemailer.Transporter;
+};
+
+const getEmailTransporter = () => {
+  if (!global.transporter) {
+    const options = process.env.EMAIL_CONNECTION_STRING;
+    if (!options) {
+      throw new Error(
+        "`EMAIL_CONNECTION_STRING` environment variable is not configured"
+      );
+    }
+    global.transporter = nodemailer.createTransport(options);
+  }
+  return global.transporter;
+};
+
+type EmailAddress = string;
+
+type EmailMessage = {
+  subject: string;
+  text: string;
+  html: string;
+};
+
+/**
+ * Sends an e-mail message using the application's e-mail account.
+ *
+ * @param to destination address
+ * @param subject subject line of the message
+ * @param html message in HTML format
+ * @param text message in plain text format
+ */
+const sendEmail = async (
+  to: EmailAddress,
+  { subject, text, html }: EmailMessage
+) => {
+  if (process.env.MAILER_DISABLE_EMAIL_SENDING) {
+    console.log(
+      "Faking sending an e-mail to '%s' with subject '%s'",
+      to,
+      subject
+    );
+    return;
+  }
+
+  const transporter = getEmailTransporter();
+
+  const from = process.env.EMAIL_FROM;
+  if (!from) {
+    throw new Error("`EMAIL_FROM` environment variable is not configured");
+  }
+
+  const info = await transporter.sendMail({
+    from,
+    to,
+    subject,
+    html,
+    text,
+  });
+
+  if (info.accepted.length < 1) {
+    throw new Error("Failed to send e-mail message: " + JSON.stringify(info));
+  }
+};
+
 /**
  * Sends an e-mail address verification message to the indicated user.
  *
@@ -96,12 +164,6 @@ export const sendVerificationEmail = async (
 
   console.log("Sending a verification e-mail to `%s`", email);
 
-  const options = process.env.EMAIL_CONNECTION_STRING;
-  const transporter = nodemailer.createTransport(options);
-
-  const from = process.env.EMAIL_FROM;
-  const to = email;
-
   const i18n = await initI18n(language);
   const subject = i18n.t("verifyEmail.subject", { ns: "emails" });
 
@@ -112,15 +174,5 @@ export const sendVerificationEmail = async (
   const html = await renderEmailToHtml(VerifyEmail, props, i18n);
   const text = convertHtmlToText(html);
 
-  const info = await transporter.sendMail({
-    from,
-    to,
-    subject,
-    html,
-    text,
-  });
-
-  if (info.accepted.length < 1) {
-    throw new Error("Failed to send e-mail message: " + JSON.stringify(info));
-  }
+  await sendEmail(email, { subject, text, html });
 };
