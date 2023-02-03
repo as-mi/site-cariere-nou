@@ -47,6 +47,14 @@ const config: PlaywrightTestConfig = {
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
+  /* Launch a web server and wait for it to be up before running tests. */
+  webServer: {
+    command: "npm run start",
+    /* Production server will bind by default to 0.0.0.0 */
+    url: "http://0.0.0.0:3000",
+    timeout: 10 * 1000,
+    reuseExistingServer: !process.env.CI,
+  },
   /* Configure projects for major browsers */
   projects: [
     {

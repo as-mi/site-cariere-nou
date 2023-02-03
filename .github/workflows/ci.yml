@@ -60,12 +60,8 @@ jobs:
       - name: Install dependencies for Playwright
         run: npx playwright install --with-deps
 
-      - name: Run end-to-end tests using Jest
-        run: npm run test:e2e
+      - name: Build production version of the app
+        run: npm run build
 
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: playwright-report
+      - name: Run end-to-end tests using Playwright
+        run: npm run test:e2e
