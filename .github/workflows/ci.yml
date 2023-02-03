@@ -78,5 +78,8 @@ jobs:
       - name: Build production version of the app
         run: npm run build
 
+      - name: Run migrations to set up database
+        run: npx prisma migrate deploy
+
       - name: Run end-to-end tests using Playwright
         run: npm run test:e2e
