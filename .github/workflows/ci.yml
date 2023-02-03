@@ -60,6 +60,9 @@ jobs:
         ports:
           # Map TCP port 5432 on service container to the host
           - 5432:5432
+    env:
+      # Don't try to actually deliver e-mails in CI
+      MAILER_DISABLE_EMAIL_SENDING: 1
     steps:
       - name: Check out the code
         uses: actions/checkout@v3
