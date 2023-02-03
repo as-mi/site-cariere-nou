@@ -53,7 +53,7 @@ jobs:
       postgres:
         image: postgres:15.1
         env:
-          POSTGRES_PASSWORD: development
+          POSTGRES_PASSWORD: ci
           POSTGRES_DB: cariere
         # Set health checks to wait until the DB has started
         options: >-
@@ -61,10 +61,8 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-        ports:
-          # Map TCP port 5432 on service container to the host
-          - 5432:5432
     env:
+      DATABASE_URL: postgresql://postgres:ci@postgres:5432/cariere?schema=public
       # Don't try to actually deliver e-mails in CI
       MAILER_DISABLE_EMAIL_SENDING: 1
     steps:
