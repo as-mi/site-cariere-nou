@@ -24,3 +24,48 @@ jobs:
 
       - name: Run the linter
         run: npm run lint
+
+  unit_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js and npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies using npm
+        run: npm ci
+
+      - name: Run unit tests using Jest
+        run: npm run test
+
+  # Based on https://playwright.dev/docs/ci#github-actions
+  e2e_tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js and npm
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies using npm
+        run: npm ci
+
+      - name: Install dependencies for Playwright
+        run: npx playwright install --with-deps
+
+      - name: Run end-to-end tests using Jest
+        run: npm run test:e2e
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report
