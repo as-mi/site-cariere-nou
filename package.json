@@ -10,6 +10,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "jest --watch",
+    "test:ci": "jest",
     "test:e2e": "playwright test"
   },
   "dependencies": {

@@ -40,7 +40,7 @@ jobs:
         run: npm ci
 
       - name: Run unit tests using Jest
-        run: npm run test
+        run: npm run test:ci
 
   # Based on https://playwright.dev/docs/ci#github-actions
   e2e_tests:
