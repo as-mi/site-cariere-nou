@@ -1,6 +1,8 @@
 import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
+import { PHASE_PRODUCTION_BUILD } from "next/dist/shared/lib/constants";
+
 import { useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
@@ -62,6 +64,23 @@ const HomePage: NextPage<PageProps> = ({ companiesByPackageType }) => {
 export default HomePage;
 
 export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
+  const ssrConfig = await serverSideTranslations(locale ?? "ro", [
+    "common",
+    "home",
+  ]);
+
+  // When performing the initial static page build, we don't want to access the database
+  if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
+    return {
+      props: {
+        ...ssrConfig,
+        companiesByPackageType: {},
+      },
+      // The page will be regenerated using the data from the database once the first request comes in
+      revalidate: 1,
+    };
+  }
+
   const companies = await prisma.company.findMany({
     select: {
       id: true,
@@ -84,7 +103,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
 
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "ro", ["common", "home"])),
+      ...ssrConfig,
       companiesByPackageType,
     },
   };

@@ -4,6 +4,9 @@ import { GetStaticProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import { PHASE_PRODUCTION_BUILD } from "next/dist/shared/lib/constants";
+
 import { signIn, getProviders } from "next-auth/react";
 
 import { useTranslation } from "next-i18next";
@@ -121,6 +124,25 @@ LoginPage.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 export default LoginPage;
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const ssrConfig = await serverSideTranslations(locale ?? "ro", [
+    "common",
+    "login",
+  ]);
+
+  // When performing the initial static page build,
+  // we don't want do dynamically query the list of providers from the backend
+  if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
+    return {
+      props: {
+        ...ssrConfig,
+        availableProviders: [],
+      },
+      // The page will be regenerated using the active list of providers
+      // once the first request comes in
+      revalidate: 1,
+    };
+  }
+
   const providers = await getProviders();
 
   const availableProviders =
@@ -130,8 +152,8 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
 
   return {
     props: {
+      ...ssrConfig,
       availableProviders,
-      ...(await serverSideTranslations(locale ?? "ro", ["common", "login"])),
     },
     revalidate: 30,
   };
