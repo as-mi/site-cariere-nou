@@ -88,6 +88,8 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
+      - run: ls -l .next
+
       - name: Build production version of the app
         run: npm run build
 
