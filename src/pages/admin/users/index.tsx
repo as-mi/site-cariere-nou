@@ -123,6 +123,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       name: true,
       role: true,
     },
+    orderBy: [{ id: "asc" }],
   });
 
   return {

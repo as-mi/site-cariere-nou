@@ -4,7 +4,7 @@ import { revalidateHomePage } from "~/api/revalidation";
 
 import { userRouter } from "./user";
 import { companyRouter } from "./company";
-import { positionRouter } from "./positions";
+import { positionRouter } from "./position";
 
 export const adminRouter = router({
   user: userRouter,

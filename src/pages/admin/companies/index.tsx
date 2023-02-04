@@ -131,6 +131,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
       name: true,
       packageType: true,
     },
+    orderBy: [{ id: "asc" }],
   });
 
   return {

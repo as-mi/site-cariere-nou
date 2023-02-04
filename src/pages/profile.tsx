@@ -98,10 +98,7 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   });
 
   const onSubmit: SubmitHandler<ProfileEditFormFieldValues> = (data) => {
-    mutation.mutate({
-      id: user.id,
-      ...data,
-    });
+    mutation.mutate(data);
   };
 
   return (

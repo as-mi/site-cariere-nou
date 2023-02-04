@@ -1,28 +1,26 @@
 import { participantProcedure, router } from "..";
-import { TRPCError } from "@trpc/server";
 
 import { z } from "zod";
 
 import prisma from "~/lib/prisma";
 
+import { EntityId } from "../schema";
+
 const ProfileUpdateInput = z.object({
-  id: z.number().int(),
   name: z.string(),
   phoneNumber: z.string(),
+});
+const ApplyToPositionInput = z.object({
+  positionId: EntityId,
+  resumeId: EntityId,
 });
 
 export const participantRouter = router({
   profileUpdate: participantProcedure
     .input(ProfileUpdateInput)
     .mutation(async ({ input, ctx }) => {
-      const { id, name, phoneNumber } = input;
-
-      if (ctx.user!.id !== id) {
-        throw new TRPCError({
-          code: "FORBIDDEN",
-          message: "Cannot update another user's profile",
-        });
-      }
+      const id = ctx.user!.id;
+      const { name, phoneNumber } = input;
 
       await prisma.user.update({
         where: { id },
@@ -38,6 +36,48 @@ export const participantRouter = router({
               },
             },
           },
+        },
+      });
+    }),
+  resumeGetAll: participantProcedure.query(async ({ ctx }) => {
+    const id = ctx.user!.id;
+
+    return await prisma.resume.findMany({
+      where: {
+        userId: id,
+      },
+      select: {
+        id: true,
+        fileName: true,
+      },
+      orderBy: [{ id: "asc" }],
+    });
+  }),
+  applyToPosition: participantProcedure
+    .input(ApplyToPositionInput)
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.user!.id;
+      const { positionId, resumeId } = input;
+
+      // Check that the given resume ID exists and belongs to this participant
+      const resume = await prisma.resume.findFirst({
+        where: {
+          userId,
+          id: resumeId,
+        },
+      });
+
+      if (!resume) {
+        throw new Error(
+          "Resume with provided ID not found for currently logged-in user"
+        );
+      }
+
+      await prisma.participantApplyToPosition.create({
+        data: {
+          userId,
+          positionId,
+          resumeId,
         },
       });
     }),

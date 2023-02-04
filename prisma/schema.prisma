@@ -106,10 +106,11 @@ model Position {
 model ParticipantApplyToPosition {
   userId     Int
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  resumeId   Int
-  resume     Resume   @relation(fields: [resumeId], references: [id], onDelete: Cascade)
   positionId Int
   position   Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
 
-  @@id([userId, resumeId, positionId])
+  resumeId Int
+  resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
+
+  @@id([userId, positionId])
 }
