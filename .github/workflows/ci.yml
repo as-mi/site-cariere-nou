@@ -49,6 +49,9 @@ jobs:
       # Use the official Playwright container image
       # in order to avoid the need to install dependencies
       image: mcr.microsoft.com/playwright:v1.30.0-focal
+      # Run the job's steps as the default user of this image, to avoid permission issues
+      # See https://github.com/cypress-io/github-action/issues/446#issuecomment-987015822
+      options: --user 1001
     services:
       postgres:
         image: postgres:15.1
@@ -87,8 +90,6 @@ jobs:
           # If source files changed but packages didn't, rebuild from a prior cache
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
-
-      - run: ls -l .next
 
       - name: Build production version of the app
         run: npm run build
