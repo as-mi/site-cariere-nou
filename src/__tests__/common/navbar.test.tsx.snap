@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NavBar renders correctly 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body>
+    <div>
+      <header
+        class="fixed z-20 flex w-full items-center bg-black px-2 py-3 text-white"
+      >
+        <div>
+          <img
+            alt="Logo Cariere"
+            data-nimg="1"
+            decoding="async"
+            height="40"
+            loading="lazy"
+            src="/img.jpg"
+            style="color: transparent;"
+            width="98"
+          />
+        </div>
+        <button
+          class="ml-auto mr-3  md:hidden"
+        >
+          <span
+            title="navbar.show"
+          >
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-bars h-6 w-6"
+              data-icon="bars"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+        </button>
+        <div
+          class="hidden md:ml-auto md:block"
+        >
+          <div
+            class="absolute left-0 top-0 z-40 h-screen w-screen bg-slate-700 bg-opacity-60 md:hidden"
+          />
+          <div
+            class="absolute left-0 top-0 z-50 flex h-screen w-screen flex-col px-3 py-5 md:static md:h-auto md:w-auto md:p-0"
+          >
+            <button
+              class="ml-auto mr-2 mb-3 md:hidden"
+            >
+              <span
+                title="navbar.close"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-xmark h-6 w-6"
+                  data-icon="xmark"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 320 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"
+                    fill="currentColor"
+                  />
+                </svg>
+              </span>
+            </button>
+            <nav
+              class="h-full rounded-lg bg-white py-2 text-black md:bg-transparent md:py-0 md:text-inherit"
+            >
+              <ul>
+                <li>
+                  Test link
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </header>
+    </div>
+  </body>,
+  "container": <div>
+    <header
+      class="fixed z-20 flex w-full items-center bg-black px-2 py-3 text-white"
+    >
+      <div>
+        <img
+          alt="Logo Cariere"
+          data-nimg="1"
+          decoding="async"
+          height="40"
+          loading="lazy"
+          src="/img.jpg"
+          style="color: transparent;"
+          width="98"
+        />
+      </div>
+      <button
+        class="ml-auto mr-3  md:hidden"
+      >
+        <span
+          title="navbar.show"
+        >
+          <svg
+            aria-hidden="true"
+            class="svg-inline--fa fa-bars h-6 w-6"
+            data-icon="bars"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            viewBox="0 0 448 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"
+              fill="currentColor"
+            />
+          </svg>
+        </span>
+      </button>
+      <div
+        class="hidden md:ml-auto md:block"
+      >
+        <div
+          class="absolute left-0 top-0 z-40 h-screen w-screen bg-slate-700 bg-opacity-60 md:hidden"
+        />
+        <div
+          class="absolute left-0 top-0 z-50 flex h-screen w-screen flex-col px-3 py-5 md:static md:h-auto md:w-auto md:p-0"
+        >
+          <button
+            class="ml-auto mr-2 mb-3 md:hidden"
+          >
+            <span
+              title="navbar.close"
+            >
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-xmark h-6 w-6"
+                data-icon="xmark"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                viewBox="0 0 320 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M310.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L160 210.7 54.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L114.7 256 9.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L160 301.3 265.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L205.3 256 310.6 150.6z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+          </button>
+          <nav
+            class="h-full rounded-lg bg-white py-2 text-black md:bg-transparent md:py-0 md:text-inherit"
+          >
+            <ul>
+              <li>
+                Test link
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;

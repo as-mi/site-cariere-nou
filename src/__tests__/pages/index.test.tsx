@@ -1,18 +1,12 @@
 import { render, screen } from "@testing-library/react";
+
+import "~/lib/test/i18next-mock";
+
 import HomePage from "~/pages/index";
 
 jest.mock("~/hooks/use-role", () => ({
   __esModule: true,
   default: () => undefined,
-}));
-
-jest.mock("react-i18next", () => ({
-  // This mock makes sure any components using the translate hook can use it without a warning being shown
-  useTranslation: () => {
-    return {
-      t: (key: string) => key,
-    };
-  },
 }));
 
 describe("Home", () => {

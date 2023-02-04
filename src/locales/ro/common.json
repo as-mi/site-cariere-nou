@@ -1,5 +1,10 @@
 {
   "scrollToTop": "Derulează în sus",
+  "navbar": {
+    "show": "Deschide meniul de navigare",
+    "close": "Închide meniul de navigare",
+    "home": "Acasă"
+  },
   "forms": {
     "required": "Câmp obligatoriu"
   },

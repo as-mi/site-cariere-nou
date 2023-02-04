@@ -15,7 +15,10 @@ const customJestConfig = {
     "!**/playwright/**",
   ],
   // Run the setup file to import additional useful packages
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  // Store snapshot files in the same directory as the test files,
+  // with the `.snap` extension appended
+  snapshotResolver: "./jest.snapshotResolver.js",
   moduleNameMapper: {
     // Configure our custom path alias for `~`
     "~/(.*)$": "<rootDir>/src/$1",
