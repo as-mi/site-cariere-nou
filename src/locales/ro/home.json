@@ -1,10 +1,11 @@
 {
   "navbar": {
-    "close": "Închide meniul de navigare",
     "home": "Acasă",
     "about": "Despre",
     "partners": "Parteneri",
-    "contact": "Contact"
+    "contact": "Contact",
+    "profile": "Contul meu",
+    "adminDashboard": "Panou de administrare"
   },
   "teaser": "Cariere revine și anul acesta cu o mulțime de oportunități pentru studenți",
   "about": "Despre Cariere",

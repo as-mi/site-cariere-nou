@@ -1,7 +1,6 @@
 import { GetStaticProps, NextPage } from "next";
+
 import Head from "next/head";
-import Link from "next/link";
-import Image from "next/image";
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
@@ -11,28 +10,7 @@ import showdown from "showdown";
 
 import prisma from "~/lib/prisma";
 
-import logoCariereSmall from "~/images/logos/cariere-small-white.png";
-
-const NavBar = () => (
-  <header className="sticky top-0 z-20 flex w-full items-center bg-black px-2 py-3 text-white">
-    <div>
-      <Image
-        src={logoCariereSmall}
-        alt="Logo Cariere"
-        width={98}
-        height={40}
-        // TODO: need to determine why Next.js's built-in compression algorithm
-        // makes this image look very blurry
-        unoptimized
-      />
-    </div>
-    <nav className="ml-auto">
-      <Link href="/" className="block px-5 py-3">
-        Acasă
-      </Link>
-    </nav>
-  </header>
-);
+import NavBar from "~/components/pages/companies/navbar";
 
 type Company = {
   name: string;
