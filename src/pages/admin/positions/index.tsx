@@ -121,7 +121,10 @@ AdminPositionsPage.getLayout = (page: ReactElement) => (
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
   const positionsCount = await prisma.position.count();
-  const positions = await prisma.position.findMany(positionWithCompanyName);
+  const positions = await prisma.position.findMany({
+    ...positionWithCompanyName,
+    orderBy: [{ id: "asc" }],
+  });
 
   return {
     props: {

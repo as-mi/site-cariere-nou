@@ -3,8 +3,6 @@ import { SubmitHandler, useForm } from "react-hook-form";
 
 import Link from "next/link";
 
-import { PackageType } from "@prisma/client";
-
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import {
@@ -18,41 +16,37 @@ import { trpc } from "~/lib/trpc";
 import { GetServerSideProps } from "next";
 
 type PageProps = {
-  companyId: number;
+  positionId: number;
 };
 
-type EditCompanyFieldValues = {
-  name: string;
-  slug: string;
-  siteUrl: string;
-  packageType: PackageType;
+type EditPositionFieldValues = {
+  title: string;
   description: string;
 };
 
-const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
+const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
+  positionId,
+}) => {
   const [successfullySaved, setSuccessfullySaved] = useState(false);
 
-  const query = trpc.admin.company.read.useQuery({ id: companyId });
+  const query = trpc.admin.position.read.useQuery({ id: positionId });
 
-  const mutation = trpc.admin.company.update.useMutation({
+  const mutation = trpc.admin.position.update.useMutation({
     onSuccess: () => setSuccessfullySaved(true),
   });
-
-  // const [isUploadingImage, setIsUploadingImage] = useState(false);
-  // const [fileUploadError, setFileUploadError] = useState("");
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<EditCompanyFieldValues>();
+  } = useForm<EditPositionFieldValues>();
 
-  const onSubmit: SubmitHandler<EditCompanyFieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<EditPositionFieldValues> = async (data) => {
     setSuccessfullySaved(false);
 
     const payload = {
-      id: companyId,
+      id: positionId,
       ...data,
     };
     mutation.mutate(payload);
@@ -71,59 +65,20 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
   return (
     <>
       <header>
-        <Link href="/admin/companies">Înapoi</Link>
+        <Link href="/admin/positions">Înapoi</Link>
         <h1 className="mt-3 mb-1 font-display text-2xl font-bold">
-          Editează o companie existentă
+          Editează o poziție existentă
         </h1>
       </header>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
         <div className="space-y-3">
           <TextField
-            name="name"
-            label="Nume"
+            name="title"
+            label="Titlu"
             required
             register={register}
             errors={errors}
           />
-          <TextField
-            name="slug"
-            label="Slug"
-            placeholder="example-corp"
-            hint="Va fi folosit în generarea URL-ului pentru pagina acestei companii"
-            required
-            register={register}
-            errors={errors}
-          />
-          <TextField
-            name="siteUrl"
-            label="URL site"
-            placeholder="https://www.example.com"
-            register={register}
-            errors={errors}
-          />
-
-          <SelectField
-            name="packageType"
-            label="Tip pachet"
-            options={[
-              { value: PackageType.BRONZE, label: "Bronze" },
-              { value: PackageType.SILVER, label: "Silver" },
-              { value: PackageType.GOLD, label: "Gold" },
-            ]}
-            register={register}
-            errors={errors}
-          />
-
-          {/* TODO: allow editing company logo */}
-          {/* <FileField
-            name="logo"
-            label="Logo"
-            accept="image/png, image/jpeg"
-            required
-            register={register}
-            errors={errors}
-          /> */}
-
           <TextAreaField
             name="description"
             label="Descriere"
@@ -150,10 +105,10 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
   );
 };
 
-export default AdminEditCompanyPage;
+export default AdminEditPositionPage;
 
-AdminEditCompanyPage.getLayout = (page: ReactElement) => (
-  <Layout title="Editează o companie existentă">{page}</Layout>
+AdminEditPositionPage.getLayout = (page: ReactElement) => (
+  <Layout title="Editează un post existent">{page}</Layout>
 );
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
@@ -166,8 +121,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     };
   }
 
-  const companyId = parseInt(id);
-  if (Number.isNaN(companyId)) {
+  const positionId = parseInt(id);
+  if (Number.isNaN(positionId)) {
     return {
       notFound: true,
     };
@@ -175,7 +130,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   return {
     props: {
-      companyId,
+      positionId,
     },
   };
 };
