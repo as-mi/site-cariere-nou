@@ -6,6 +6,9 @@ import prisma from "~/lib/prisma";
 import { adminProcedure, router } from "../..";
 import { EntityId } from "../../schema";
 
+const GetAllInput = z.object({
+  companyId: EntityId,
+});
 const ReadInput = z.object({
   id: EntityId,
 });
@@ -24,6 +27,18 @@ const DeleteInput = z.object({
 });
 
 export const positionRouter = router({
+  getAll: adminProcedure.input(GetAllInput).query(async ({ input }) => {
+    const { companyId } = input;
+
+    const positions = await prisma.position.findMany({
+      where: { companyId },
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+    return positions;
+  }),
   read: adminProcedure.input(ReadInput).query(async ({ input }) => {
     const { id } = input;
 

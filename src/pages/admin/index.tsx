@@ -13,10 +13,16 @@ import Layout from "~/components/pages/admin/layout";
 import { authOptions } from "~/lib/next-auth-options";
 import { redirectToLoginPage } from "~/lib/auth";
 
-const links = [
+type LinkData = {
+  href: string;
+  label: string;
+};
+
+const links: LinkData[] = [
   { href: "/admin/users", label: "Utilizatori" },
   { href: "/admin/companies", label: "Companii" },
   { href: "/admin/positions", label: "Posturi" },
+  { href: "/admin/technical-tests", label: "Teste tehnice" },
   { href: "/admin/resumes", label: "CV-uri" },
 ];
 
