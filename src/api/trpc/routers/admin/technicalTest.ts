@@ -6,6 +6,9 @@ import { z } from "zod";
 import { QuestionsSchema } from "~/lib/technical-tests-schema";
 import prisma from "~/lib/prisma";
 
+const GetAllInput = z.object({
+  positionId: EntityId,
+});
 const ReadInput = z.object({
   id: EntityId,
 });
@@ -36,6 +39,18 @@ const DeleteInput = z.object({
 });
 
 export const technicalTestRouter = router({
+  getAll: adminProcedure.input(GetAllInput).query(async ({ input }) => {
+    const { positionId } = input;
+
+    const technicalTests = await prisma.technicalTest.findMany({
+      where: { positionId },
+      select: {
+        id: true,
+        title: true,
+      },
+    });
+    return technicalTests;
+  }),
   read: adminProcedure
     .input(ReadInput)
     .output(ReadOutput)

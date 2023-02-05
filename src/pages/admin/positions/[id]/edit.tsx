@@ -1,8 +1,10 @@
-import { ReactElement, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { ReactElement, useEffect, useMemo, useState } from "react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+
+import Select from "react-select";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
@@ -18,9 +20,12 @@ type PageProps = {
   positionId: number;
 };
 
+type Option = { value: number; label: string };
+
 type EditPositionFieldValues = {
   title: string;
   description: string;
+  activeTechnicalTest: Option;
 };
 
 const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
@@ -29,15 +34,19 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
   const [successfullySaved, setSuccessfullySaved] = useState(false);
 
   const query = trpc.admin.position.read.useQuery({ id: positionId });
+  const technicalTestsQuery = trpc.admin.technicalTest.getAll.useQuery({
+    positionId,
+  });
 
   const mutation = trpc.admin.position.update.useMutation({
     onSuccess: () => setSuccessfullySaved(true),
   });
 
   const {
-    register,
-    handleSubmit,
     reset,
+    handleSubmit,
+    register,
+    control,
     formState: { errors },
   } = useForm<EditPositionFieldValues>();
 
@@ -47,6 +56,8 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
     const payload = {
       id: positionId,
       ...data,
+      activeTechnicalTest: undefined,
+      activeTechnicalTestId: data.activeTechnicalTest?.value || null,
     };
     mutation.mutate(payload);
   };
@@ -57,7 +68,18 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
     }
   }, [query.data, reset]);
 
-  if (!query.data) {
+  const technicalTestOptions = useMemo(() => {
+    if (!technicalTestsQuery.data) {
+      return [];
+    }
+
+    return technicalTestsQuery.data.map((technicalTest) => ({
+      value: technicalTest.id,
+      label: technicalTest.title,
+    }));
+  }, [technicalTestsQuery.data]);
+
+  if (!query.data || !technicalTestsQuery.data) {
     return <p>Loading...</p>;
   }
 
@@ -85,6 +107,24 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
             errors={errors}
             className="min-h-[8rem] min-w-[24rem]"
           />
+          <div>
+            <label htmlFor="activeTechnicalTest" className="block">
+              Test tehnic
+            </label>
+            <Controller
+              name="activeTechnicalTest"
+              control={control}
+              render={({ field }) => (
+                <Select
+                  id="activeTechnicalTest"
+                  options={technicalTestOptions}
+                  isClearable
+                  {...field}
+                  className="text-black"
+                />
+              )}
+            />
+          </div>
         </div>
 
         <SubmitButton
