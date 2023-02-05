@@ -1,4 +1,4 @@
-import { ReactElement, useEffect } from "react";
+import { ReactElement } from "react";
 
 import { GetServerSideProps } from "next";
 import Link from "next/link";
