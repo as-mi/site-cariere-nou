@@ -36,18 +36,19 @@ enum Role {
 }
 
 model User {
-  id                     Int                          @id @default(autoincrement())
+  id                     Int                                 @id @default(autoincrement())
   name                   String
-  email                  String                       @unique
+  email                  String                              @unique
   emailVerified          DateTime?
   emailVerificationToken String?
   passwordHash           String?
   passwordResetToken     String?
   role                   Role
   accounts               Account[]
+  profile                Profile?
   resumes                Resume[]
   applications           ParticipantApplyToPosition[]
-  profile                Profile?
+  answers                ParticipantAnswersToTechnicalTest[]
 }
 
 model Profile {
@@ -95,12 +96,13 @@ model Resume {
 }
 
 model Position {
-  id           Int                          @id @default(autoincrement())
-  companyId    Int
-  company      Company                      @relation(fields: [companyId], references: [id])
-  title        String
-  description  String
-  applications ParticipantApplyToPosition[]
+  id             Int                          @id @default(autoincrement())
+  companyId      Int
+  company        Company                      @relation(fields: [companyId], references: [id])
+  title          String
+  description    String
+  applications   ParticipantApplyToPosition[]
+  technicalTests TechnicalTest[]
 }
 
 model ParticipantApplyToPosition {
@@ -113,4 +115,30 @@ model ParticipantApplyToPosition {
   resume   Resume @relation(fields: [resumeId], references: [id], onDelete: Cascade)
 
   @@id([userId, positionId])
+}
+
+model TechnicalTest {
+  id Int @id @default(autoincrement())
+
+  positionId Int
+  position   Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+
+  title       String
+  description String
+
+  questions Json
+
+  participantAnswers ParticipantAnswersToTechnicalTest[]
+}
+
+model ParticipantAnswersToTechnicalTest {
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  technicalTestId Int
+  technicalTest   TechnicalTest @relation(fields: [technicalTestId], references: [id], onDelete: Cascade)
+
+  answers Json
+
+  @@id([userId, technicalTestId])
 }

@@ -1,9 +1,14 @@
 import { ReactElement } from "react";
 
+import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+
+import prisma from "~/lib/prisma";
+import { trpc } from "~/lib/trpc";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
@@ -19,9 +24,29 @@ type TechnicalTest = {
   };
 };
 
-const AdminTechnicalTestsPage: NextPageWithLayout = () => {
-  const technicalTestsCount: number = 0;
-  const technicalTests: TechnicalTest[] = [];
+type PageProps = {
+  technicalTestsCount: number;
+  technicalTests: TechnicalTest[];
+};
+
+const AdminTechnicalTestsPage: NextPageWithLayout<PageProps> = ({
+  technicalTestsCount,
+  technicalTests,
+}) => {
+  const router = useRouter();
+
+  const technicalTestDeleteMutation =
+    trpc.admin.technicalTest.delete.useMutation({
+      onSuccess: () => router.push("/admin/technical-tests"),
+      onError: (error) =>
+        alert(`Eroare la ștergerea testului tehnic: ${error.message}`),
+    });
+
+  const handleTechnicalTestDelete = (technicalTestId: number) => {
+    if (window.confirm("Sigur vrei să ștergi acest test tehnic?")) {
+      technicalTestDeleteMutation.mutate({ id: technicalTestId });
+    }
+  };
 
   return (
     <>
@@ -54,6 +79,7 @@ const AdminTechnicalTestsPage: NextPageWithLayout = () => {
               <th>Nume companie</th>
               <th>Titlu post</th>
               <th>Titlu test</th>
+              <th>Activ</th>
               <th>Acțiuni</th>
             </tr>
           </thead>
@@ -66,13 +92,19 @@ const AdminTechnicalTestsPage: NextPageWithLayout = () => {
                 <td className="px-3">{technicalTest.position.company.name}</td>
                 <td className="px-3">{technicalTest.position.title}</td>
                 <td className="px-3">{technicalTest.title}</td>
+                <td className="px-3">Nu</td>
                 <td className="flex flex-col px-3">
                   <Link
                     href={`/admin/technical-tests/${technicalTest.id}/edit`}
                   >
                     Editează
                   </Link>
-                  <button className="block">Șterge</button>
+                  <button
+                    onClick={() => handleTechnicalTestDelete(technicalTest.id)}
+                    className="block"
+                  >
+                    Șterge
+                  </button>
                 </td>
               </tr>
             ))}
@@ -88,3 +120,31 @@ export default AdminTechnicalTestsPage;
 AdminTechnicalTestsPage.getLayout = (page: ReactElement) => (
   <Layout title="Teste tehnice">{page}</Layout>
 );
+
+export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+  const technicalTestsCount = await prisma.technicalTest.count();
+  const technicalTests = await prisma.technicalTest.findMany({
+    select: {
+      id: true,
+      title: true,
+      position: {
+        select: {
+          title: true,
+          company: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: [{ id: "asc" }],
+  });
+
+  return {
+    props: {
+      technicalTestsCount,
+      technicalTests,
+    },
+  };
+};
