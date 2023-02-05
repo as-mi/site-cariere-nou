@@ -47,15 +47,18 @@ const ProfileDisplay: React.FC<ProfileDisplayProps> = ({ t, user }) => {
 
   return (
     <>
-      <div>
-        <span className="font-semibold">{t("fields.name")}:</span> {user.name}
+      <div className="py-2">
+        <span className="font-semibold">{t("fields.name")}:</span>
+        <span className="ml-2">{user.name}</span>
       </div>
-      <div>
-        <span className="font-semibold">{t("fields.phoneNumber")}:</span>{" "}
-        {user.profile?.phoneNumber}
-      </div>
+      {role === Role.PARTICIPANT && (
+        <div className="py-2">
+          <span className="font-semibold">{t("fields.phoneNumber")}:</span>{" "}
+          <span className="ml-2">{user.profile?.phoneNumber}</span>
+        </div>
+      )}
       {process.env.NODE_ENV === "development" && role && (
-        <div>
+        <div className="py-2">
           <span className="font-semibold">{t("fields.role")}:</span>{" "}
           {role.toLowerCase()}
         </div>
@@ -82,6 +85,8 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
   onCancel,
   onSuccess,
 }) => {
+  const role = useRole();
+
   const mutation = trpc.participant.profileUpdate.useMutation({
     onSuccess,
   });
@@ -127,17 +132,23 @@ const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
         />
         {errors.phoneNumber && <div>{errors.phoneNumber.message}</div>}
       </div>
+      {process.env.NODE_ENV === "development" && role && (
+        <div className="py-2">
+          <span className="font-semibold">{t("fields.role")}:</span>{" "}
+          {role.toLowerCase()}
+        </div>
+      )}
       <div className="my-3 space-x-3">
         <button
           type="submit"
-          className="rounded-md bg-blue-700 px-3 py-2 text-center text-white"
+          className="rounded-md bg-blue-700 px-3 py-2 text-center text-white hover:bg-blue-800 active:bg-blue-900"
         >
           {t("profileUpdateForm.submit")}
         </button>
         <button
           type="button"
           onClick={onCancel}
-          className="rounded-md bg-zinc-700 px-3 py-2 text-center text-white"
+          className="rounded-md bg-zinc-700 px-3 py-2 text-center text-white hover:bg-zinc-800 active:bg-zinc-900"
         >
           {t("profileUpdateForm.cancel")}
         </button>
@@ -278,27 +289,29 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
           ) : (
             <>
               <ProfileDisplay t={t} user={user} />
-              <div className="my-3">
-                <button
-                  onClick={() => setShowProfileEditForm(true)}
-                  className="rounded-md bg-blue-700 px-3 py-2 text-center text-white"
-                >
-                  {t("editProfile")}
-                </button>
-              </div>
+              {role === Role.PARTICIPANT && (
+                <div className="my-3">
+                  <button
+                    onClick={() => setShowProfileEditForm(true)}
+                    className="rounded-md bg-blue-700 px-3 py-2 text-center text-white hover:bg-blue-800 active:bg-blue-900"
+                  >
+                    {t("editProfile")}
+                  </button>
+                </div>
+              )}
             </>
           )}
         </section>
         <div className="mt-3 flex flex-row flex-wrap items-center gap-3">
           <Link
             href="/"
-            className="flex-1 rounded-md bg-green-700 px-3 py-2 text-center text-white sm:flex-none"
+            className="flex-1 rounded-md bg-green-700 px-3 py-2 text-center text-white hover:bg-green-800 active:bg-green-900 sm:flex-none"
           >
             Înapoi la pagina principală
           </Link>
           <button
             onClick={handleSignOut}
-            className="flex-1 rounded-md bg-red-600 px-3 py-2 text-center text-white sm:flex-none"
+            className="flex-1 rounded-md bg-red-600 px-3 py-2 text-center text-white hover:bg-red-700 active:bg-red-800 sm:flex-none"
           >
             Dezautentificare
           </button>
