@@ -9,6 +9,7 @@ import {
   faBars,
   faBuilding,
   faFile,
+  faListCheck,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -33,6 +34,11 @@ const links = [
     href: "/admin/positions",
     icon: faAddressCard,
     label: "Posturi",
+  },
+  {
+    href: "/admin/technical-tests",
+    icon: faListCheck,
+    label: "Teste tehnice",
   },
   {
     href: "/admin/resumes",

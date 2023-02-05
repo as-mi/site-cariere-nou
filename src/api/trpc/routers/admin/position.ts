@@ -21,6 +21,7 @@ const UpdateInput = z.object({
   id: EntityId,
   title: z.string(),
   description: z.string().default(""),
+  activeTechnicalTestId: EntityId.or(z.null()),
 });
 const DeleteInput = z.object({
   id: EntityId,
@@ -74,7 +75,7 @@ export const positionRouter = router({
   update: adminProcedure
     .input(UpdateInput)
     .mutation(async ({ input, ctx: { res } }) => {
-      const { id, title, description } = input;
+      const { id, title, description, activeTechnicalTestId } = input;
 
       const position = await prisma.position.findUnique({
         where: { id },
@@ -96,6 +97,7 @@ export const positionRouter = router({
         data: {
           title,
           description,
+          activeTechnicalTestId,
         },
       });
 

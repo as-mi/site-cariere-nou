@@ -96,13 +96,15 @@ model Resume {
 }
 
 model Position {
-  id             Int                          @id @default(autoincrement())
-  companyId      Int
-  company        Company                      @relation(fields: [companyId], references: [id])
-  title          String
-  description    String
-  applications   ParticipantApplyToPosition[]
-  technicalTests TechnicalTest[]
+  id                    Int                          @id @default(autoincrement())
+  companyId             Int
+  company               Company                      @relation(fields: [companyId], references: [id])
+  title                 String
+  description           String
+  applications          ParticipantApplyToPosition[]
+  technicalTests        TechnicalTest[]              @relation("TechnicalTests")
+  activeTechnicalTestId Int?                         @unique
+  activeTechnicalTest   TechnicalTest?               @relation("ActiveTechnicalTest", fields: [activeTechnicalTestId], references: [id])
 }
 
 model ParticipantApplyToPosition {
@@ -121,7 +123,7 @@ model TechnicalTest {
   id Int @id @default(autoincrement())
 
   positionId Int
-  position   Position @relation(fields: [positionId], references: [id], onDelete: Cascade)
+  position   Position @relation("TechnicalTests", fields: [positionId], references: [id], onDelete: Cascade)
 
   title       String
   description String
@@ -129,6 +131,7 @@ model TechnicalTest {
   questions Json
 
   participantAnswers ParticipantAnswersToTechnicalTest[]
+  activePosition     Position?                           @relation("ActiveTechnicalTest")
 }
 
 model ParticipantAnswersToTechnicalTest {

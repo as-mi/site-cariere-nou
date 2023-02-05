@@ -22,6 +22,9 @@ type TechnicalTest = {
       name: string;
     };
   };
+  activePosition?: {
+    id: number;
+  };
 };
 
 type PageProps = {
@@ -92,7 +95,9 @@ const AdminTechnicalTestsPage: NextPageWithLayout<PageProps> = ({
                 <td className="px-3">{technicalTest.position.company.name}</td>
                 <td className="px-3">{technicalTest.position.title}</td>
                 <td className="px-3">{technicalTest.title}</td>
-                <td className="px-3">Nu</td>
+                <td className="px-3">
+                  {!!technicalTest.activePosition ? "Da" : "Nu"}
+                </td>
                 <td className="flex flex-col px-3">
                   <Link
                     href={`/admin/technical-tests/${technicalTest.id}/edit`}
@@ -135,6 +140,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
               name: true,
             },
           },
+        },
+      },
+      activePosition: {
+        select: {
+          id: true,
         },
       },
     },
