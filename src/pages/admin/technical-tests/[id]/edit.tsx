@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 
+import { trpc } from "~/lib/trpc";
+
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import {
@@ -12,40 +14,39 @@ import {
   TextField,
 } from "~/components/pages/admin/forms";
 
-import { trpc } from "~/lib/trpc";
+import { CommonFieldValues } from "~/components/pages/admin/technical-tests/forms/common";
+import QuestionsEditor from "~/components/pages/admin/technical-tests/forms/questions-editor";
 
 type PageProps = {
-  positionId: number;
+  technicalTestId: number;
 };
 
-type EditPositionFieldValues = {
-  title: string;
-  description: string;
-};
-
-const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
-  positionId,
+const AdminEditTechnicalTestPage: NextPageWithLayout<PageProps> = ({
+  technicalTestId,
 }) => {
   const [successfullySaved, setSuccessfullySaved] = useState(false);
 
-  const query = trpc.admin.position.read.useQuery({ id: positionId });
+  const query = trpc.admin.technicalTest.read.useQuery({ id: technicalTestId });
 
-  const mutation = trpc.admin.position.update.useMutation({
+  const mutation = trpc.admin.technicalTest.update.useMutation({
     onSuccess: () => setSuccessfullySaved(true),
   });
 
   const {
-    register,
-    handleSubmit,
     reset,
+    handleSubmit,
+    control,
+    register,
+    unregister,
+    watch,
     formState: { errors },
-  } = useForm<EditPositionFieldValues>();
+  } = useForm<CommonFieldValues>();
 
-  const onSubmit: SubmitHandler<EditPositionFieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<CommonFieldValues> = async (data) => {
     setSuccessfullySaved(false);
 
     const payload = {
-      id: positionId,
+      id: technicalTestId,
       ...data,
     };
     mutation.mutate(payload);
@@ -53,7 +54,11 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
 
   useEffect(() => {
     if (query.data) {
-      reset(query.data);
+      const formData = {
+        ...query.data,
+        positionId: undefined,
+      };
+      reset(formData);
     }
   }, [query.data, reset]);
 
@@ -64,9 +69,9 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
   return (
     <>
       <header>
-        <Link href="/admin/positions">Înapoi</Link>
+        <Link href="/admin/technical-tests">Înapoi</Link>
         <h1 className="mt-3 mb-1 font-display text-2xl font-bold">
-          Editează o poziție existentă
+          Editează un test tehnic existent
         </h1>
       </header>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
@@ -78,12 +83,21 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
             register={register}
             errors={errors}
           />
+
           <TextAreaField
             name="description"
             label="Descriere"
             register={register}
             errors={errors}
             className="min-h-[8rem] min-w-[24rem]"
+          />
+
+          <QuestionsEditor
+            control={control}
+            watch={watch}
+            register={register}
+            unregister={unregister}
+            errors={errors}
           />
         </div>
 
@@ -104,10 +118,10 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
   );
 };
 
-export default AdminEditPositionPage;
+export default AdminEditTechnicalTestPage;
 
-AdminEditPositionPage.getLayout = (page: ReactElement) => (
-  <Layout title="Editează un post existent">{page}</Layout>
+AdminEditTechnicalTestPage.getLayout = (page: ReactElement) => (
+  <Layout title="Editează un test tehnic existent">{page}</Layout>
 );
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
@@ -120,8 +134,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     };
   }
 
-  const positionId = parseInt(id);
-  if (Number.isNaN(positionId)) {
+  const technicalTestId = parseInt(id);
+  if (Number.isNaN(technicalTestId)) {
     return {
       notFound: true,
     };
@@ -129,7 +143,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   return {
     props: {
-      positionId,
+      technicalTestId,
     },
   };
 };
