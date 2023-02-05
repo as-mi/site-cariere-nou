@@ -8,5 +8,6 @@ export const revalidateCompanyPage = async (
   res: NextApiResponse,
   slug: string
 ) => {
-  await res.revalidate(`/companies/${slug}`);
+  // TODO: currently broken, because we dynamically generate companies' pages
+  //await res.revalidate(`/companies/${slug}`);
 };
