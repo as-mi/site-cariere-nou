@@ -68,6 +68,16 @@ npm run dev
 
 Aplicația va fi disponibilă la adresa `http://localhost:3000`.
 
+## Creare cont de admin
+
+Pentru a crea un cont de administrator în baza de date, se poate folosi comanda:
+
+```sh
+npm run seed:admin
+```
+
+O să pornească un script interactiv care va solicita informațiile necesare creării contului de admin.
+
 ## Verificare cod
 
 Pe măsură ce lucrezi la cod, este recomandat să rulezi comenzile
