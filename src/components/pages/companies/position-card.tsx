@@ -10,22 +10,32 @@ import { trpc } from "~/lib/trpc";
 
 type TechnicalTestRequiredMessageProps = {
   technicalTestId: number;
+  onCancel: () => void;
 };
 
 const TechnicalTestRequiredMessage: React.FC<
   TechnicalTestRequiredMessageProps
-> = ({ technicalTestId }) => (
+> = ({ technicalTestId, onCancel }) => (
   <>
     <p>
       Pentru a putea aplica pe acest post, va trebui să răspunzi mai întâi la
       întrebările din testul tehnic asociat.
     </p>
-    <Link
-      href={`/technical-tests/${technicalTestId}`}
-      className="mt-3 inline-block rounded-md bg-green-700 px-3 py-2 text-white hover:bg-green-800 active:bg-green-900"
-    >
-      Deschide testul tehnic
-    </Link>
+    <div className="mt-3 space-x-3">
+      <Link
+        href={`/technical-tests/${technicalTestId}`}
+        className="inline-block rounded-md bg-green-700 px-3 py-2 text-white hover:bg-green-800 active:bg-green-900"
+      >
+        Deschide testul tehnic
+      </Link>
+      <button
+        type="button"
+        onClick={onCancel}
+        className="rounded-md bg-zinc-200 px-3 py-2 hover:bg-zinc-100"
+      >
+        Anulează
+      </button>
+    </div>
   </>
 );
 
@@ -76,32 +86,36 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-wrap">
-        {resumes.data.map((resume) => {
-          const selected = watchResumeId === resume.id.toString();
-          const inputId = `applicationForm-${id}-resume-${resume.id}`;
+      {resumes.data.length > 0 ? (
+        <div className="flex flex-wrap">
+          {resumes.data.map((resume) => {
+            const selected = watchResumeId === resume.id.toString();
+            const inputId = `applicationForm-${id}-resume-${resume.id}`;
 
-          return (
-            <div key={resume.id} className="flex-1 basis-40">
-              <input
-                id={inputId}
-                type="radio"
-                value={resume.id}
-                {...register("resumeId")}
-                className="hidden"
-              />
-              <label
-                htmlFor={inputId}
-                className={`block cursor-pointer py-6 px-4 ${
-                  selected ? "bg-blue-400" : ""
-                } hover:bg-blue-300`}
-              >
-                CV cu ID-ul {resume.id}: &quot;{resume.fileName}&quot;
-              </label>
-            </div>
-          );
-        })}
-      </div>
+            return (
+              <div key={resume.id} className="flex-1 basis-40">
+                <input
+                  id={inputId}
+                  type="radio"
+                  value={resume.id}
+                  {...register("resumeId")}
+                  className="hidden"
+                />
+                <label
+                  htmlFor={inputId}
+                  className={`block cursor-pointer py-6 px-4 ${
+                    selected ? "bg-blue-400" : ""
+                  } hover:bg-blue-300`}
+                >
+                  CV cu ID-ul {resume.id}: &quot;{resume.fileName}&quot;
+                </label>
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p>Nu ți-ai încărcat încă niciun CV.</p>
+      )}
 
       <div className="mt-3 space-x-3">
         <button
@@ -139,18 +153,24 @@ export type Position = {
   title: string;
   descriptionHtml: string;
   alreadyAppliedTo: boolean;
-  technicalTestId?: number;
-  technicalTestCompleted?: boolean;
+  technicalTestId: number | null;
+  technicalTestCompleted: boolean | null;
 };
 
 type PositionCardProps = {
   position: Position;
+  initiallyShowApplicationForm?: boolean;
 };
 
-const PositionCard: React.FC<PositionCardProps> = ({ position }) => {
+const PositionCard: React.FC<PositionCardProps> = ({
+  position,
+  initiallyShowApplicationForm,
+}) => {
   const role = useRole();
 
-  const [showApplicationForm, setShowApplicationForm] = useState(false);
+  const [showApplicationForm, setShowApplicationForm] = useState(
+    initiallyShowApplicationForm
+  );
   const [showApplicationSuccessMessage, setShowApplicationSuccessMessage] =
     useState(false);
 
@@ -178,19 +198,22 @@ const PositionCard: React.FC<PositionCardProps> = ({ position }) => {
             <p>Ai aplicat deja pentru această poziție.</p>
           ) : showApplicationSuccessMessage ? (
             <ApplicationSuccessMessage />
-          ) : showTechnicalTestRequiredMessage ? (
-            <TechnicalTestRequiredMessage
-              technicalTestId={position.technicalTestId!}
-            />
           ) : showApplicationForm ? (
-            <ApplicationForm
-              onCancel={() => setShowApplicationForm(false)}
-              onSuccess={() => {
-                setShowApplicationForm(false);
-                setShowApplicationSuccessMessage(true);
-              }}
-              positionId={position.id}
-            />
+            showTechnicalTestRequiredMessage ? (
+              <TechnicalTestRequiredMessage
+                onCancel={() => setShowApplicationForm(false)}
+                technicalTestId={position.technicalTestId!}
+              />
+            ) : (
+              <ApplicationForm
+                onCancel={() => setShowApplicationForm(false)}
+                onSuccess={() => {
+                  setShowApplicationForm(false);
+                  setShowApplicationSuccessMessage(true);
+                }}
+                positionId={position.id}
+              />
+            )
           ) : (
             <button
               onClick={() => setShowApplicationForm(true)}
@@ -203,6 +226,10 @@ const PositionCard: React.FC<PositionCardProps> = ({ position }) => {
       )}
     </div>
   );
+};
+
+PositionCard.defaultProps = {
+  initiallyShowApplicationForm: false,
 };
 
 export default PositionCard;
