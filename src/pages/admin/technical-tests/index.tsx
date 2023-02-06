@@ -22,9 +22,9 @@ type TechnicalTest = {
       name: string;
     };
   };
-  activePosition?: {
+  activePosition: {
     id: number;
-  };
+  } | null;
 };
 
 type PageProps = {
