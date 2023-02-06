@@ -28,3 +28,14 @@ export const QuestionSchema = z
 export type Question = z.infer<typeof QuestionSchema>;
 
 export const QuestionsSchema = z.array(QuestionSchema);
+
+export const AnswerSchema = z
+  .object({
+    questionId: IdSchema,
+    value: z.string(),
+  })
+  .strict();
+
+export type Answer = z.infer<typeof AnswerSchema>;
+
+export const AnswersSchema = z.array(AnswerSchema);

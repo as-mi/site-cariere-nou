@@ -32,11 +32,11 @@ const CompanyPage: NextPage<PageProps> = ({ company }) => {
 
   return (
     <>
+      <Head>
+        <title>{pageTitle}</title>
+      </Head>
       <NavBar />
       <main className="min-h-screen bg-black pt-32 md:pt-40 lg:pt-48">
-        <Head>
-          <title>{pageTitle}</title>
-        </Head>
         <header className="flex flex-col items-center justify-center bg-black py-8 text-white sm:py-12 md:py-20">
           <h1 className="mb-2 font-display text-3xl sm:text-5xl">
             {company.name}
@@ -62,7 +62,7 @@ const CompanyPage: NextPage<PageProps> = ({ company }) => {
               Acest partener nu a publicat încă nicio poziție.
             </div>
           ) : (
-            <div className="flex flex-col gap-4 xs:px-3">
+            <div className="flex w-full flex-col items-center gap-4 xs:px-3">
               {company.positions.map((position) => (
                 <PositionCard key={position.id} position={position} />
               ))}
@@ -112,6 +112,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
           id: true,
           title: true,
           description: true,
+          activeTechnicalTestId: true,
         },
       },
     },
@@ -128,6 +129,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   const user = session?.user;
 
   let positionsAlreadyAppliedToIds = new Set();
+  let completedTechnicalTestsIds = new Set();
   if (user && user.role === Role.PARTICIPANT) {
     const applications = await prisma.participantApplyToPosition.findMany({
       where: {
@@ -143,16 +145,37 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     positionsAlreadyAppliedToIds = new Set(
       applications.map((application) => application.positionId)
     );
+
+    const answeredTechnicalTests =
+      await prisma.participantAnswersToTechnicalTest.findMany({
+        where: {
+          userId: user.id,
+          technicalTest: {
+            position: {
+              companyId: company.id,
+            },
+          },
+        },
+        select: {
+          technicalTestId: true,
+        },
+      });
+    completedTechnicalTestsIds = new Set(
+      answeredTechnicalTests.map((answers) => answers.technicalTestId)
+    );
   }
 
   const converter = new showdown.Converter();
 
-  const positions = company.positions.map(({ id, title, description }) => ({
-    id,
-    title,
-    descriptionHtml: converter.makeHtml(description),
-    alreadyAppliedTo: positionsAlreadyAppliedToIds.has(id),
-  }));
+  const positions = company.positions.map(
+    ({ id, title, description, activeTechnicalTestId }) => ({
+      id,
+      title,
+      descriptionHtml: converter.makeHtml(description),
+      alreadyAppliedTo: positionsAlreadyAppliedToIds.has(id),
+      technicalTestId: activeTechnicalTestId || undefined,
+    })
+  );
 
   return {
     props: {
