@@ -3,7 +3,11 @@ import { participantProcedure, router } from "..";
 import { z } from "zod";
 
 import prisma from "~/lib/prisma";
-import { AnswersSchema } from "~/lib/technical-tests-schema";
+import {
+  AnswersSchema,
+  QuestionsSchema,
+  validateAnswers,
+} from "~/lib/technical-tests-schema";
 
 import { EntityId } from "../schema";
 
@@ -128,13 +132,35 @@ export const participantRouter = router({
     }),
   answerTechnicalTest: participantProcedure
     .input(AnswerTechnicalTestInput)
-    .mutation(async ({ input }) => {
+    .mutation(async ({ input, ctx: { user } }) => {
       const { technicalTestId, answers } = input;
 
       const technicalTest = await prisma.technicalTest.findUnique({
         where: { id: technicalTestId },
+        select: {
+          questions: true,
+        },
       });
+      if (!technicalTest) {
+        throw new Error("Technical test with provided ID not found");
+      }
 
-      throw new Error("Not yet implemented");
+      const result = QuestionsSchema.safeParse(technicalTest.questions);
+      if (!result.success) {
+        throw new Error(
+          "Failed to parse questions from technical test for validation"
+        );
+      }
+
+      const questions = result.data;
+      validateAnswers(answers, questions);
+
+      await prisma.participantAnswersToTechnicalTest.create({
+        data: {
+          userId: user!.id,
+          technicalTestId,
+          answers,
+        },
+      });
     }),
 });

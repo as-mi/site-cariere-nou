@@ -12,8 +12,10 @@ type PageProps = {
     title: string;
     description: string;
     position: {
+      id: number;
       company: {
         name: string;
+        slug: string;
       };
     };
     questions: Question[];
@@ -25,22 +27,30 @@ const TechnicalTestPage: NextPage<PageProps> = ({
     id,
     title,
     description,
-    position: { company },
+    position: {
+      id: positionId,
+      company: { name: companyName, slug: companySlug },
+    },
     questions,
   },
 }) => {
-  const pageTitle = `${title} - ${company.name} - Cariere v12.0`;
+  const pageTitle = `${title} - ${companyName} - Cariere v12.0`;
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <div className="min-h-screen bg-black px-4 py-6 text-white">
+      <div className="min-h-screen bg-black px-4 py-6 text-white xs:py-10 sm:py-20 md:py-32 lg:py-40">
         <main className="mx-auto max-w-prose text-center">
           <h1 className="font-display text-3xl font-bold">{title}</h1>
           {description && <p className="my-3">{description}</p>}
-          <TechnicalTest technicalTestId={id} questions={questions} />
+          <TechnicalTest
+            companySlug={companySlug}
+            positionId={positionId}
+            technicalTestId={id}
+            questions={questions}
+          />
         </main>
       </div>
     </>
@@ -82,9 +92,11 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       description: true,
       position: {
         select: {
+          id: true,
           company: {
             select: {
               name: true,
+              slug: true,
             },
           },
         },

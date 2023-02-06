@@ -25,9 +25,10 @@ type Company = {
 
 type PageProps = {
   company: Company;
+  applyToPositionId: number | null;
 };
 
-const CompanyPage: NextPage<PageProps> = ({ company }) => {
+const CompanyPage: NextPage<PageProps> = ({ company, applyToPositionId }) => {
   const pageTitle = `${company.name} - Cariere v12.0`;
 
   return (
@@ -64,7 +65,13 @@ const CompanyPage: NextPage<PageProps> = ({ company }) => {
           ) : (
             <div className="flex w-full flex-col items-center gap-4 xs:px-3">
               {company.positions.map((position) => (
-                <PositionCard key={position.id} position={position} />
+                <PositionCard
+                  key={position.id}
+                  position={position}
+                  initiallyShowApplicationForm={
+                    position.id === applyToPositionId
+                  }
+                />
               ))}
             </div>
           )}
@@ -86,6 +93,7 @@ export default CompanyPage;
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   params,
+  query,
   locale,
   req,
   res,
@@ -123,6 +131,20 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     return {
       notFound: true,
     };
+  }
+
+  let applyToPositionId: number | null = null;
+  if (query.applyToPositionId) {
+    if (typeof query.applyToPositionId !== "string") {
+      throw new Error(
+        "Invalid value for `applyToPositionId` query string parameter"
+      );
+    }
+
+    applyToPositionId = parseInt(query.applyToPositionId);
+    if (Number.isNaN(applyToPositionId)) {
+      throw new Error("Value for `applyToPositionId` must be an integer ID");
+    }
   }
 
   const session = await getServerSession(req, res);
@@ -173,7 +195,10 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       title,
       descriptionHtml: converter.makeHtml(description),
       alreadyAppliedTo: positionsAlreadyAppliedToIds.has(id),
-      technicalTestId: activeTechnicalTestId || undefined,
+      technicalTestId: activeTechnicalTestId || null,
+      technicalTestCompleted: activeTechnicalTestId
+        ? completedTechnicalTestsIds.has(activeTechnicalTestId)
+        : null,
     })
   );
 
@@ -186,6 +211,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         descriptionHtml: converter.makeHtml(company.description),
         positions,
       },
+      applyToPositionId,
     },
   };
 };
