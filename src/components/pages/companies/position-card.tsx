@@ -1,10 +1,33 @@
 import { useId, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import Link from "next/link";
+
 import { Role } from "@prisma/client";
 import useRole from "~/hooks/use-role";
 
 import { trpc } from "~/lib/trpc";
+
+type TechnicalTestRequiredMessageProps = {
+  technicalTestId: number;
+};
+
+const TechnicalTestRequiredMessage: React.FC<
+  TechnicalTestRequiredMessageProps
+> = ({ technicalTestId }) => (
+  <>
+    <p>
+      Pentru a putea aplica pe acest post, va trebui să răspunzi mai întâi la
+      întrebările din testul tehnic asociat.
+    </p>
+    <Link
+      href={`/technical-tests/${technicalTestId}`}
+      className="mt-3 inline-block rounded-md bg-green-700 px-3 py-2 text-white hover:bg-green-800 active:bg-green-900"
+    >
+      Deschide testul tehnic
+    </Link>
+  </>
+);
 
 type ApplicationFormFieldValues = {
   resumeId: string;
@@ -96,6 +119,10 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
           Anulează
         </button>
       </div>
+
+      {mutation.error && (
+        <div className="mt-3 text-red-700">{mutation.error.message}</div>
+      )}
     </form>
   );
 };
@@ -112,6 +139,8 @@ export type Position = {
   title: string;
   descriptionHtml: string;
   alreadyAppliedTo: boolean;
+  technicalTestId?: number;
+  technicalTestCompleted?: boolean;
 };
 
 type PositionCardProps = {
@@ -125,8 +154,11 @@ const PositionCard: React.FC<PositionCardProps> = ({ position }) => {
   const [showApplicationSuccessMessage, setShowApplicationSuccessMessage] =
     useState(false);
 
+  const showTechnicalTestRequiredMessage =
+    !!position.technicalTestId && !position.technicalTestCompleted;
+
   return (
-    <div className="rounded-md bg-white p-3 text-black">
+    <div className="w-full max-w-md rounded-md bg-white p-3 text-black">
       <h3 className="mb-1 font-display text-xl">{position.title}</h3>
       {position.descriptionHtml ? (
         <div
@@ -146,6 +178,10 @@ const PositionCard: React.FC<PositionCardProps> = ({ position }) => {
             <p>Ai aplicat deja pentru această poziție.</p>
           ) : showApplicationSuccessMessage ? (
             <ApplicationSuccessMessage />
+          ) : showTechnicalTestRequiredMessage ? (
+            <TechnicalTestRequiredMessage
+              technicalTestId={position.technicalTestId!}
+            />
           ) : showApplicationForm ? (
             <ApplicationForm
               onCancel={() => setShowApplicationForm(false)}
