@@ -20,14 +20,20 @@ const QuestionsEditor: React.FC<QuestionsEditorProps> = ({
   errors,
 }) => {
   const { fields, append, remove } = useFieldArray({
+    keyName: "_id",
     control,
     name: "questions",
     rules: { required: true },
   });
 
   const addNewQuestion = () => {
+    const ids = fields.map((field) => field.id);
+    if (ids.length === 0) {
+      ids.push(0);
+    }
+    const id = Math.max(...ids) + 1;
     append({
-      id: Math.floor(Math.random() * 65536),
+      id,
       title: "",
       details: "",
       type: QuestionType.SINGLE_CHOICE,

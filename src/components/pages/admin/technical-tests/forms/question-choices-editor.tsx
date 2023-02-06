@@ -30,14 +30,20 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
   }, [unregister, name]);
 
   const { fields, append, remove } = useFieldArray({
+    keyName: "_id",
     control,
     name,
     rules: { required: true },
   });
 
   const addNewChoice = () => {
+    const ids = fields.map((field) => field.id);
+    if (ids.length === 0) {
+      ids.push(0);
+    }
+    const id = Math.max(...ids) + 1;
     append({
-      id: Math.floor(Math.random() * 65536),
+      id,
       label: "",
     });
   };
@@ -74,7 +80,7 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
               />
               <TextField
                 name={`${name}.label`}
-                label="Variantă"
+                label={`Varianta #${choiceIndex + 1}`}
                 required
                 register={register}
                 errors={errors}
