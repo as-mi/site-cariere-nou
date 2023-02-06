@@ -84,11 +84,15 @@ const AdminNewPositionPage: NextPageWithLayout = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
         <div className="space-y-3">
           <div>
+            <label htmlFor="company" className="block">
+              Companie
+            </label>
             <Controller
               name="company"
               control={control}
               render={({ field }) => (
                 <Select
+                  id="company"
                   options={companyOptions}
                   {...field}
                   className="text-black"
