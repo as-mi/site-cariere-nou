@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import Image from "next/image";
 
@@ -21,6 +21,24 @@ export type NavBarProps = {
   }: RenderLinksParams) => JSX.Element | null;
 };
 
+// Based on https://designcode.io/react-hooks-handbook-usescrollposition-hook
+const useScrollPosition = (): number => {
+  const [scrollPosition, setScrollPosition] = useState(0);
+
+  useEffect(() => {
+    const updatePosition = () => {
+      setScrollPosition(window.pageYOffset);
+    };
+    window.addEventListener("scroll", updatePosition, { passive: true });
+    updatePosition();
+    return () => {
+      window.removeEventListener("scroll", updatePosition);
+    };
+  }, []);
+
+  return scrollPosition;
+};
+
 const NavBar: React.FC<NavBarProps> = ({ renderLinks }) => {
   const { t } = useTranslation("common");
 
@@ -34,6 +52,9 @@ const NavBar: React.FC<NavBarProps> = ({ renderLinks }) => {
     [renderLinks, showNavMenu, closeNavMenu]
   );
 
+  const scrollPosition = useScrollPosition();
+  const scrolled = scrollPosition > 200;
+
   return (
     <header className="fixed z-20 flex w-full items-center bg-black px-2 py-3 text-white">
       <div>
@@ -45,6 +66,9 @@ const NavBar: React.FC<NavBarProps> = ({ renderLinks }) => {
           // TODO: need to determine why Next.js's built-in compression algorithm
           // makes this image look very blurry
           unoptimized
+          className={`opacity-0 transition-opacity duration-500 ${
+            scrolled ? "opacity-100" : "invisible"
+          }`}
         />
       </div>
       <button
