@@ -1,5 +1,7 @@
 import { FieldValues } from "react-hook-form";
 
+import classNames from "classnames";
+
 import { CommonFieldProps, useFieldId } from "./common";
 
 export interface InputFieldProps<IFormValues extends FieldValues>
@@ -8,6 +10,7 @@ export interface InputFieldProps<IFormValues extends FieldValues>
   placeholder?: string;
   hint?: string;
   accept?: string;
+  inputClassName?: string;
 }
 
 export type SpecializedInputFieldProps<IFormValues extends FieldValues> = Omit<
@@ -25,6 +28,7 @@ const InputField = <IFormValues extends FieldValues>({
   required,
   register,
   errors,
+  inputClassName,
 }: InputFieldProps<IFormValues>) => {
   const inputId = useFieldId(name);
   return (
@@ -38,7 +42,11 @@ const InputField = <IFormValues extends FieldValues>({
         placeholder={placeholder}
         accept={accept}
         {...register(name, { required })}
-        className="block bg-zinc-800 text-white"
+        className={classNames(
+          "block bg-zinc-800 text-white",
+          { "w-full": !inputClassName },
+          inputClassName
+        )}
       />
       {hint && <div className="mt-1 text-sm">{hint}</div>}
       {errors[name] &&

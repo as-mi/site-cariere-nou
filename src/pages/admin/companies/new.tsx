@@ -159,7 +159,7 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             label="Descriere"
             register={register}
             errors={errors}
-            className="min-h-[8rem] min-w-[24rem]"
+            className="min-h-[8rem]"
           />
         </div>
 
