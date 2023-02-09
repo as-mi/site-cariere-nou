@@ -44,10 +44,6 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
   return (
     <>
       <header>
-        <Link href="/admin" className="text-green-400 hover:text-green-300">
-          <FontAwesomeIcon icon={faArrowLeft} className="mr-2 h-4 w-4" />
-          Înapoi
-        </Link>
         <h1 className="my-2 font-display text-3xl">Utilizatori</h1>
         <p className="my-2">
           {usersCount == 1
