@@ -57,7 +57,7 @@ const Layout: React.FC<LayoutProps> = ({ title, renderSidebar, children }) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <div className="sm:flex sm:flex-wrap">
+      <div className="sm:flex">
         {renderSidebar && (
           <div className="text-white sm:inline-block">
             <div className="block bg-zinc-700 p-3 sm:hidden">
