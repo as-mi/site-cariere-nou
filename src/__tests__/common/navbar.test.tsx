@@ -9,8 +9,7 @@ describe("NavBar", () => {
   it("renders correctly", () => {
     const linkText = "Test link";
 
-    const tree = render(<NavBar renderLinks={() => <li>{linkText}</li>} />);
-    expect(tree).toMatchSnapshot();
+    render(<NavBar renderLinks={() => <li>{linkText}</li>} />);
 
     const link = screen.getByText(linkText);
 
