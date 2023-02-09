@@ -1,5 +1,7 @@
 import { FieldValues } from "react-hook-form";
 
+import classNames from "classnames";
+
 import { CommonFieldProps, useFieldId } from "./common";
 
 export interface TextAreaFieldProps<IFormValues extends FieldValues>
@@ -29,7 +31,7 @@ const TextAreaField = <IFormValues extends FieldValues>({
         id={inputId}
         placeholder={placeholder}
         {...register(name, { required })}
-        className={`block bg-zinc-800 text-white ${className}`}
+        className={classNames("block w-full bg-zinc-800 text-white", className)}
       />
       {hint && <div className="mt-1 text-sm">{hint}</div>}
       {errors[name] &&
