@@ -1,12 +1,12 @@
 import { useFieldArray, UseFormWatch } from "react-hook-form";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
-import { QuestionType } from "~/lib/technical-tests-schema";
+import { QuestionKind } from "~/lib/technical-tests-schema";
 
 import { CommonFieldValues, CommonUseFormProps } from "./common";
-import QuestionEditor from "./question-editor";
+import QuestionCard from "./question-card";
 
 interface QuestionsEditorProps extends CommonUseFormProps {
   watch: UseFormWatch<CommonFieldValues>;
@@ -19,7 +19,7 @@ const QuestionsEditor: React.FC<QuestionsEditorProps> = ({
   unregister,
   errors,
 }) => {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, move, remove } = useFieldArray({
     keyName: "_id",
     control,
     name: "questions",
@@ -36,8 +36,12 @@ const QuestionsEditor: React.FC<QuestionsEditorProps> = ({
       id,
       title: "",
       details: "",
-      type: QuestionType.SINGLE_CHOICE,
+      kind: QuestionKind.SINGLE_CHOICE,
     });
+  };
+
+  const reorderQuestions = (fromIndex: number, toIndex: number) => {
+    move(fromIndex, toIndex);
   };
 
   const removeQuestion = (questionIndex: number) => {
@@ -53,29 +57,23 @@ const QuestionsEditor: React.FC<QuestionsEditorProps> = ({
   return (
     <div>
       <h2 className="font-display text-xl font-semibold">Întrebări</h2>
-      <div className="pl-2 pt-1">
-        {fields.map((question, index) => (
-          <div key={question.id} className="flex flex-row">
-            <div className="pr-2">
-              <button
-                type="button"
-                onClick={() => removeQuestion(index)}
-                className="hover:text-zinc-500 active:text-zinc-600"
-              >
-                <FontAwesomeIcon icon={faClose} className="h-4 w-4" />
-              </button>
-            </div>
-            <QuestionEditor
+      <DndProvider backend={HTML5Backend}>
+        <div className="pl-2 pt-1">
+          {fields.map((question, index) => (
+            <QuestionCard
+              key={question.id}
               index={index}
+              reorderQuestions={reorderQuestions}
+              removeQuestion={removeQuestion}
               control={control}
               watch={watch}
               register={register}
               unregister={unregister}
               errors={errors}
             />
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      </DndProvider>
       <button
         type="button"
         onClick={addNewQuestion}

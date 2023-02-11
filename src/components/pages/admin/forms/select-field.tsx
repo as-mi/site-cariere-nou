@@ -20,8 +20,10 @@ const SelectField = <T extends string, IFormValues extends FieldValues>({
   required,
   register,
   errors,
+  fieldErrors,
 }: SelectFieldProps<T, IFormValues>) => {
   const selectId = useFieldId(name);
+  const error = fieldErrors || (errors && errors[name]);
   return (
     <div>
       <label htmlFor={selectId} className="block">
@@ -39,7 +41,7 @@ const SelectField = <T extends string, IFormValues extends FieldValues>({
         ))}
       </select>
       {hint && <div className="mt-1 text-sm">{hint}</div>}
-      {errors[name] && <div>{errors[name]?.message as string}</div>}
+      {error && <div>{error?.message as string}</div>}
     </div>
   );
 };

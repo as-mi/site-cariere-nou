@@ -1,6 +1,6 @@
 import { UseFormWatch } from "react-hook-form";
 
-import { QuestionType } from "~/lib/technical-tests-schema";
+import { QuestionKind } from "~/lib/technical-tests-schema";
 
 import { SelectField, TextAreaField, TextField } from "../../forms";
 
@@ -13,9 +13,9 @@ interface QuestionEditorProps extends CommonUseFormProps {
 }
 
 const QUESTION_TYPE_OPTIONS = [
-  { value: QuestionType.SINGLE_CHOICE, label: "Alegere unică" },
-  { value: QuestionType.SHORT_TEXT, label: "Text scurt" },
-  { value: QuestionType.LONG_TEXT, label: "Text lung" },
+  { value: QuestionKind.SINGLE_CHOICE, label: "Alegere unică" },
+  { value: QuestionKind.SHORT_TEXT, label: "Text scurt" },
+  { value: QuestionKind.LONG_TEXT, label: "Text lung" },
 ];
 
 const QuestionEditor: React.FC<QuestionEditorProps> = ({
@@ -27,10 +27,11 @@ const QuestionEditor: React.FC<QuestionEditorProps> = ({
   errors,
 }) => {
   const name = `questions.${index}` as const;
-  const watchQuestionType = watch(`${name}.type`);
+  const fieldErrors = errors?.questions?.[index];
+  const watchQuestionKind = watch(`${name}.kind`);
 
   return (
-    <div>
+    <>
       <h3 className="font-display text-lg font-semibold">
         Întrebarea #{index + 1}
       </h3>
@@ -47,25 +48,25 @@ const QuestionEditor: React.FC<QuestionEditorProps> = ({
           label="Titlu"
           required
           register={register}
-          errors={errors}
+          fieldErrors={fieldErrors?.title}
         />
 
         <TextAreaField
           name={`${name}.details`}
           label="Detalii"
           register={register}
-          errors={errors}
+          fieldErrors={fieldErrors?.details}
         />
 
         <SelectField
-          name={`${name}.type`}
+          name={`${name}.kind`}
           label="Tip întrebare"
           options={QUESTION_TYPE_OPTIONS}
           register={register}
-          errors={errors}
+          fieldErrors={fieldErrors?.kind}
         />
 
-        {watchQuestionType === QuestionType.SINGLE_CHOICE && (
+        {watchQuestionKind === QuestionKind.SINGLE_CHOICE && (
           <QuestionChoicesEditor
             control={control}
             register={register}
@@ -75,7 +76,7 @@ const QuestionEditor: React.FC<QuestionEditorProps> = ({
           />
         )}
       </div>
-    </div>
+    </>
   );
 };
 

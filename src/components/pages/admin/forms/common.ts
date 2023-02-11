@@ -1,6 +1,7 @@
 import { useId, useMemo } from "react";
 
 import {
+  FieldError,
   FieldErrors,
   FieldValues,
   Path,
@@ -15,7 +16,8 @@ export interface CommonFieldProps<IFormValues extends FieldValues> {
   label: string;
   required?: boolean;
   register: UseFormRegister<IFormValues>;
-  errors: FieldErrors<IFormValues>;
+  errors?: FieldErrors<IFormValues>;
+  fieldErrors?: FieldError;
 }
 
 /**
