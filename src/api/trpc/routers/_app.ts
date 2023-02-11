@@ -1,9 +1,10 @@
-import { publicProcedure, router } from "..";
+import { router } from "..";
+import { commonRouter } from "./common";
 import { participantRouter } from "./participant";
 import { adminRouter } from "./admin";
 
 export const appRouter = router({
-  hello: publicProcedure.query(() => "Hello!"),
+  common: commonRouter,
   participant: participantRouter,
   admin: adminRouter,
 });
