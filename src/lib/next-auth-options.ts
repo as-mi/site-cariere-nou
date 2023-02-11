@@ -1,6 +1,7 @@
 import { AuthOptions } from "next-auth";
 
 import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
@@ -26,6 +27,31 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   });
 
   providers.push(googleProvider);
+}
+
+if (process.env.FACEBOOK_APP_ID && process.env.FACEBOOK_APP_SECRET) {
+  const facebookProvider = FacebookProvider({
+    clientId: process.env.FACEBOOK_APP_ID,
+    clientSecret: process.env.FACEBOOK_APP_SECRET,
+    userinfo: {
+      params: { fields: "id,name,email" },
+    },
+    profile(profile) {
+      // Facebook allows users to reject the disclosure of their e-mail to the service provider
+      if (!profile.email) {
+        throw new Error("E-mail address not received from Facebook");
+      }
+
+      return {
+        id: profile.id,
+        name: profile.name,
+        email: profile.email,
+        role: Role.PARTICIPANT,
+      };
+    },
+  });
+
+  providers.push(facebookProvider);
 }
 
 if (true) {
