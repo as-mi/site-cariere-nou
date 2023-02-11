@@ -9,6 +9,7 @@ import {
   faBars,
   faBuilding,
   faFile,
+  faHouse,
   faListCheck,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -20,6 +21,11 @@ type LayoutProps = {
 };
 
 const links = [
+  {
+    href: "/admin",
+    icon: faHouse,
+    label: "Acasă",
+  },
   {
     href: "/admin/users",
     icon: faUser,
