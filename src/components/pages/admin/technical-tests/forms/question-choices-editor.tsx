@@ -1,12 +1,8 @@
 import { useEffect } from "react";
 import { useFieldArray } from "react-hook-form";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose } from "@fortawesome/free-solid-svg-icons";
-
-import { TextField } from "../../forms";
-
 import { CommonUseFormProps } from "./common";
+import QuestionChoice from "./question-choice";
 
 interface QuestionChoicesEditorProps extends CommonUseFormProps {
   questionIndex: number;
@@ -20,6 +16,7 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
   questionIndex,
 }) => {
   const name = `questions.${questionIndex}.choices` as const;
+  const choicesFieldErrors = errors.questions?.[questionIndex]?.choices?.root;
 
   useEffect(() => {
     // When this component unmounts (such as when the user changes this question's type),
@@ -29,7 +26,7 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
     };
   }, [unregister, name]);
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, move, remove } = useFieldArray({
     keyName: "_id",
     control,
     name,
@@ -48,6 +45,10 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
     });
   };
 
+  const reorderChoices = (fromChoiceIndex: number, toChoiceIndex: number) => {
+    move(fromChoiceIndex, toChoiceIndex);
+  };
+
   const removeChoice = (choiceIndex: number) => {
     if (window.confirm("Sigur vrei să ștergi această variantă de răspuns?")) {
       remove(choiceIndex);
@@ -58,36 +59,18 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
     <div>
       <h4>Variante de răspuns</h4>
 
-      <div className="space-y-1 p-2">
-        {fields.map((choice, choiceIndex) => {
-          const name =
-            `questions.${questionIndex}.choices.${choiceIndex}` as const;
-          return (
-            <div key={choice.id} className="flex flex-row">
-              <div className="pr-2">
-                <button
-                  type="button"
-                  onClick={() => removeChoice(choiceIndex)}
-                  className="hover:text-zinc-500 active:text-zinc-600"
-                >
-                  <FontAwesomeIcon icon={faClose} className="h-4 w-4" />
-                </button>
-              </div>
-              <input
-                type="hidden"
-                {...register(`${name}.id`, { valueAsNumber: true })}
-                className="hidden"
-              />
-              <TextField
-                name={`${name}.label`}
-                label={`Varianta #${choiceIndex + 1}`}
-                required
-                register={register}
-                errors={errors}
-              />
-            </div>
-          );
-        })}
+      <div className="space-y-1 pt-2 pr-4 pb-4 pl-2">
+        {fields.map((choice, choiceIndex) => (
+          <QuestionChoice
+            key={choice.id}
+            questionIndex={questionIndex}
+            choiceIndex={choiceIndex}
+            reorderChoices={reorderChoices}
+            removeChoice={removeChoice}
+            register={register}
+            errors={errors}
+          />
+        ))}
       </div>
 
       <button
@@ -97,8 +80,7 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
         Adaugă o nouă variantă de răspuns
       </button>
 
-      {errors.questions?.[questionIndex]?.choices?.root?.type ===
-        "required" && (
+      {choicesFieldErrors?.type === "required" && (
         <p className="mt-2 text-sm">
           Trebuie adăugată cel puțin o variantă de răspuns
         </p>

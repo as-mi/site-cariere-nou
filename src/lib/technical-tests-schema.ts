@@ -10,7 +10,7 @@ const ChoiceSchema = z
   })
   .strict();
 
-export enum QuestionType {
+export enum QuestionKind {
   SHORT_TEXT = "shortText",
   LONG_TEXT = "longText",
   SINGLE_CHOICE = "singleChoice",
@@ -21,7 +21,7 @@ export const QuestionSchema = z
     id: IdSchema,
     title: z.string(),
     details: z.string().default(""),
-    type: z.nativeEnum(QuestionType),
+    kind: z.nativeEnum(QuestionKind),
     choices: z.array(ChoiceSchema).optional(),
   })
   .strict();
@@ -66,7 +66,7 @@ export function validateAnswers(answers: Answer[], questions: Question[]) {
       );
     }
 
-    if (question.type === QuestionType.SINGLE_CHOICE) {
+    if (question.kind === QuestionKind.SINGLE_CHOICE) {
       const valueInt = parseInt(value);
       if (Number.isNaN(valueInt)) {
         throw new Error(

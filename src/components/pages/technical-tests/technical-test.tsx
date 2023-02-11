@@ -8,7 +8,7 @@ import {
 
 import { useRouter } from "next/router";
 
-import { Answer, Question, QuestionType } from "~/lib/technical-tests-schema";
+import { Answer, Question, QuestionKind } from "~/lib/technical-tests-schema";
 import { trpc } from "~/lib/trpc";
 
 type TechnicalTestFieldValues = {
@@ -32,8 +32,8 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
   const valueName = `${name}.value` as const;
 
   let input;
-  switch (question.type) {
-    case QuestionType.SHORT_TEXT:
+  switch (question.kind) {
+    case QuestionKind.SHORT_TEXT:
       input = (
         <input
           type="text"
@@ -42,7 +42,7 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
         />
       );
       break;
-    case QuestionType.LONG_TEXT:
+    case QuestionKind.LONG_TEXT:
       input = (
         <textarea
           {...register(valueName, { required: true })}
@@ -50,7 +50,7 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
         />
       );
       break;
-    case QuestionType.SINGLE_CHOICE:
+    case QuestionKind.SINGLE_CHOICE:
       input = (
         <div className="inline-flex flex-row flex-wrap gap-4">
           {question.choices!.map((choice) => {
@@ -72,7 +72,7 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
       );
       break;
     default:
-      throw new Error("Unknown question type");
+      throw new Error("Unknown question kind");
   }
 
   return (

@@ -19,9 +19,11 @@ const TextAreaField = <IFormValues extends FieldValues>({
   required,
   register,
   errors,
+  fieldErrors,
   className,
 }: TextAreaFieldProps<IFormValues>) => {
   const inputId = useFieldId(name);
+  const error = fieldErrors || (errors && errors[name]);
   return (
     <div>
       <label htmlFor={inputId} className="block">
@@ -34,11 +36,11 @@ const TextAreaField = <IFormValues extends FieldValues>({
         className={classNames("block w-full bg-zinc-800 text-white", className)}
       />
       {hint && <div className="mt-1 text-sm">{hint}</div>}
-      {errors[name] &&
-        (errors[name]?.type === "required" ? (
+      {error &&
+        (error?.type === "required" ? (
           <div>Câmp obligatoriu</div>
         ) : (
-          <div>{errors[name]?.message as string}</div>
+          <div>{error?.message as string}</div>
         ))}
     </div>
   );
