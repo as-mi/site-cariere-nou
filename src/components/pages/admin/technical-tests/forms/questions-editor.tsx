@@ -1,24 +1,19 @@
-import { useFieldArray, UseFormWatch } from "react-hook-form";
+import { useFieldArray, useFormContext, UseFormWatch } from "react-hook-form";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 
 import { QuestionKind } from "~/lib/technical-tests-schema";
 
-import { CommonFieldValues, CommonUseFormProps } from "./common";
+import { CommonFieldValues } from "./common";
 import QuestionCard from "./question-card";
 
-interface QuestionsEditorProps extends CommonUseFormProps {
-  watch: UseFormWatch<CommonFieldValues>;
-}
+const QuestionsEditor: React.FC = () => {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<CommonFieldValues>();
 
-const QuestionsEditor: React.FC<QuestionsEditorProps> = ({
-  control,
-  watch,
-  register,
-  unregister,
-  errors,
-}) => {
   const { fields, append, move, remove } = useFieldArray({
     keyName: "_id",
     control,
@@ -65,11 +60,6 @@ const QuestionsEditor: React.FC<QuestionsEditorProps> = ({
               index={index}
               reorderQuestions={reorderQuestions}
               removeQuestion={removeQuestion}
-              control={control}
-              watch={watch}
-              register={register}
-              unregister={unregister}
-              errors={errors}
             />
           ))}
         </div>

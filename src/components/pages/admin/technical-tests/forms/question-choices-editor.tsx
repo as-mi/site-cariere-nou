@@ -1,20 +1,22 @@
 import { useEffect } from "react";
-import { useFieldArray } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
-import { CommonUseFormProps } from "./common";
+import { CommonFieldValues } from "./common";
 import QuestionChoice from "./question-choice";
 
-interface QuestionChoicesEditorProps extends CommonUseFormProps {
+type QuestionChoicesEditorProps = {
   questionIndex: number;
-}
+};
 
 const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
-  control,
-  register,
-  unregister,
-  errors,
   questionIndex,
 }) => {
+  const {
+    control,
+    unregister,
+    formState: { errors },
+  } = useFormContext<CommonFieldValues>();
+
   const name = `questions.${questionIndex}.choices` as const;
   const choicesFieldErrors = errors.questions?.[questionIndex]?.choices?.root;
 
@@ -67,8 +69,6 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
             choiceIndex={choiceIndex}
             reorderChoices={reorderChoices}
             removeChoice={removeChoice}
-            register={register}
-            errors={errors}
           />
         ))}
       </div>

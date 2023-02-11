@@ -1,5 +1,5 @@
 import { ReactElement, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 import { GetServerSideProps } from "next";
 import Link from "next/link";
@@ -32,15 +32,13 @@ const AdminEditTechnicalTestPage: NextPageWithLayout<PageProps> = ({
     onSuccess: () => setSuccessfullySaved(true),
   });
 
+  const useFormMethods = useForm<CommonFieldValues>();
   const {
     reset,
     handleSubmit,
-    control,
     register,
-    unregister,
-    watch,
     formState: { errors },
-  } = useForm<CommonFieldValues>();
+  } = useFormMethods;
 
   const onSubmit: SubmitHandler<CommonFieldValues> = async (data) => {
     setSuccessfullySaved(false);
@@ -74,46 +72,42 @@ const AdminEditTechnicalTestPage: NextPageWithLayout<PageProps> = ({
           Editează un test tehnic existent
         </h1>
       </header>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
-        <div className="space-y-3">
-          <TextField
-            name="title"
-            label="Titlu"
-            required
-            register={register}
-            errors={errors}
+      <FormProvider {...useFormMethods}>
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
+          <div className="space-y-3">
+            <TextField
+              name="title"
+              label="Titlu"
+              required
+              register={register}
+              errors={errors}
+            />
+
+            <TextAreaField
+              name="description"
+              label="Descriere"
+              register={register}
+              errors={errors}
+              className="min-h-[8rem]"
+            />
+
+            <QuestionsEditor />
+          </div>
+
+          <SubmitButton
+            label="Salvează"
+            disabled={mutation.isLoading}
+            className="mt-6"
           />
 
-          <TextAreaField
-            name="description"
-            label="Descriere"
-            register={register}
-            errors={errors}
-            className="min-h-[8rem]"
-          />
-
-          <QuestionsEditor
-            control={control}
-            watch={watch}
-            register={register}
-            unregister={unregister}
-            errors={errors}
-          />
-        </div>
-
-        <SubmitButton
-          label="Salvează"
-          disabled={mutation.isLoading}
-          className="mt-6"
-        />
-
-        {mutation.error && (
-          <div className="mt-3 text-red-400">{mutation.error.message}</div>
-        )}
-        {successfullySaved && (
-          <div className="mt-3 text-green-400">Salvat cu succes!</div>
-        )}
-      </form>
+          {mutation.error && (
+            <div className="mt-3 text-red-400">{mutation.error.message}</div>
+          )}
+          {successfullySaved && (
+            <div className="mt-3 text-green-400">Salvat cu succes!</div>
+          )}
+        </form>
+      </FormProvider>
     </>
   );
 };

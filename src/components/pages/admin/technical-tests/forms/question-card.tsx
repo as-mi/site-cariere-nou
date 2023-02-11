@@ -1,5 +1,4 @@
 import { useCallback } from "react";
-import { UseFormWatch } from "react-hook-form";
 import { useDrag, useDrop } from "react-dnd";
 
 import classNames from "classnames";
@@ -7,15 +6,13 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 
-import { CommonFieldValues, CommonUseFormProps } from "./common";
 import QuestionEditor from "./question-editor";
 
-interface QuestionCardProps extends CommonUseFormProps {
-  watch: UseFormWatch<CommonFieldValues>;
+type QuestionCardProps = {
   index: number;
   reorderQuestions: (from: number, to: number) => void;
   removeQuestion: (index: number) => void;
-}
+};
 
 type DragItem = {
   index: number;
@@ -27,11 +24,6 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
   index,
   reorderQuestions,
   removeQuestion,
-  control,
-  watch,
-  register,
-  unregister,
-  errors,
 }) => {
   const item: DragItem = { index };
   const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
@@ -85,14 +77,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       </div>
 
       <div className="grow">
-        <QuestionEditor
-          index={index}
-          control={control}
-          watch={watch}
-          register={register}
-          unregister={unregister}
-          errors={errors}
-        />
+        <QuestionEditor index={index} />
       </div>
     </div>
   );

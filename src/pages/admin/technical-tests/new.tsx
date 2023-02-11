@@ -1,5 +1,10 @@
 import { ReactElement, useEffect, useMemo } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import {
+  Controller,
+  FormProvider,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -26,15 +31,15 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
     },
   });
 
+  const useFormMethods = useForm<CommonFieldValues>();
   const {
-    watch,
     resetField,
+    watch,
     handleSubmit,
-    register,
-    unregister,
     control,
+    register,
     formState: { errors },
-  } = useForm<CommonFieldValues>();
+  } = useFormMethods;
 
   const watchCompany = watch("company");
   const companyId: number | undefined = watchCompany?.value;
@@ -113,82 +118,78 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
           Adaugă un nou test tehnic
         </h1>
       </header>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
-        <div className="space-y-3">
-          <div>
-            <label htmlFor="company" className="block">
-              Companie
-            </label>
-            <Controller
-              name="company"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select
-                  id="company"
-                  options={companyOptions}
-                  {...field}
-                  className="text-black"
-                />
-              )}
+      <FormProvider {...useFormMethods}>
+        <form onSubmit={handleSubmit(onSubmit)} className="max-w-sm">
+          <div className="space-y-3">
+            <div>
+              <label htmlFor="company" className="block">
+                Companie
+              </label>
+              <Controller
+                name="company"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select
+                    id="company"
+                    options={companyOptions}
+                    {...field}
+                    className="text-black"
+                  />
+                )}
+              />
+            </div>
+
+            <div>
+              <label htmlFor="position" className="block">
+                Post
+              </label>
+              <Controller
+                name="position"
+                control={control}
+                rules={{ required: true }}
+                render={({ field }) => (
+                  <Select
+                    id="position"
+                    isDisabled={positionsQuery.isLoading}
+                    options={positionOptions}
+                    {...field}
+                    className="text-black"
+                  />
+                )}
+              />
+            </div>
+
+            <TextField
+              name="title"
+              label="Titlu"
+              required
+              register={register}
+              errors={errors}
             />
+
+            <TextAreaField
+              name="description"
+              label="Descriere"
+              register={register}
+              errors={errors}
+              className="min-h-[8rem]"
+            />
+
+            <QuestionsEditor />
           </div>
 
-          <div>
-            <label htmlFor="position" className="block">
-              Post
-            </label>
-            <Controller
-              name="position"
-              control={control}
-              rules={{ required: true }}
-              render={({ field }) => (
-                <Select
-                  id="position"
-                  isDisabled={positionsQuery.isLoading}
-                  options={positionOptions}
-                  {...field}
-                  className="text-black"
-                />
-              )}
-            />
-          </div>
-
-          <TextField
-            name="title"
-            label="Titlu"
-            required
-            register={register}
-            errors={errors}
+          <SubmitButton
+            label="Adaugă"
+            disabled={mutation.isLoading}
+            className="mt-6"
           />
 
-          <TextAreaField
-            name="description"
-            label="Descriere"
-            register={register}
-            errors={errors}
-            className="min-h-[8rem]"
-          />
-
-          <QuestionsEditor
-            control={control}
-            watch={watch}
-            register={register}
-            unregister={unregister}
-            errors={errors}
-          />
-        </div>
-
-        <SubmitButton
-          label="Adaugă"
-          disabled={mutation.isLoading}
-          className="mt-6"
-        />
-
-        {mutation.error && (
-          <div className="mt-3 text-red-400">{mutation.error.message}</div>
-        )}
-      </form>
+          {mutation.error && (
+            <div className="mt-3 text-red-400">{mutation.error.message}</div>
+          )}
+        </form>
+      </FormProvider>
     </>
   );
 };
