@@ -46,9 +46,16 @@ const LoginPage: NextPageWithLayout<PageProps> = ({ availableProviders }) => {
   const canSignInWithGoogle = !!availableProviders.find(
     (providerId) => providerId === "google"
   );
+  const canSignInWithFacebook = !!availableProviders.find(
+    (providerId) => providerId === "facebook"
+  );
 
   const handleSignInWithGoogle = () => {
     signIn("google", { callbackUrl });
+  };
+
+  const handleSignInWithFacebook = () => {
+    signIn("facebook", { callbackUrl });
   };
 
   return (
@@ -93,9 +100,16 @@ const LoginPage: NextPageWithLayout<PageProps> = ({ availableProviders }) => {
             {t("authenticationProviders.google")}
           </button>
           <button
-            disabled
-            title={t("authenticationProviders.notAvailable") || undefined}
-            className="block cursor-not-allowed rounded-md border-2 border-solid border-sky-600 bg-sky-800 px-3 py-2 text-white"
+            disabled={!canSignInWithFacebook}
+            onClick={
+              canSignInWithFacebook ? handleSignInWithFacebook : undefined
+            }
+            title={
+              canSignInWithFacebook
+                ? ""
+                : t("authenticationProviders.notAvailable") || undefined
+            }
+            className="block rounded-md border-2 border-solid border-sky-600 bg-sky-800 px-3 py-2 text-white hover:ring-2 hover:ring-sky-300"
           >
             <FontAwesomeIcon
               icon={faFacebook}
