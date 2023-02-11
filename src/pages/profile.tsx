@@ -18,8 +18,9 @@ import { Role } from "@prisma/client";
 
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
-import { trpc } from "~/lib/trpc";
 import useRole from "~/hooks/use-role";
+
+import ContactInfoSection from "~/components/pages/profile/contact-info/section";
 
 type Profile = {
   phoneNumber: string;
@@ -35,129 +36,6 @@ type User = {
   role: Role;
   profile?: Profile;
   resumes: Resume[];
-};
-
-type ProfileDisplayProps = {
-  t: TFunction;
-  user: User;
-};
-
-const ProfileDisplay: React.FC<ProfileDisplayProps> = ({ t, user }) => {
-  const role = useRole();
-
-  return (
-    <>
-      <div className="py-2">
-        <span className="font-semibold">{t("fields.name")}:</span>
-        <span className="ml-2">{user.name}</span>
-      </div>
-      {role === Role.PARTICIPANT && (
-        <div className="py-2">
-          <span className="font-semibold">{t("fields.phoneNumber")}:</span>{" "}
-          <span className="ml-2">{user.profile?.phoneNumber}</span>
-        </div>
-      )}
-      {process.env.NODE_ENV === "development" && role && (
-        <div className="py-2">
-          <span className="font-semibold">{t("fields.role")}:</span>{" "}
-          {role.toLowerCase()}
-        </div>
-      )}
-    </>
-  );
-};
-
-type ProfileEditFormProps = {
-  t: TFunction;
-  user: User;
-  onCancel: () => void;
-  onSuccess: () => void;
-};
-
-type ProfileEditFormFieldValues = {
-  name: string;
-  phoneNumber: string;
-};
-
-const ProfileEditForm: React.FC<ProfileEditFormProps> = ({
-  t,
-  user,
-  onCancel,
-  onSuccess,
-}) => {
-  const role = useRole();
-
-  const mutation = trpc.participant.profileUpdate.useMutation({
-    onSuccess,
-  });
-
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-  } = useForm<ProfileEditFormFieldValues>({
-    defaultValues: {
-      name: user.name,
-      phoneNumber: user.profile?.phoneNumber,
-    },
-  });
-
-  const onSubmit: SubmitHandler<ProfileEditFormFieldValues> = (data) => {
-    mutation.mutate(data);
-  };
-
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <label htmlFor="name">
-          <span className="font-semibold">{t("fields.name")}:</span>
-        </label>
-        <input
-          id="name"
-          type="text"
-          {...register("name", { required: true })}
-          className="m-1 rounded-md bg-gray-200 p-1"
-        />
-        {errors.name && <div>{errors.name.message}</div>}
-      </div>
-      <div>
-        <label htmlFor="phoneNumber">
-          <span className="font-semibold">{t("fields.phoneNumber")}</span>:
-        </label>
-        <input
-          id="phoneNumber"
-          type="tel"
-          {...register("phoneNumber", { required: true })}
-          className="m-1 rounded-md bg-gray-200 p-1"
-        />
-        {errors.phoneNumber && <div>{errors.phoneNumber.message}</div>}
-      </div>
-      {process.env.NODE_ENV === "development" && role && (
-        <div className="py-2">
-          <span className="font-semibold">{t("fields.role")}:</span>{" "}
-          {role.toLowerCase()}
-        </div>
-      )}
-      <div className="my-3 space-x-3">
-        <button
-          type="submit"
-          className="rounded-md bg-blue-700 px-3 py-2 text-center text-white hover:bg-blue-800 active:bg-blue-900"
-        >
-          {t("profileUpdateForm.submit")}
-        </button>
-        <button
-          type="button"
-          onClick={onCancel}
-          className="rounded-md bg-zinc-700 px-3 py-2 text-center text-white hover:bg-zinc-800 active:bg-zinc-900"
-        >
-          {t("profileUpdateForm.cancel")}
-        </button>
-      </div>
-      {mutation.error && (
-        <div className="mt-3 text-red-600">{mutation.error.message}</div>
-      )}
-    </form>
-  );
 };
 
 type ResumeUploadFormProps = {
@@ -256,7 +134,6 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
 
   const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
 
-  const [showProfileEditForm, setShowProfileEditForm] = useState(false);
   const [showResumeUploadForm, setShowResumeUploadForm] = useState(false);
 
   const handleSignOut = () => {
@@ -265,6 +142,11 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
 
   const role = useRole();
 
+  const contactInfo = {
+    name: user.name,
+    phoneNumber: user.profile?.phoneNumber ?? "",
+  };
+
   return (
     <div className="min-h-screen bg-black px-4 py-8">
       <Head>
@@ -272,36 +154,7 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
       </Head>
       <main className="mx-auto max-w-md rounded-lg bg-white px-6 py-6 text-black">
         <h1 className="font-display text-3xl font-bold">{t("pageTitle")}</h1>
-        <section>
-          <h2 className="font-display text-xl font-semibold">
-            Date de contact
-          </h2>
-          {showProfileEditForm ? (
-            <ProfileEditForm
-              t={t}
-              user={user}
-              onCancel={() => setShowProfileEditForm(false)}
-              onSuccess={() => {
-                router.push("/profile");
-                setShowProfileEditForm(false);
-              }}
-            />
-          ) : (
-            <>
-              <ProfileDisplay t={t} user={user} />
-              {role === Role.PARTICIPANT && (
-                <div className="my-3">
-                  <button
-                    onClick={() => setShowProfileEditForm(true)}
-                    className="rounded-md bg-blue-700 px-3 py-2 text-center text-white hover:bg-blue-800 active:bg-blue-900"
-                  >
-                    {t("editProfile")}
-                  </button>
-                </div>
-              )}
-            </>
-          )}
-        </section>
+        <ContactInfoSection t={t} initialData={contactInfo} />
         <div className="mt-3 flex flex-row flex-wrap items-center gap-3">
           <Link
             href="/"

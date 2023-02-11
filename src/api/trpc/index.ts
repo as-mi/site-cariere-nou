@@ -34,6 +34,7 @@ const isAdmin = createIsRoleMiddleware(Role.ADMIN);
 // Export the router and procedure helpers
 export const router = t.router;
 export const publicProcedure = t.procedure;
+export const authenticatedProcedure = t.procedure.use(isAuthenticated);
 export const participantProcedure = t.procedure
   .use(isAuthenticated)
   .use(isParticipant);

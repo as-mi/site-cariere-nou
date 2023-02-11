@@ -29,7 +29,10 @@ export const participantRouter = router({
     .input(ProfileUpdateInput)
     .mutation(async ({ input, ctx }) => {
       const id = ctx.user!.id;
-      const { name, phoneNumber } = input;
+      let { name, phoneNumber } = input;
+
+      name = name.trim();
+      phoneNumber = phoneNumber.trim();
 
       await prisma.user.update({
         where: { id },

@@ -3,7 +3,7 @@
   "editProfile": "Editează-ți profilul",
   "fields": {
     "name": "Nume complet",
-    "phoneNumber": "Telefon",
+    "phoneNumber": "Număr de telefon",
     "role": "Rol"
   },
   "profileUpdateForm": {
