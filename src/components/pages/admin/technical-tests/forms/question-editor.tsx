@@ -1,16 +1,15 @@
-import { UseFormWatch } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import { QuestionKind } from "~/lib/technical-tests-schema";
 
 import { SelectField, TextAreaField, TextField } from "../../forms";
 
-import { CommonFieldValues, CommonUseFormProps } from "./common";
+import { CommonFieldValues } from "./common";
 import QuestionChoicesEditor from "./question-choices-editor";
 
-interface QuestionEditorProps extends CommonUseFormProps {
+type QuestionEditorProps = {
   index: number;
-  watch: UseFormWatch<CommonFieldValues>;
-}
+};
 
 const QUESTION_TYPE_OPTIONS = [
   { value: QuestionKind.SINGLE_CHOICE, label: "Alegere unică" },
@@ -18,14 +17,13 @@ const QUESTION_TYPE_OPTIONS = [
   { value: QuestionKind.LONG_TEXT, label: "Text lung" },
 ];
 
-const QuestionEditor: React.FC<QuestionEditorProps> = ({
-  index,
-  control,
-  watch,
-  register,
-  unregister,
-  errors,
-}) => {
+const QuestionEditor: React.FC<QuestionEditorProps> = ({ index }) => {
+  const {
+    formState: { errors },
+    watch,
+    register,
+  } = useFormContext<CommonFieldValues>();
+
   const name = `questions.${index}` as const;
   const fieldErrors = errors?.questions?.[index];
   const watchQuestionKind = watch(`${name}.kind`);
@@ -67,13 +65,7 @@ const QuestionEditor: React.FC<QuestionEditorProps> = ({
         />
 
         {watchQuestionKind === QuestionKind.SINGLE_CHOICE && (
-          <QuestionChoicesEditor
-            control={control}
-            register={register}
-            unregister={unregister}
-            errors={errors}
-            questionIndex={index}
-          />
+          <QuestionChoicesEditor questionIndex={index} />
         )}
       </div>
     </>

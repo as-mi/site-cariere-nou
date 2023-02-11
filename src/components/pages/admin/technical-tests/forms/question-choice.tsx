@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { FieldErrors, UseFormRegister } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 import { useDrag, useDrop } from "react-dnd";
 
 import classNames from "classnames";
@@ -10,14 +10,12 @@ import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 import { TextField } from "../../forms";
 import { CommonFieldValues } from "./common";
 
-interface QuestionChoiceProps {
+type QuestionChoiceProps = {
   questionIndex: number;
   choiceIndex: number;
   reorderChoices: (from: number, to: number) => void;
   removeChoice: (index: number) => void;
-  register: UseFormRegister<CommonFieldValues>;
-  errors: FieldErrors<CommonFieldValues>;
-}
+};
 
 type DragItem = {
   index: number;
@@ -30,9 +28,11 @@ const QuestionChoice: React.FC<QuestionChoiceProps> = ({
   choiceIndex,
   reorderChoices,
   removeChoice,
-  register,
-  errors,
 }) => {
+  const {
+    formState: { errors },
+    register,
+  } = useFormContext<CommonFieldValues>();
   const name = `questions.${questionIndex}.choices.${choiceIndex}` as const;
   const labelError =
     errors?.questions?.[questionIndex]?.choices?.[choiceIndex]?.label;
