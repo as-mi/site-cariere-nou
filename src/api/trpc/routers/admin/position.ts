@@ -15,6 +15,11 @@ const ReadInput = z.object({
 const CreateInput = z.object({
   companyId: EntityId,
   title: z.string(),
+  category: z.string().default(""),
+  requiredSkills: z.string().default(""),
+  workSchedule: z.string().default(""),
+  workModel: z.string().default(""),
+  duration: z.string().default(""),
   description: z.string().default(""),
 });
 const UpdateInput = z.object({
@@ -57,7 +62,7 @@ export const positionRouter = router({
   create: adminProcedure
     .input(CreateInput)
     .mutation(async ({ input, ctx: { res } }) => {
-      const { companyId, title, description } = input;
+      const { companyId } = input;
 
       const company = await prisma.company.findUnique({
         where: { id: companyId },
@@ -69,11 +74,7 @@ export const positionRouter = router({
       }
 
       await prisma.position.create({
-        data: {
-          companyId,
-          title,
-          description,
-        },
+        data: input,
       });
 
       await revalidateCompanyPage(res, company.slug);
