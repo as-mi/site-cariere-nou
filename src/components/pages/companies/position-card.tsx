@@ -2,6 +2,7 @@ import { useId, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { Role } from "@prisma/client";
 import useRole from "~/hooks/use-role";
@@ -194,6 +195,7 @@ const PositionCard: React.FC<PositionCardProps> = ({
   position,
   initiallyShowApplicationForm,
 }) => {
+  const router = useRouter();
   const role = useRole();
 
   const [showApplicationForm, setShowApplicationForm] = useState(
@@ -207,6 +209,22 @@ const PositionCard: React.FC<PositionCardProps> = ({
     !!position.technicalTestId &&
     !technicalTestSkipped &&
     !position.technicalTestCompleted;
+
+  const withdrawApplicationMutation =
+    trpc.participant.withdrawFromPosition.useMutation({
+      onSuccess: () => {
+        // TODO: refactor to avoid the need to reload the page
+        router.push(router.asPath);
+      },
+    });
+
+  const withdrawApplication = () => {
+    if (confirm("Ești sigur că nu mai vrei să aplici pe acest post?")) {
+      withdrawApplicationMutation.mutate({
+        positionId: position.id,
+      });
+    }
+  };
 
   return (
     <div className="w-full max-w-md rounded-md bg-white p-3 text-black">
@@ -226,7 +244,18 @@ const PositionCard: React.FC<PositionCardProps> = ({
       {role === Role.PARTICIPANT && (
         <div className="mt-3">
           {position.alreadyAppliedTo ? (
-            <p>Ai aplicat deja pentru această poziție.</p>
+            <>
+              <p>Ai aplicat deja pentru această poziție.</p>
+              <div className="mt-2">
+                <button
+                  type="button"
+                  onClick={withdrawApplication}
+                  className="rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600 active:bg-red-700"
+                >
+                  Retrage aplicația
+                </button>
+              </div>
+            </>
           ) : showApplicationSuccessMessage ? (
             <ApplicationSuccessMessage />
           ) : showApplicationForm ? (
