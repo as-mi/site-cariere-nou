@@ -22,6 +22,9 @@ const ApplyToPositionInput = z.object({
   positionId: EntityId,
   resumeId: EntityId,
 });
+const WithdrawFromPositionInput = z.object({
+  positionId: EntityId,
+});
 const AnswerTechnicalTestInput = z.object({
   technicalTestId: EntityId,
   answers: AnswersSchema,
@@ -157,6 +160,18 @@ export const participantRouter = router({
           userId,
           positionId,
           resumeId,
+        },
+      });
+    }),
+  withdrawFromPosition: participantProcedure
+    .input(WithdrawFromPositionInput)
+    .mutation(async ({ input, ctx }) => {
+      const userId = ctx.user!.id;
+      const { positionId } = input;
+
+      await prisma.participantApplyToPosition.delete({
+        where: {
+          userId_positionId: { userId, positionId },
         },
       });
     }),
