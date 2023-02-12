@@ -5,7 +5,12 @@ import { Role } from "@prisma/client";
 import prisma from "~/lib/prisma";
 
 import { generateEmailVerificationToken, hashPassword } from "~/lib/accounts";
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH, mustHaveAlpha, mustHaveDigit } from "~/lib/passwords";
+import {
+  MAX_PASSWORD_LENGTH,
+  MIN_PASSWORD_LENGTH,
+  mustHaveAlpha,
+  mustHaveDigit,
+} from "~/lib/passwords";
 
 import { sendVerificationEmail } from "~/lib/emails";
 
@@ -15,7 +20,6 @@ import {
   InternalServerError,
   MethodNotAllowedError,
 } from "~/api/errors";
-
 
 const validatePassword = (password: string) => {
   if (password.length < MIN_PASSWORD_LENGTH) {
@@ -30,19 +34,19 @@ const validatePassword = (password: string) => {
       `password must be at most ${MAX_PASSWORD_LENGTH} characters long`
     );
   }
-  if(!mustHaveAlpha(password)) {
+  if (!mustHaveAlpha(password)) {
     throw new BadRequestError(
       "password-no-alpha",
       "password must contain at least one letter"
     );
   }
-  if(!mustHaveDigit(password)) {
+  if (!mustHaveDigit(password)) {
     throw new BadRequestError(
       "password-no-digit",
       "password must contain at least one digit"
     );
   }
-}
+};
 
 const registerSchema = z
   .object({

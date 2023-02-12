@@ -25,7 +25,7 @@ test("can create new account using e-mail and password", async ({ page }) => {
   const nonce = Math.floor(Math.random() * 65536);
   const email = `example${nonce}@example.com`;
   const name = "Example User";
-  const password = "12345678";
+  const password = "a12345678";
 
   // Fill in the registration form
   await page.fill(`[name=email]`, email);
