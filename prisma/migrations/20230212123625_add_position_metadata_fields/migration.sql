@@ -1,0 +1,12 @@
+-- AlterTable
+ALTER TABLE "Position" ADD COLUMN     "category" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "duration" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "requiredSkills" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "workModel" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "workSchedule" TEXT NOT NULL DEFAULT '';
+
+ALTER TABLE "Position" ALTER COLUMN "category" DROP DEFAULT,
+ALTER COLUMN "duration" DROP DEFAULT,
+ALTER COLUMN "requiredSkills" DROP DEFAULT,
+ALTER COLUMN "workModel" DROP DEFAULT,
+ALTER COLUMN "workSchedule" DROP DEFAULT;
