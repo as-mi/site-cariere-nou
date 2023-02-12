@@ -59,7 +59,7 @@ const EmailLoginPage: NextPageWithLayout = () => {
       if (result === undefined || !result.ok) {
         let errorMessage;
         if (result) {
-          const errorMessageKey = `errors.${result.error}`;
+          const errorMessageKey = `common:errors.${result.error}`;
           if (commonI18n.exists(errorMessageKey)) {
             errorMessage = commonT(errorMessageKey);
           }

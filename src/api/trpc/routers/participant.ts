@@ -15,6 +15,9 @@ const ProfileUpdateInput = z.object({
   name: z.string(),
   phoneNumber: z.string(),
 });
+const ResumeDeleteInput = z.object({
+  id: EntityId,
+});
 const ApplyToPositionInput = z.object({
   positionId: EntityId,
   resumeId: EntityId,
@@ -65,6 +68,29 @@ export const participantRouter = router({
       orderBy: [{ id: "asc" }],
     });
   }),
+  resumeDelete: participantProcedure
+    .input(ResumeDeleteInput)
+    .mutation(async ({ input, ctx }) => {
+      const { id } = input;
+      const userId = ctx.user!.id;
+
+      const resume = await prisma.resume.findFirst({
+        where: {
+          id,
+          userId,
+        },
+      });
+
+      if (!resume) {
+        throw new Error("Resume with provided ID not found");
+      }
+
+      await prisma.resume.delete({
+        where: {
+          id,
+        },
+      });
+    }),
   applyToPosition: participantProcedure
     .input(ApplyToPositionInput)
     .mutation(async ({ input, ctx }) => {
