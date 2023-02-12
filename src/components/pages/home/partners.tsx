@@ -34,7 +34,7 @@ const PartnerLogo: React.FC<PartnerLogoProps> = ({
   className,
 }) => (
   <Image
-    src={`/api/images/${logo.id}`}
+    src={`http://localhost:${process.env.PORT ?? 3000}/api/images/${logo.id}`}
     width={logo.width}
     height={logo.height}
     alt={t("partnersSection.logo", { partnerName: name })}
