@@ -53,7 +53,6 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
       description: data.description,
       questions: data.questions,
     };
-    console.log(payload);
     mutation.mutate(payload);
   };
 
