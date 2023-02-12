@@ -5,11 +5,13 @@ import { getServerSession } from "next-auth";
 import nextConnect from "next-connect";
 
 import multer from "multer";
-import sharp from "sharp";
 
 import { Role } from "@prisma/client";
 import { authOptions } from "~/lib/next-auth-options";
 import prisma from "~/lib/prisma";
+
+const MAXIMUM_RESUME_SIZE_IN_BYTES = 2 * 1024 * 1024;
+const MAXIMUM_NUMBER_OF_RESUMES_PER_PARTICIPANT = 5;
 
 const ALLOWED_RESUME_MIME_TYPES = new Set(["application/pdf"]);
 
@@ -59,10 +61,32 @@ apiRoute.post(async (req: NextApiRequestWithFile, res) => {
     return;
   }
 
+  if (file.size > MAXIMUM_RESUME_SIZE_IN_BYTES) {
+    res.status(400).json({
+      error: "file-too-big",
+      message: "file size exceeds limit",
+    });
+
+    return;
+  }
+
   if (!ALLOWED_RESUME_MIME_TYPES.has(file.mimetype.trim())) {
     res.status(400).json({
       error: "invalid-mime-type",
       message: "file does not have a valid content type",
+    });
+
+    return;
+  }
+
+  const resumeCount = await prisma.resume.count({
+    where: { userId },
+  });
+
+  if (resumeCount >= MAXIMUM_NUMBER_OF_RESUMES_PER_PARTICIPANT) {
+    res.status(400).json({
+      error: "resumes-limit-reached",
+      message: "reached limit on number of resumes",
     });
 
     return;

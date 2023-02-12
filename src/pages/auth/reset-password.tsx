@@ -68,7 +68,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSuccess }) => {
         let errorMessage;
         if (errorData) {
           console.error(errorData);
-          const errorMessageKey = `errors.${errorData.error}`;
+          const errorMessageKey = `common:errors.${errorData.error}`;
           if (commonI18n.exists(errorMessageKey)) {
             errorMessage = commonT(errorMessageKey);
           }

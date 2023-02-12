@@ -14,6 +14,20 @@
   "resumesSectionTitle": "CV-uri",
   "uploadResume": "Adaugă un CV",
   "resumeUploadForm": {
+    "file": "Fișier",
+    "hints": {
+      "fileMustBeInFormat": "Fișierul trebuie să fie în",
+      "pdfFormat": "formatul PDF",
+      "and": "și",
+      "fileMustHaveMaximumSize": "să aibă maximum"
+    },
+    "errorOccurred": "Eroare la încărcarea CV-ului",
+    "errors": {
+      "missing-file": "fișierul nu a fost găsit în request",
+      "file-too-big": "fișierul este prea mare",
+      "invalid-mime-type": "fișierul nu are un format acceptat",
+      "resumes-limit-reached": "ai atins limita maximă de CV-uri pe care le poți încărca"
+    },
     "cancel": "Anulează",
     "submit": "Încarcă"
   },
