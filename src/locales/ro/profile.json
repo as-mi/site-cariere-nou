@@ -1,5 +1,6 @@
 {
   "pageTitle": "Profilul meu",
+  "contactInfoSectionTitle": "Date de contact",
   "editProfile": "Editează-ți profilul",
   "fields": {
     "name": "Nume complet",
@@ -10,8 +11,16 @@
     "cancel": "Anulează",
     "submit": "Salvează"
   },
+  "resumesSectionTitle": "CV-uri",
+  "uploadResume": "Adaugă un CV",
   "resumeUploadForm": {
     "cancel": "Anulează",
     "submit": "Încarcă"
-  }
+  },
+  "resumesDisplay": {
+    "noResumeFound": "Nu ai încărcat încă niciun CV.",
+    "resumeTitle": "CV-ul numărul {{resumeIndex}}"
+  },
+  "backToHomePage": "Înapoi la pagina principală",
+  "signOut": "Delogare"
 }

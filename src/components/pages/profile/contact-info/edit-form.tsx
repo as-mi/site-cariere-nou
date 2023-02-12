@@ -9,7 +9,7 @@ import useRole from "~/hooks/use-role";
 
 import { trpc } from "~/lib/trpc";
 
-import { ContactInfo } from "./common";
+import type { ContactInfo } from "./common";
 
 type ContactInfoEditFormProps = {
   t: TFunction;
