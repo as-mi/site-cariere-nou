@@ -51,6 +51,20 @@ const Input = <IFormValues extends FieldValues>({
           {t("forms.required")}
         </div>
       )}
+      {errors[name]?.type === "minLength" && (
+        <div role="alert" className="pt-1 pl-2 text-sm">
+          {t("forms.minLength", {
+            length: registerOptions?.minLength as number,
+          })}
+        </div>
+      )}
+      {errors[name]?.type === "maxLength" && (
+        <div role="alert" className="pt-1 pl-2 text-sm">
+          {t("forms.maxLength", {
+            length: registerOptions?.maxLength as number,
+          })}
+        </div>
+      )}
       {additionalErrorMessages}
     </div>
   );

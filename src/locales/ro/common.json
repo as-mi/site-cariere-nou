@@ -6,7 +6,10 @@
     "home": "Acasă"
   },
   "forms": {
-    "required": "Câmp obligatoriu"
+    "required": "Câmp obligatoriu",
+    "minLength": "Trebuie să conțină cel puțin {{length}} caractere",
+    "maxLength": "Trebuie să conțină cel mult {{length}} caractere"
+    
   },
   "loading": "Se încarcă...",
   "errors": {
