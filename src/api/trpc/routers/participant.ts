@@ -104,6 +104,7 @@ export const participantRouter = router({
         },
         select: {
           activeTechnicalTestId: true,
+          technicalTestIsMandatory: true,
         },
       });
 
@@ -111,7 +112,7 @@ export const participantRouter = router({
         throw new Error("Position with provided ID not found");
       }
 
-      if (position.activeTechnicalTestId) {
+      if (position.activeTechnicalTestId && position.technicalTestIsMandatory) {
         const technicalTestId = position.activeTechnicalTestId;
 
         const answers =

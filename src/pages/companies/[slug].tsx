@@ -121,6 +121,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
           title: true,
           description: true,
           activeTechnicalTestId: true,
+          technicalTestIsMandatory: true,
         },
       },
     },
@@ -190,7 +191,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   const converter = new showdown.Converter();
 
   const positions = company.positions.map(
-    ({ id, title, description, activeTechnicalTestId }) => ({
+    ({
+      id,
+      title,
+      description,
+      activeTechnicalTestId,
+      technicalTestIsMandatory,
+    }) => ({
       id,
       title,
       descriptionHtml: converter.makeHtml(description),
@@ -199,6 +206,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       technicalTestCompleted: activeTechnicalTestId
         ? completedTechnicalTestsIds.has(activeTechnicalTestId)
         : null,
+      technicalTestIsMandatory,
     })
   );
 
