@@ -96,15 +96,16 @@ model Resume {
 }
 
 model Position {
-  id                    Int                          @id @default(autoincrement())
-  companyId             Int
-  company               Company                      @relation(fields: [companyId], references: [id])
-  title                 String
-  description           String
-  applications          ParticipantApplyToPosition[]
-  technicalTests        TechnicalTest[]              @relation("TechnicalTests")
-  activeTechnicalTestId Int?                         @unique
-  activeTechnicalTest   TechnicalTest?               @relation("ActiveTechnicalTest", fields: [activeTechnicalTestId], references: [id])
+  id                       Int                          @id @default(autoincrement())
+  companyId                Int
+  company                  Company                      @relation(fields: [companyId], references: [id])
+  title                    String
+  description              String
+  applications             ParticipantApplyToPosition[]
+  technicalTests           TechnicalTest[]              @relation("TechnicalTests")
+  activeTechnicalTestId    Int?                         @unique
+  activeTechnicalTest      TechnicalTest?               @relation("ActiveTechnicalTest", fields: [activeTechnicalTestId], references: [id])
+  technicalTestIsMandatory Boolean                      @default(true)
 }
 
 model ParticipantApplyToPosition {

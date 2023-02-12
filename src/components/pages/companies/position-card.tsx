@@ -8,18 +8,24 @@ import useRole from "~/hooks/use-role";
 
 import { trpc } from "~/lib/trpc";
 
-type TechnicalTestRequiredMessageProps = {
+type TechnicalTestMessageProps = {
   technicalTestId: number;
+  mandatory: boolean;
+  onSkip: () => void;
   onCancel: () => void;
 };
 
-const TechnicalTestRequiredMessage: React.FC<
-  TechnicalTestRequiredMessageProps
-> = ({ technicalTestId, onCancel }) => (
+const TechnicalTestMessage: React.FC<TechnicalTestMessageProps> = ({
+  technicalTestId,
+  mandatory,
+  onSkip,
+  onCancel,
+}) => (
   <>
     <p>
-      Pentru a putea aplica pe acest post, va trebui să răspunzi mai întâi la
-      întrebările din testul tehnic asociat.
+      {mandatory
+        ? "Pentru a putea aplica pe acest post, va trebui să răspunzi mai întâi la întrebările din testul tehnic asociat."
+        : "Înainte de a aplica pe acest post, este recomandat să completezi testul tehnic asociat."}
     </p>
     <div className="mt-3 space-x-3">
       <Link
@@ -28,6 +34,15 @@ const TechnicalTestRequiredMessage: React.FC<
       >
         Deschide testul tehnic
       </Link>
+      {!mandatory && (
+        <button
+          type="button"
+          onClick={onSkip}
+          className="rounded-md bg-yellow-300 px-3 py-2 hover:bg-yellow-200"
+        >
+          Sari peste
+        </button>
+      )}
       <button
         type="button"
         onClick={onCancel}
@@ -86,6 +101,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <p className="font-semibold">Selectează CV-ul cu care vrei să aplici:</p>
       {resumes.data.length > 0 ? (
         <div className="flex flex-wrap">
           {resumes.data.map((resume) => {
@@ -117,7 +133,18 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({
         <p>Nu ți-ai încărcat încă niciun CV.</p>
       )}
 
-      <div className="mt-3 space-x-3">
+      <p className="my-3">
+        Îți poți gestiona CV-urile de pe{" "}
+        <Link
+          href="/profile"
+          className="font-semibold text-green-700 hover:text-green-600 active:text-green-500"
+        >
+          pagina de profil
+        </Link>
+        .
+      </p>
+
+      <div className="mt-5 space-x-3">
         <button
           type="submit"
           disabled={!watchResumeId}
@@ -155,6 +182,7 @@ export type Position = {
   alreadyAppliedTo: boolean;
   technicalTestId: number | null;
   technicalTestCompleted: boolean | null;
+  technicalTestIsMandatory: boolean;
 };
 
 type PositionCardProps = {
@@ -173,9 +201,12 @@ const PositionCard: React.FC<PositionCardProps> = ({
   );
   const [showApplicationSuccessMessage, setShowApplicationSuccessMessage] =
     useState(false);
+  const [technicalTestSkipped, setTechnicalTestSkipped] = useState(false);
 
-  const showTechnicalTestRequiredMessage =
-    !!position.technicalTestId && !position.technicalTestCompleted;
+  const showTechnicalTestMessage =
+    !!position.technicalTestId &&
+    !technicalTestSkipped &&
+    !position.technicalTestCompleted;
 
   return (
     <div className="w-full max-w-md rounded-md bg-white p-3 text-black">
@@ -199,14 +230,19 @@ const PositionCard: React.FC<PositionCardProps> = ({
           ) : showApplicationSuccessMessage ? (
             <ApplicationSuccessMessage />
           ) : showApplicationForm ? (
-            showTechnicalTestRequiredMessage ? (
-              <TechnicalTestRequiredMessage
-                onCancel={() => setShowApplicationForm(false)}
+            showTechnicalTestMessage ? (
+              <TechnicalTestMessage
                 technicalTestId={position.technicalTestId!}
+                mandatory={position.technicalTestIsMandatory}
+                onSkip={() => setTechnicalTestSkipped(true)}
+                onCancel={() => setShowApplicationForm(false)}
               />
             ) : (
               <ApplicationForm
-                onCancel={() => setShowApplicationForm(false)}
+                onCancel={() => {
+                  setShowApplicationForm(false);
+                  setTechnicalTestSkipped(false);
+                }}
                 onSuccess={() => {
                   setShowApplicationForm(false);
                   setShowApplicationSuccessMessage(true);

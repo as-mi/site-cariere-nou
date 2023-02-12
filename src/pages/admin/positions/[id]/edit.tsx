@@ -15,6 +15,7 @@ import {
 } from "~/components/pages/admin/forms";
 
 import { trpc } from "~/lib/trpc";
+import CheckboxField from "~/components/pages/admin/forms/checkbox-field";
 
 type PageProps = {
   positionId: number;
@@ -26,6 +27,7 @@ type EditPositionFieldValues = {
   title: string;
   description: string;
   activeTechnicalTest: Option;
+  technicalTestIsMandatory?: boolean;
 };
 
 const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
@@ -43,12 +45,15 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
   });
 
   const {
+    watch,
     reset,
     handleSubmit,
     register,
     control,
     formState: { errors },
   } = useForm<EditPositionFieldValues>();
+
+  const activeTechnicalTest = watch("activeTechnicalTest");
 
   const onSubmit: SubmitHandler<EditPositionFieldValues> = async (data) => {
     setSuccessfullySaved(false);
@@ -62,12 +67,6 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
     mutation.mutate(payload);
   };
 
-  useEffect(() => {
-    if (query.data) {
-      reset(query.data);
-    }
-  }, [query.data, reset]);
-
   const technicalTestOptions = useMemo(() => {
     if (!technicalTestsQuery.data) {
       return [];
@@ -79,8 +78,31 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
     }));
   }, [technicalTestsQuery.data]);
 
+  useEffect(() => {
+    if (query.data && technicalTestsQuery.data) {
+      const { activeTechnicalTestId } = query.data;
+      const technicalTests = technicalTestsQuery.data;
+
+      let activeTechnicalTest;
+      if (activeTechnicalTestId) {
+        activeTechnicalTest = {
+          value: activeTechnicalTestId,
+          label:
+            technicalTests.find(
+              (technicalTest) => technicalTest.id === activeTechnicalTestId
+            )?.title || "Necunoscut",
+        };
+      }
+
+      reset({
+        ...query.data,
+        activeTechnicalTest,
+      });
+    }
+  }, [query.data, technicalTestsQuery.data, reset]);
+
   if (!query.data || !technicalTestsQuery.data) {
-    return <p>Loading...</p>;
+    return <p>Se încarcă...</p>;
   }
 
   return (
@@ -125,6 +147,14 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
               )}
             />
           </div>
+          {activeTechnicalTest && (
+            <CheckboxField
+              name="technicalTestIsMandatory"
+              label="Completarea testului tehnic este obligatorie pentru a aplica"
+              register={register}
+              errors={errors}
+            />
+          )}
         </div>
 
         <SubmitButton
