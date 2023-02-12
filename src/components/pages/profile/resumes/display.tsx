@@ -33,7 +33,6 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({ t, initialData }) => {
         "query"
       );
 
-      console.log(initialData);
       if (initialData) {
         // Update the list of resumes
         const resumes = initialData.filter(
