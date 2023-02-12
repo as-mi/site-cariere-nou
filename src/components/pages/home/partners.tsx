@@ -61,18 +61,25 @@ const PartnersSectionSubsection: React.FC<PartnersSectionSubsectionProps> = ({
     </header>
     <div className="flex flex-row flex-wrap justify-center gap-4">
       {companies.map((company) => (
-        <div
-          key={company.id}
-          className="min-h-[12rem] w-64 p-2 xs:p-4 sm:p-8 md:min-h-[18rem] md:w-80 lg:min-h-[22rem] lg:w-96"
-        >
+        <div key={company.id} className="rounded-md bg-white">
           <Link
             href={`/companies/${company.slug}`}
-            className="flex h-full flex-col"
+            className=" block flex h-32 w-full max-w-xl flex-row items-center py-10 px-4"
           >
-            <span className="block text-center font-display text-2xl font-semibold">
-              {company.name}
-            </span>
-            <PartnerLogo t={t} company={company} className="my-auto p-3" />
+            <div className="w-2/4">
+              <PartnerLogo t={t} company={company} className="my-auto" />
+            </div>
+            <div className="w-2/4 content-center pl-6 text-black">
+              <span className="block text-center font-display text-2xl font-semibold">
+                {company.name}
+              </span>
+              <hr />
+              <span className="block text-center">
+                Partener{" "}
+                {packageType.charAt(0).toUpperCase() +
+                  packageType.toLowerCase().slice(1)}
+              </span>
+            </div>
           </Link>
         </div>
       ))}
