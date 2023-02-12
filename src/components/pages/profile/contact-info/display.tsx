@@ -6,7 +6,7 @@ import { Role } from "@prisma/client";
 
 import useRole from "~/hooks/use-role";
 
-import { ContactInfo } from "./common";
+import type { ContactInfo } from "./common";
 
 type ContactInfoDisplayProps = {
   t: TFunction;

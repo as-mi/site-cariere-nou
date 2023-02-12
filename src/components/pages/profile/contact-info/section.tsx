@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 import router from "next/router";
-import { TFunction } from "next-i18next";
+import { TFunction, useTranslation } from "next-i18next";
 
 import { Role } from "@prisma/client";
 import useRole from "~/hooks/use-role";
 
 import { trpc } from "~/lib/trpc";
 
-import { ContactInfo } from "./common";
+import type { ContactInfo } from "./common";
 import ContactInfoEditForm from "./edit-form";
 import ContactInfoDisplay from "./display";
 
@@ -21,6 +21,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
   t,
   initialData,
 }) => {
+  const { t: commonT } = useTranslation("common");
+
   const role = useRole();
   const [showEditForm, setShowEditForm] = useState(false);
 
@@ -30,28 +32,26 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({
   });
 
   if (query.isLoading) {
-    return <p>Se încarcă...</p>;
+    return <p>{commonT("loading")}</p>;
   }
 
   if (!query.data) {
-    return <p>Eroare la încărcarea datelor</p>;
+    return <p>{commonT("errors.loadingError")}</p>;
   }
 
   const contactInfo: ContactInfo = query.data;
 
   return (
     <section>
-      <h2 className="font-display text-xl font-semibold">Date de contact</h2>
+      <h2 className="font-display text-xl font-semibold">
+        {t("contactInfoSectionTitle")}
+      </h2>
       {showEditForm ? (
         <ContactInfoEditForm
           t={t}
           contactInfo={contactInfo}
           onCancel={() => setShowEditForm(false)}
-          onSuccess={() => {
-            // TODO: find a better way to refresh the data display
-            router.push("/profile");
-            setShowEditForm(false);
-          }}
+          onSuccess={() => setShowEditForm(false)}
         />
       ) : (
         <>

@@ -8,7 +8,9 @@
   "forms": {
     "required": "Câmp obligatoriu"
   },
+  "loading": "Se încarcă...",
   "errors": {
+    "loadingError": "Eroare la încărcarea datelor",
     "errorCode": "eroare cod {{code}}",
     "networkError": "Eroare de rețea",
     "not-authenticated": "Accesul interzis, nu ești autentificat",
