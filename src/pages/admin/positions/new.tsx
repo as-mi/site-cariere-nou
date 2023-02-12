@@ -19,6 +19,11 @@ import { trpc } from "~/lib/trpc";
 type AddPositionFieldValues = {
   company: { value: number; label: string };
   title: string;
+  category: string;
+  requiredSkills: string;
+  workSchedule: string;
+  workModel: string;
+  duration: string;
   description: string;
 };
 
@@ -105,6 +110,46 @@ const AdminNewPositionPage: NextPageWithLayout = () => {
             name="title"
             label="Titlu"
             required
+            register={register}
+            errors={errors}
+          />
+
+          <TextField
+            name="category"
+            label="Categorie"
+            hint="În ce categorie de activitate se încadrează postul."
+            register={register}
+            errors={errors}
+          />
+
+          <TextField
+            name="requiredSkills"
+            label="Skill-uri necesare"
+            hint="Ce skill-uri ar trebui să aibe candidații care vor să aplice pe acest post."
+            register={register}
+            errors={errors}
+          />
+
+          <TextField
+            name="workSchedule"
+            label="Program de lucru"
+            hint="Part time (4/6 ore), full time, dacă programul este flexibil sau nu."
+            register={register}
+            errors={errors}
+          />
+
+          <TextField
+            name="workModel"
+            label="Mod de lucru"
+            hint="Dacă este fizic/remote/hibrid și în ce măsură."
+            register={register}
+            errors={errors}
+          />
+
+          <TextField
+            name="duration"
+            label="Durată"
+            hint="Cât de mult o să dureze angajarea (e.g.: 3 luni, două săptămâni, toată vara, perioadă nedeterminată etc.)"
             register={register}
             errors={errors}
           />

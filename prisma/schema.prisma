@@ -100,6 +100,11 @@ model Position {
   companyId                Int
   company                  Company                      @relation(fields: [companyId], references: [id])
   title                    String
+  category                 String
+  requiredSkills           String
+  workSchedule             String
+  workModel                String
+  duration                 String
   description              String
   applications             ParticipantApplyToPosition[]
   technicalTests           TechnicalTest[]              @relation("TechnicalTests")
