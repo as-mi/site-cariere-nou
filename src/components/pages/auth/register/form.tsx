@@ -120,9 +120,9 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
             label={t("registrationForm.password")}
             required
             register={register}
+            minLength={MIN_PASSWORD_LENGTH}
+            maxLength={MAX_PASSWORD_LENGTH}
             registerOptions={{
-              minLength: MIN_PASSWORD_LENGTH,
-              maxLength: MAX_PASSWORD_LENGTH,
               validate: {
                 mustHaveDigit,
                 mustHaveAlpha,
