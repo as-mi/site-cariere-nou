@@ -19,6 +19,8 @@ type InputProps<
   register: UseFormRegister<TFieldValues>;
   registerOptions?: RegisterOptions<TFieldValues, TFieldName>;
   required: boolean;
+  minLength?: number;
+  maxLength?: number;
   errors: FieldErrors<TFieldValues>;
   additionalErrorMessages?: React.ReactNode;
 };
@@ -34,6 +36,8 @@ const Input = <
   register,
   registerOptions,
   required,
+  minLength,
+  maxLength,
   errors,
   additionalErrorMessages,
 }: InputProps<TFieldValues, TFieldName>): JSX.Element => {
@@ -46,7 +50,12 @@ const Input = <
       <input
         id={id}
         type={type}
-        {...register(name, { required, ...registerOptions })}
+        {...register(name, {
+          required,
+          minLength,
+          maxLength,
+          ...registerOptions,
+        })}
         aria-invalid={errors[name] ? true : false}
         className={`block w-full border p-2 ${
           errors[name] ? "outline outline-1 outline-red-400" : ""
@@ -59,16 +68,12 @@ const Input = <
       )}
       {errors[name]?.type === "minLength" && (
         <div role="alert" className="pt-1 pl-2 text-sm">
-          {t("forms.minLength", {
-            length: registerOptions?.minLength as number,
-          })}
+          {t("forms.minLength", { length: minLength! })}
         </div>
       )}
       {errors[name]?.type === "maxLength" && (
         <div role="alert" className="pt-1 pl-2 text-sm">
-          {t("forms.maxLength", {
-            length: registerOptions?.maxLength as number,
-          })}
+          {t("forms.maxLength", { length: maxLength! })}
         </div>
       )}
       {additionalErrorMessages}
