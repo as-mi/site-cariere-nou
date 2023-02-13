@@ -5,14 +5,25 @@ import { BadRequestError } from "~/api/errors";
 
 import { Role } from "@prisma/client";
 import prismaMock from "~/lib/test/prisma-mock";
-import { sendVerificationEmail } from "~/lib/emails";
-
-import handler from "~/pages/api/auth/register";
+import { SettingKey } from "~/lib/settings";
 import {
   generateEmailVerificationToken,
   hashPassword,
   validatePassword,
 } from "~/lib/accounts";
+import { sendVerificationEmail } from "~/lib/emails";
+
+import handler from "~/pages/api/auth/register";
+
+jest.mock("~/lib/settings/get", () => ({
+  getSettingValue: async (name: SettingKey) => {
+    if (name === "registrationEnabled") {
+      return true;
+    }
+
+    return false;
+  },
+}));
 
 jest.mock("~/lib/emails", () => ({
   sendVerificationEmail: jest.fn(),

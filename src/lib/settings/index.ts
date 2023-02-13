@@ -26,13 +26,13 @@ export const SETTINGS = {
 } as const;
 
 export type Settings = typeof SETTINGS;
-export type SettingKeys = keyof Settings;
+export type SettingKey = keyof Settings;
 export type Setting = {
   key: string;
   label: string;
   hint?: string;
   schema: z.Schema;
 };
-export type KnownSetting<K extends SettingKeys> = Settings[K];
-export type SettingSchema<K extends SettingKeys> = KnownSetting<K>["schema"];
-export type SettingValueType<K extends SettingKeys> = z.infer<SettingSchema<K>>;
+export type KnownSetting<K extends SettingKey> = Settings[K];
+export type SettingSchema<K extends SettingKey> = KnownSetting<K>["schema"];
+export type SettingValueType<K extends SettingKey> = z.infer<SettingSchema<K>>;

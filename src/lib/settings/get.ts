@@ -2,9 +2,9 @@ import { PHASE_PRODUCTION_BUILD } from "next/dist/shared/lib/constants";
 
 import prisma from "~/lib/prisma";
 
-import { SettingKeys, SETTINGS, SettingValueType } from ".";
+import { SettingKey, SETTINGS, SettingValueType } from ".";
 
-export const getSettingValue = async <K extends SettingKeys>(
+export const getSettingValue = async <K extends SettingKey>(
   key: K
 ): Promise<SettingValueType<K>> => {
   const setting = SETTINGS[key];
