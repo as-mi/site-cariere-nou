@@ -97,11 +97,41 @@ sau încălcări ale bunelor practici.
 
 ## Rulare teste
 
+### Unit tests
+
 Pentru a rula testele automate folosind [Jest](https://jestjs.io/), folosește comanda:
 
 ```sh
 npm run test
 ```
+
+Aceasta va porni Jest în „watch mode”, adică vă monitoriza fișierele pe care le modifici și va rula automat testele corespunzătoare. Dacă vrei să rulezi toate testele o singură dată, poți folosi în schimb `npx jest`.
+
+### End-to-end tests
+
+Aplicația are și câteva [teste end-to-end](https://smartbear.com/learn/automated-testing/what-is-end-to-end-testing/) care verifică funcționarea generală a aplicației din perspectiva utilizatorului final. Acestea sunt implementate folosind [Playwright](https://playwright.dev/).
+
+Pentru a putea rula pentru prima dată testele, după ce ai rulat deja `npm install`, mai trebuie să instalezi și dependency-urile specifice Playwright:
+
+```sh
+npx playwright install
+```
+
+De fiecare dată când faci modificări la codul sursă al aplicației, va trebui să recompilezi varianta de producție a ei (documentația oficială Next.js [recomandă rularea testelor E2E față de codul de producție](https://nextjs.org/docs/testing#running-your-playwright-tests)). Poți face acest lucru folosind comanda:
+
+```sh
+npm run build
+```
+
+Nu e nevoie să recompilezi aplicația dacă ai modificat doar codul sursă al testelor.
+
+Într-un final, pentru a rula testele, trebuie să te asiguri că **baza de date de dezvoltare este pornită și accesibilă** și apoi să rulezi:
+
+```sh
+npm run test:e2e
+```
+
+Playwright va porni server-ul de producție pe `localhost` la port-ul `3000` și va începe să execute testele față de această instanță a aplicației. Ar trebui să vezi o fereastră nouă de Google Chrome, care este controlată automat de Playwright.
 
 ## Gestionare bază de date folosind Prisma
 
@@ -120,6 +150,8 @@ Pentru a crea și aplica o nouă migrație după ce ai modificat `prisma/schema.
 ```sh
 npx prisma migrate dev --name "nume-migratie"
 ```
+
+Dacă nu ești sigur de codul SQL pe care îl va genera migrația, sau vrei să-l poți revizui înainte de a-l aplica, poți adăuga și flag-ul `--create-only`. Asta va genera migrația fără a o aplica pe baza de date de dezvoltare. O poți aplica ulterior rulând din nou `npx prisma migrate`.
 
 Pentru a regenera codul client după ce ai modificat schema bazei de date:
 
