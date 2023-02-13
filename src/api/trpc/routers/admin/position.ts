@@ -59,69 +59,63 @@ export const positionRouter = router({
     });
     return position;
   }),
-  create: adminProcedure
-    .input(CreateInput)
-    .mutation(async ({ input, ctx: { res } }) => {
-      const { companyId } = input;
+  create: adminProcedure.input(CreateInput).mutation(async ({ input, ctx }) => {
+    const { companyId } = input;
 
-      const company = await prisma.company.findUnique({
-        where: { id: companyId },
-        select: { slug: true },
-      });
+    const company = await prisma.company.findUnique({
+      where: { id: companyId },
+      select: { slug: true },
+    });
 
-      if (!company) {
-        throw new Error("Company with provided ID not found");
-      }
+    if (!company) {
+      throw new Error("Company with provided ID not found");
+    }
 
-      await prisma.position.create({
-        data: input,
-      });
+    await prisma.position.create({
+      data: input,
+    });
 
-      await revalidateCompanyPage(res, company.slug);
-    }),
-  update: adminProcedure
-    .input(UpdateInput)
-    .mutation(async ({ input, ctx: { res } }) => {
-      const { id } = input;
+    await revalidateCompanyPage(ctx, company.slug);
+  }),
+  update: adminProcedure.input(UpdateInput).mutation(async ({ input, ctx }) => {
+    const { id } = input;
 
-      const position = await prisma.position.findUnique({
-        where: { id },
-        select: {
-          company: {
-            select: {
-              slug: true,
-            },
+    const position = await prisma.position.findUnique({
+      where: { id },
+      select: {
+        company: {
+          select: {
+            slug: true,
           },
         },
-      });
+      },
+    });
 
-      if (!position) {
-        throw new Error("Position with provided ID not found");
-      }
+    if (!position) {
+      throw new Error("Position with provided ID not found");
+    }
 
-      await prisma.position.update({
-        where: { id },
-        data: input,
-      });
+    await prisma.position.update({
+      where: { id },
+      data: input,
+    });
 
-      await revalidateCompanyPage(res, position.company.slug);
-    }),
-  delete: adminProcedure
-    .input(DeleteInput)
-    .mutation(async ({ input, ctx: { res } }) => {
-      const { id } = input;
+    await revalidateCompanyPage(ctx, position.company.slug);
+  }),
+  delete: adminProcedure.input(DeleteInput).mutation(async ({ input, ctx }) => {
+    const { id } = input;
 
-      const position = await prisma.position.findUnique({
-        where: { id },
-        select: { company: { select: { slug: true } } },
-      });
+    const position = await prisma.position.findUnique({
+      where: { id },
+      select: { company: { select: { slug: true } } },
+    });
 
-      if (!position) {
-        throw new Error("Position not found");
-      }
+    if (!position) {
+      throw new Error("Position not found");
+    }
 
-      await prisma.position.delete({ where: { id } });
+    await prisma.position.delete({ where: { id } });
 
-      await revalidateCompanyPage(res, position.company.slug);
-    }),
+    await revalidateCompanyPage(ctx, position.company.slug);
+  }),
 });

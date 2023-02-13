@@ -12,7 +12,7 @@ export const adminRouter = router({
   company: companyRouter,
   position: positionRouter,
   technicalTest: technicalTestRouter,
-  revalidateHomePage: adminProcedure.mutation(async ({ ctx: { res } }) => {
-    await revalidateHomePage(res);
+  revalidateHomePage: adminProcedure.mutation(async ({ ctx }) => {
+    await revalidateHomePage(ctx);
   }),
 });
