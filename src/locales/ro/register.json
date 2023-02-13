@@ -1,6 +1,7 @@
 {
   "pageTitle": "Înregistrare",
   "backToEmailLoginPage": "Înapoi la formularul de autentificare",
+  "registrationDisabled": "Ne cerem scuze, crearea de noi conturi este momentan dezactivată.",
   "registrationForm": {
     "email": "Adresă de e-mail",
     "name": "Nume complet",

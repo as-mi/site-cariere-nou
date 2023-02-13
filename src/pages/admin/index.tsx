@@ -24,6 +24,7 @@ const links: LinkData[] = [
   { href: "/admin/positions", label: "Posturi" },
   { href: "/admin/technical-tests", label: "Teste tehnice" },
   { href: "/admin/resumes", label: "CV-uri" },
+  { href: "/admin/settings", label: "Setări" },
 ];
 
 const AdminHomePage: NextPageWithLayout = () => {

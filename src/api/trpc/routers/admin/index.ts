@@ -2,12 +2,14 @@ import { adminProcedure, router } from "../..";
 
 import { revalidateHomePage } from "~/api/revalidation";
 
+import { settingRouter } from "./setting";
 import { userRouter } from "./user";
 import { companyRouter } from "./company";
 import { positionRouter } from "./position";
 import { technicalTestRouter } from "./technicalTest";
 
 export const adminRouter = router({
+  setting: settingRouter,
   user: userRouter,
   company: companyRouter,
   position: positionRouter,

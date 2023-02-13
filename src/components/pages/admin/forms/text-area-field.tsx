@@ -8,6 +8,7 @@ export interface TextAreaFieldProps<IFormValues extends FieldValues>
   extends CommonFieldProps<IFormValues> {
   placeholder?: string;
   hint?: string;
+  wrapperClassName?: string;
   className?: string;
 }
 
@@ -20,12 +21,13 @@ const TextAreaField = <IFormValues extends FieldValues>({
   register,
   errors,
   fieldErrors,
+  wrapperClassName,
   className,
 }: TextAreaFieldProps<IFormValues>) => {
   const inputId = useFieldId(name);
   const error = fieldErrors || (errors && errors[name]);
   return (
-    <div>
+    <div className={wrapperClassName}>
       <label htmlFor={inputId} className="block">
         {label}
       </label>

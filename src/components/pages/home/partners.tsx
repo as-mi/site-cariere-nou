@@ -82,6 +82,7 @@ const PartnersSectionSubsection: React.FC<PartnersSectionSubsectionProps> = ({
 
 type PartnersSectionProps = {
   t: TFunction;
+  showComingSoonMessage: boolean;
   companiesByPackageType: CompaniesByPackageType;
 };
 
@@ -93,40 +94,45 @@ const PACKAGE_TYPES_IN_DESCENDING_ORDER = [
 
 const PartnersSection: React.FC<PartnersSectionProps> = ({
   t,
+  showComingSoonMessage,
   companiesByPackageType,
-}) => (
-  <section
-    id="partners"
-    className="bg-black px-3 py-16 text-white sm:py-20 md:py-28"
-  >
-    <header className="mb-10">
-      <h2 className="text-center font-display text-2xl font-bold uppercase xs:text-3xl sm:text-4xl md:text-5xl">
-        {t("partnersSection.title")}
-      </h2>
-    </header>
-    {_.isEmpty(companiesByPackageType) ? (
-      <div className="text-md mx-auto max-w-xs space-y-4 text-center xs:text-lg sm:max-w-lg sm:space-y-8 sm:py-10 sm:text-xl md:text-2xl">
-        <p>{t("partnersSection.comingSoon")}</p>
-        <p>{t("partnersSection.followOurSocialMediaPages")}</p>
-      </div>
-    ) : (
-      <div className="space-y-10">
-        {PACKAGE_TYPES_IN_DESCENDING_ORDER.map((packageType) => ({
-          packageType,
-          companies: companiesByPackageType[packageType],
-        }))
-          .filter(({ companies }) => !!companies)
-          .map(({ packageType, companies }, index) => (
-            <PartnersSectionSubsection
-              key={index}
-              t={t}
-              packageType={packageType}
-              companies={companies!}
-            />
-          ))}
-      </div>
-    )}
-  </section>
-);
+}) => {
+  showComingSoonMessage ||= _.isEmpty(companiesByPackageType);
+
+  return (
+    <section
+      id="partners"
+      className="bg-black px-3 py-16 text-white sm:py-20 md:py-28"
+    >
+      <header className="mb-10">
+        <h2 className="text-center font-display text-2xl font-bold uppercase xs:text-3xl sm:text-4xl md:text-5xl">
+          {t("partnersSection.title")}
+        </h2>
+      </header>
+      {showComingSoonMessage ? (
+        <div className="text-md mx-auto max-w-xs space-y-4 text-center xs:text-lg sm:max-w-lg sm:space-y-8 sm:py-10 sm:text-xl md:text-2xl">
+          <p>{t("partnersSection.comingSoon")}</p>
+          <p>{t("partnersSection.followOurSocialMediaPages")}</p>
+        </div>
+      ) : (
+        <div className="space-y-10">
+          {PACKAGE_TYPES_IN_DESCENDING_ORDER.map((packageType) => ({
+            packageType,
+            companies: companiesByPackageType[packageType],
+          }))
+            .filter(({ companies }) => !!companies)
+            .map(({ packageType, companies }, index) => (
+              <PartnersSectionSubsection
+                key={index}
+                t={t}
+                packageType={packageType}
+                companies={companies!}
+              />
+            ))}
+        </div>
+      )}
+    </section>
+  );
+};
 
 export default PartnersSection;

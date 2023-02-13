@@ -10,6 +10,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model SettingValue {
+  key   String @id
+  value Json
+}
+
 model Account {
   id                Int     @id @default(autoincrement())
   userId            Int

@@ -1,7 +1,7 @@
 import { ReactElement, useMemo, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
-import type { GetStaticProps } from "next";
+import type { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -12,6 +12,8 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import queryString from "query-string";
 
+import { getSettingValue } from "~/lib/settings/get";
+
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/auth/layout";
 import Input from "~/components/forms/input";
@@ -21,7 +23,13 @@ type Credentials = {
   password: string;
 };
 
-const EmailLoginPage: NextPageWithLayout = () => {
+type PageProps = {
+  showRegistrationLink: boolean;
+};
+
+const EmailLoginPage: NextPageWithLayout<PageProps> = ({
+  showRegistrationLink,
+}) => {
   const { t } = useTranslation("emailLogin");
   const { t: commonT, i18n: commonI18n } = useTranslation("common");
 
@@ -128,12 +136,14 @@ const EmailLoginPage: NextPageWithLayout = () => {
           </div>
         </form>
         <div className="flex flex-col items-center justify-around">
-          <Link
-            href={`/auth/register${query ? `?${query}` : ""}`}
-            className="block text-green-700 hover:text-green-600"
-          >
-            {t("register")}
-          </Link>
+          {showRegistrationLink && (
+            <Link
+              href={`/auth/register${query ? `?${query}` : ""}`}
+              className="block text-green-700 hover:text-green-600"
+            >
+              {t("register")}
+            </Link>
+          )}
           <Link
             href={`/auth/reset-password${query ? `?${query}` : ""}`}
             className="block text-green-700 hover:text-green-600"
@@ -150,13 +160,17 @@ export default EmailLoginPage;
 
 EmailLoginPage.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  locale,
+}) => {
+  const registrationEnabled = await getSettingValue("registrationEnabled");
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "ro", [
         "common",
         "emailLogin",
       ])),
+      showRegistrationLink: registrationEnabled,
     },
   };
 };

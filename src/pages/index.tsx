@@ -8,6 +8,10 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import _ from "lodash";
 
+import { PackageType } from "@prisma/client";
+
+import { getSettingValue } from "~/lib/settings/get";
+
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
 import LogosSection from "~/components/pages/home/logos";
@@ -21,13 +25,18 @@ import PartnersSection, {
 } from "~/components/pages/home/partners";
 
 import prisma from "~/lib/prisma";
-import { PackageType } from "@prisma/client";
 
 type PageProps = {
+  showComingSoonMessage: boolean;
+  hideProfileLink: boolean;
   companiesByPackageType: CompaniesByPackageType;
 };
 
-const HomePage: NextPage<PageProps> = ({ companiesByPackageType }) => {
+const HomePage: NextPage<PageProps> = ({
+  showComingSoonMessage,
+  hideProfileLink,
+  companiesByPackageType,
+}) => {
   const { t } = useTranslation("home");
 
   return (
@@ -41,14 +50,15 @@ const HomePage: NextPage<PageProps> = ({ companiesByPackageType }) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <NavBar />
+      <NavBar t={t} hideProfileLink={hideProfileLink} />
 
       <main>
-        <HeroSection t={t} />
+        <HeroSection t={t} showComingSoonMessage={showComingSoonMessage} />
         <LogosSection />
         <AboutSection t={t} />
         <PartnersSection
           t={t}
+          showComingSoonMessage={showComingSoonMessage}
           companiesByPackageType={companiesByPackageType}
         />
         <ContactSection t={t} />
@@ -69,11 +79,17 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
     "home",
   ]);
 
+  const showComingSoonMessage = await getSettingValue("showComingSoonMessage");
+  const showProfileLink = await getSettingValue("showProfileLink");
+  const hideProfileLink = !showProfileLink;
+
   // When performing the initial static page build, we don't want to access the database
   if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
     return {
       props: {
         ...ssrConfig,
+        showComingSoonMessage,
+        hideProfileLink,
         companiesByPackageType: {},
       },
       // The page will be regenerated using the data from the database once the first request comes in
@@ -104,6 +120,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   return {
     props: {
       ...ssrConfig,
+      showComingSoonMessage,
+      hideProfileLink,
       companiesByPackageType,
     },
   };
