@@ -82,6 +82,25 @@ describe("/api/auth/register", () => {
     expect(res._isEndCalled()).toBe(true);
   });
 
+  it("returns an error if password doesn't meet minimum requirements", async () => {
+    const { req, res } = createMocks({
+      method: "POST",
+      body: {
+        ...fakeUserRegistrationParams,
+        password: "1234",
+      },
+    });
+
+    await handler(
+      req as unknown as NextApiRequest,
+      res as unknown as NextApiResponse
+    );
+
+    expect(res.statusCode).toBe(400);
+    expect(res._isEndCalled()).toBe(true);
+    expect(res._getJSONData()).toMatchObject({ error: "password-too-short" });
+  });
+
   it("localizes verify e-mail message based on `Accept-Language` header", async () => {
     const language = "en";
 
