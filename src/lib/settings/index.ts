@@ -11,7 +11,13 @@ export const SETTINGS = {
     key: "showProfileLink",
     label: `Afișează link-ul către „Contul meu” în bara de navigare de pe prima pagină`,
     hint: `Pagina va fi în continuare accesibilă de către cei care navighează direct pe ea, iar utilizatorii autentificați vor vedea în continuare link-ul.`,
-    schema: z.boolean().default(false),
+    schema: z
+      .boolean()
+      .default(
+        process.env.CARIERE_SHOW_PROFILE_LINK
+          ? !!process.env.CARIERE_SHOW_PROFILE_LINK
+          : false
+      ),
   },
   enableSocialLogin: {
     key: "enableSocialLogin",
@@ -21,7 +27,13 @@ export const SETTINGS = {
   registrationEnabled: {
     key: "registrationEnabled",
     label: `Permite-le utilizatorilor să-și creeze/înregistreze noi conturi (cu oricare dintre metodele de autentificare active)`,
-    schema: z.boolean().default(false),
+    schema: z
+      .boolean()
+      .default(
+        process.env.CARIERE_REGISTRATION_ENABLED
+          ? !!process.env.CARIERE_REGISTRATION_ENABLED
+          : false
+      ),
   },
 } as const;
 
@@ -29,6 +41,7 @@ export type Settings = typeof SETTINGS;
 export type SettingKey = keyof Settings;
 export type Setting = {
   key: string;
+  env?: string;
   label: string;
   hint?: string;
   schema: z.Schema;
