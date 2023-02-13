@@ -8,19 +8,25 @@ import {
 
 import { useTranslation } from "next-i18next";
 
-type InputProps<IFormValues extends FieldValues> = {
+type InputProps<
+  TFieldValues extends FieldValues,
+  TFieldName extends Path<TFieldValues>
+> = {
   id: string;
   label: string;
   type: "text" | "email" | "password";
-  name: Path<IFormValues>;
-  register: UseFormRegister<IFormValues>;
-  registerOptions?: RegisterOptions<IFormValues>;
+  name: TFieldName;
+  register: UseFormRegister<TFieldValues>;
+  registerOptions?: RegisterOptions<TFieldValues, TFieldName>;
   required: boolean;
-  errors: FieldErrors<IFormValues>;
+  errors: FieldErrors<TFieldValues>;
   additionalErrorMessages?: React.ReactNode;
 };
 
-const Input = <IFormValues extends FieldValues>({
+const Input = <
+  TFieldValues extends FieldValues,
+  TFieldName extends Path<TFieldValues>
+>({
   id,
   label,
   type,
@@ -30,7 +36,7 @@ const Input = <IFormValues extends FieldValues>({
   required,
   errors,
   additionalErrorMessages,
-}: InputProps<IFormValues>): JSX.Element => {
+}: InputProps<TFieldValues, TFieldName>): JSX.Element => {
   const { t } = useTranslation("common");
   return (
     <div className="flex flex-col items-start">
