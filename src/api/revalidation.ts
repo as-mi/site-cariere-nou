@@ -1,13 +1,10 @@
-import { NextApiResponse } from "next";
+import { Context } from "./trpc/context";
 
-export const revalidateHomePage = async (res: NextApiResponse) => {
-  await res.revalidate("/");
+export const revalidateHomePage = async (ctx: Context) => {
+  await ctx.revalidate("/");
 };
 
-export const revalidateCompanyPage = async (
-  res: NextApiResponse,
-  slug: string
-) => {
+export const revalidateCompanyPage = async (ctx: Context, slug: string) => {
   // TODO: currently broken, because we dynamically generate companies' pages
-  //await res.revalidate(`/companies/${slug}`);
+  //await ctx.revalidate(`/companies/${slug}`);
 };

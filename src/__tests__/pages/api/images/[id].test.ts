@@ -3,16 +3,10 @@ import { createMocks } from "node-mocks-http";
 
 import { Role } from "@prisma/client";
 
-import { getServerSession } from "~/lib/auth";
-
+import { mockGetServerSession } from "~/lib/test/auth-mock";
 import prismaMock from "~/lib/test/prisma-mock";
+
 import handler from "~/pages/api/images/[id]";
-
-jest.mock("~/lib/auth", () => ({
-  getServerSession: jest.fn(),
-}));
-
-const mockGetServerSession = getServerSession as unknown as jest.Mock;
 
 afterEach(() => {
   mockGetServerSession.mockClear();

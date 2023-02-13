@@ -1,12 +1,18 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { createMocks } from "node-mocks-http";
 
+import { BadRequestError } from "~/api/errors";
+
 import { Role } from "@prisma/client";
 import prismaMock from "~/lib/test/prisma-mock";
 import { sendVerificationEmail } from "~/lib/emails";
 
 import handler from "~/pages/api/auth/register";
-import { generateEmailVerificationToken, hashPassword } from "~/lib/accounts";
+import {
+  generateEmailVerificationToken,
+  hashPassword,
+  validatePassword,
+} from "~/lib/accounts";
 
 jest.mock("~/lib/emails", () => ({
   sendVerificationEmail: jest.fn(),
@@ -15,12 +21,14 @@ jest.mock("~/lib/emails", () => ({
 jest.mock("~/lib/accounts", () => ({
   generateEmailVerificationToken: jest.fn(),
   hashPassword: jest.fn(),
+  validatePassword: jest.fn(),
 }));
 
 const mockGenerateEmailVerificationToken =
   generateEmailVerificationToken as unknown as jest.Mock;
 
 const mockHashPassword = hashPassword as unknown as jest.Mock;
+const mockValidatePassword = validatePassword as unknown as jest.Mock;
 
 afterEach(() => {
   jest.clearAllMocks();
@@ -91,6 +99,10 @@ describe("/api/auth/register", () => {
       },
     });
 
+    mockValidatePassword.mockImplementationOnce(() => {
+      throw new BadRequestError("password-too-weak");
+    });
+
     await handler(
       req as unknown as NextApiRequest,
       res as unknown as NextApiResponse
@@ -98,7 +110,7 @@ describe("/api/auth/register", () => {
 
     expect(res.statusCode).toBe(400);
     expect(res._isEndCalled()).toBe(true);
-    expect(res._getJSONData()).toMatchObject({ error: "password-too-short" });
+    expect(res._getJSONData()).toMatchObject({ error: "password-too-weak" });
   });
 
   it("localizes verify e-mail message based on `Accept-Language` header", async () => {

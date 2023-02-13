@@ -1,35 +1,25 @@
-import trpcNext from "@trpc/server/adapters/next";
+import { inferAsyncReturnType } from "@trpc/server";
 
-import { User } from "@prisma/client";
+import type { User } from "@prisma/client";
 
-import { NextApiRequest, NextApiResponse } from "next";
-import { getServerSession } from "next-auth";
-import { authOptions } from "~/lib/next-auth-options";
-
-export type Context = {
-  req: NextApiRequest;
-  res: NextApiResponse;
+interface CreateContextOptions {
+  /**
+   * Object describing the currently logged-in user, or `null` if request is unauthenticated.
+   */
   user: Pick<User, "id" | "role"> | null;
-};
-
-export async function createContext({
-  req,
-  res,
-}: trpcNext.CreateNextContextOptions): Promise<Context> {
-  let user = null;
-
-  const session = await getServerSession(req, res, authOptions);
-
-  if (session?.user) {
-    user = {
-      id: session.user.id,
-      role: session.user.role,
-    };
-  }
-
-  return {
-    user,
-    req,
-    res,
-  };
+  /**
+   * Regenerates an existing site page which supports Next.js' Incremental Site Generation.
+   */
+  revalidate: (urlPath: string) => Promise<void>;
 }
+
+/**
+ * Inner function for `createContext` where we create the context.
+ *
+ * This is useful for testing, where we don't want to mock Next.js' request/response objects.
+ */
+export async function createContextInner(opts: CreateContextOptions) {
+  return { ...opts };
+}
+
+export type Context = inferAsyncReturnType<typeof createContextInner>;

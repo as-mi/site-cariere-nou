@@ -1,7 +1,8 @@
 import { z } from "zod";
 
-import { hashPassword } from "~/lib/accounts";
+import { hashPassword, validatePassword } from "~/lib/accounts";
 import prisma from "~/lib/prisma";
+import { BadRequestError } from "~/api/errors";
 
 import { AllRoles, EntityId } from "../../schema";
 import { adminProcedure, router } from "../..";
@@ -30,6 +31,16 @@ export const userRouter = router({
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input }) => {
     const { name, email, password, role } = input;
+
+    try {
+      validatePassword(password);
+    } catch (e) {
+      if (e instanceof BadRequestError) {
+        throw new Error(`Password validation error: ${e.message}`);
+      } else {
+        throw e;
+      }
+    }
 
     const passwordHash = password ? await hashPassword(password) : "";
 
@@ -88,3 +99,5 @@ export const userRouter = router({
       });
     }),
 });
+
+export type UserRouter = typeof userRouter;
