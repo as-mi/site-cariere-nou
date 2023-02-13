@@ -4,6 +4,8 @@ import { z } from "zod";
 import { Role } from "@prisma/client";
 import prisma from "~/lib/prisma";
 
+import { getSettingValue } from "~/lib/settings/get";
+
 import {
   generateEmailVerificationToken,
   hashPassword,
@@ -31,6 +33,14 @@ const registerSchema = z
 type RegisterData = z.infer<typeof registerSchema>;
 
 const register = async (data: RegisterData) => {
+  const registrationEnabled = await getSettingValue("registrationEnabled");
+  if (!registrationEnabled) {
+    throw new BadRequestError(
+      "registration-disabled",
+      "registration of new accounts is currently disabled"
+    );
+  }
+
   validatePassword(data.password);
 
   try {

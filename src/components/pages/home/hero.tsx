@@ -2,14 +2,18 @@ import { TFunction } from "next-i18next";
 
 import Image from "next/image";
 
-import background from "../../../images/hero-background.jpg";
-import logoCariere from "../../../images/logos/cariere-white.png";
+import background from "~/images/hero-background.jpg";
+import logoCariere from "~/images/logos/cariere-white.png";
 
 type HeroSectionProps = {
   t: TFunction;
+  showComingSoonMessage: boolean;
 };
 
-const HeroSection: React.FC<HeroSectionProps> = ({ t }) => {
+const HeroSection: React.FC<HeroSectionProps> = ({
+  t,
+  showComingSoonMessage,
+}) => {
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
 
@@ -48,14 +52,32 @@ const HeroSection: React.FC<HeroSectionProps> = ({ t }) => {
           priority
         />
 
-        <p className="mx-auto mt-16 max-w-sm px-3 text-lg">{t("teaser")}</p>
+        {showComingSoonMessage ? (
+          <>
+            <p className="mt-12 font-display text-xl text-gray-400">
+              {t("heroSection.comingSoon")}
+            </p>
+
+            <p className="mx-2 mt-8 font-display text-3xl">
+              {t("heroSection.date")}
+            </p>
+
+            <p className="mx-auto mt-16 max-w-sm px-3 text-lg">
+              {t("heroSection.teaser")}
+            </p>
+          </>
+        ) : (
+          <p className="mx-auto mt-16 max-w-sm px-3 text-xl">
+            {t("heroSection.welcome")}
+          </p>
+        )}
 
         <a
-          className="mt-16 inline-block rounded-full bg-white px-5 py-2 font-medium text-black"
+          className="mt-16 mb-8 inline-block rounded-full bg-white px-5 py-2 font-medium text-black"
           href="#about"
           onClick={handleClick}
         >
-          {t("about")}
+          {t("heroSection.about")}
         </a>
       </div>
     </section>

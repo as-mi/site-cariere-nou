@@ -7,8 +7,13 @@
     "profile": "Contul meu",
     "adminDashboard": "Panou de administrare"
   },
-  "teaser": "Cariere revine și anul acesta cu o mulțime de oportunități pentru studenți",
-  "about": "Despre Cariere",
+  "heroSection": {
+    "comingSoon": "În curând",
+    "date": "28 februarie – 2 martie 2023",
+    "teaser": "Cariere revine și anul acesta cu o mulțime de oportunități pentru studenți",
+    "welcome": "Bine ai venit pe site-ul oficial al proiectului Cariere!",
+    "about": "Despre Cariere"
+  },
   "aboutSection": {
     "title": "Despre Cariere",
     "objectives": "Obiective",

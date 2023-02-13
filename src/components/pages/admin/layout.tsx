@@ -9,6 +9,7 @@ import {
   faBars,
   faBuilding,
   faFile,
+  faGear,
   faHouse,
   faListCheck,
   faUser,
@@ -50,6 +51,11 @@ const links = [
     href: "/admin/resumes",
     icon: faFile,
     label: "CV-uri",
+  },
+  {
+    href: "/admin/settings",
+    icon: faGear,
+    label: "Setări",
   },
 ];
 

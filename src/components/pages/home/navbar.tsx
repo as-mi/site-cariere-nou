@@ -1,4 +1,4 @@
-import { useTranslation } from "next-i18next";
+import { TFunction } from "next-i18next";
 
 import Link from "next/link";
 
@@ -8,9 +8,12 @@ import CommonNavBar, { RenderLinksParams } from "~/components/common/navbar";
 import useRole from "~/hooks/use-role";
 import { useCallback } from "react";
 
-const NavBar: React.FC = () => {
-  const { t } = useTranslation("home");
+type NavBarProps = {
+  t: TFunction;
+  hideProfileLink: boolean;
+};
 
+const NavBar: React.FC<NavBarProps> = ({ t, hideProfileLink }) => {
   const role = useRole();
 
   const renderLinks = useCallback(
@@ -43,6 +46,9 @@ const NavBar: React.FC = () => {
         { targetId: "contact", label: t("navbar.contact") },
       ];
 
+      const isLoggedIn = !!role;
+      const showProfileLink = isLoggedIn || !hideProfileLink;
+
       return (
         <>
           {links.map(({ targetId, label }, index) => (
@@ -56,11 +62,13 @@ const NavBar: React.FC = () => {
               </a>
             </li>
           ))}
-          <li className="md:inline-block">
-            <Link href="/profile" className="block px-5 py-3">
-              {t("navbar.profile")}
-            </Link>
-          </li>
+          {showProfileLink && (
+            <li className="md:inline-block">
+              <Link href="/profile" className="block px-5 py-3">
+                {t("navbar.profile")}
+              </Link>
+            </li>
+          )}
           {role === Role.ADMIN && (
             <li className="md:inline-block">
               <Link href="/admin" className="block px-5 py-3">
@@ -71,7 +79,7 @@ const NavBar: React.FC = () => {
         </>
       );
     },
-    [t, role]
+    [t, hideProfileLink, role]
   );
 
   return <CommonNavBar renderLinks={renderLinks} />;

@@ -18,14 +18,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook, faGoogle } from "@fortawesome/free-brands-svg-icons";
 
-import { NextPageWithLayout } from "../../_app";
-import Layout from "../../../components/pages/auth/layout";
+import { NextPageWithLayout } from "~/pages/_app";
+import Layout from "~/components/pages/auth/layout";
+import { getSettingValue } from "~/lib/settings/get";
 
 type PageProps = {
+  showSocialLoginButtons: boolean;
   availableProviders: string[];
 };
 
-const LoginPage: NextPageWithLayout<PageProps> = ({ availableProviders }) => {
+const LoginPage: NextPageWithLayout<PageProps> = ({
+  showSocialLoginButtons,
+  availableProviders,
+}) => {
   const { t } = useTranslation("login");
 
   const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
@@ -83,40 +88,46 @@ const LoginPage: NextPageWithLayout<PageProps> = ({ availableProviders }) => {
         </header>
 
         <div className="flex flex-col space-y-3">
-          <button
-            disabled={!canSignInWithGoogle}
-            onClick={canSignInWithGoogle ? handleSignInWithGoogle : undefined}
-            title={
-              canSignInWithGoogle
-                ? ""
-                : t("authenticationProviders.notAvailable") || undefined
-            }
-            className="block rounded-md border-2 border-solid border-blue-300 bg-blue-500 px-3 py-2 text-white hover:ring-2 hover:ring-blue-300"
-          >
-            <FontAwesomeIcon
-              icon={faGoogle}
-              className="mr-2 inline-block h-4 w-4"
-            />{" "}
-            {t("authenticationProviders.google")}
-          </button>
-          <button
-            disabled={!canSignInWithFacebook}
-            onClick={
-              canSignInWithFacebook ? handleSignInWithFacebook : undefined
-            }
-            title={
-              canSignInWithFacebook
-                ? ""
-                : t("authenticationProviders.notAvailable") || undefined
-            }
-            className="block rounded-md border-2 border-solid border-sky-600 bg-sky-800 px-3 py-2 text-white hover:ring-2 hover:ring-sky-300"
-          >
-            <FontAwesomeIcon
-              icon={faFacebook}
-              className="mr-2 inline-block h-4 w-4"
-            />{" "}
-            {t("authenticationProviders.facebook")}
-          </button>
+          {showSocialLoginButtons && (
+            <>
+              <button
+                disabled={!canSignInWithGoogle}
+                onClick={
+                  canSignInWithGoogle ? handleSignInWithGoogle : undefined
+                }
+                title={
+                  canSignInWithGoogle
+                    ? ""
+                    : t("authenticationProviders.notAvailable") || undefined
+                }
+                className="block rounded-md border-2 border-solid border-blue-300 bg-blue-500 px-3 py-2 text-white hover:ring-2 hover:ring-blue-300"
+              >
+                <FontAwesomeIcon
+                  icon={faGoogle}
+                  className="mr-2 inline-block h-4 w-4"
+                />{" "}
+                {t("authenticationProviders.google")}
+              </button>
+              <button
+                disabled={!canSignInWithFacebook}
+                onClick={
+                  canSignInWithFacebook ? handleSignInWithFacebook : undefined
+                }
+                title={
+                  canSignInWithFacebook
+                    ? ""
+                    : t("authenticationProviders.notAvailable") || undefined
+                }
+                className="block rounded-md border-2 border-solid border-sky-600 bg-sky-800 px-3 py-2 text-white hover:ring-2 hover:ring-sky-300"
+              >
+                <FontAwesomeIcon
+                  icon={faFacebook}
+                  className="mr-2 inline-block h-4 w-4"
+                />{" "}
+                {t("authenticationProviders.facebook")}
+              </button>
+            </>
+          )}
           <Link
             href={`/auth/login/email${query ? `?${query}` : ""}`}
             className="border-gray block rounded-md border-2 border-solid px-3 py-2"
@@ -149,6 +160,7 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
     return {
       props: {
         ...ssrConfig,
+        showSocialLoginButtons: false,
         availableProviders: [],
       },
       // The page will be regenerated using the active list of providers
@@ -164,9 +176,12 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => {
       ? []
       : Object.values(providers).map((provider) => provider.id);
 
+  const enableSocialLogin = await getSettingValue("enableSocialLogin");
+
   return {
     props: {
       ...ssrConfig,
+      showSocialLoginButtons: enableSocialLogin,
       availableProviders,
     },
     revalidate: 30,
