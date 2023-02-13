@@ -5,10 +5,10 @@
     "email": "Adresă de e-mail",
     "name": "Nume complet",
     "password": "Parolă",
+    "passwordMustHaveDigits": "Parola trebuie să conțină cel puțin o cifră",
+    "passwordMustHaveAlpha": "Parola trebuie să conțină cel puțin o literă",
     "passwordConfirmation": "Confirmă parola",
     "passwordsMustMatch": "Parolele nu corespund",
-    "passwordsMustHaveDigits": "Parola trebuie să conțină cel puțin o cifră",
-    "passwordsMustHaveAlpha": "Parola trebuie să conțină cel puțin o literă",
     "consent": "Sunt de acord cu prelucrarea datelor mele personale de către ASMI",
     "consentRequired": "Trebuie să îți dai consimțământul înainte de crearea contului",
     "submit": "Înregistrează-te"
