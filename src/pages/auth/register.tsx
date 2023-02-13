@@ -10,7 +10,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import queryString from "query-string";
 
-import { getSettingValue } from "~/lib/settings";
+import { getSettingValue } from "~/lib/settings/get";
 
 import RegistrationForm from "~/components/pages/auth/register/form";
 import RegistrationSuccessMessage from "~/components/pages/auth/register/success-message";
