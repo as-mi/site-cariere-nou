@@ -14,6 +14,13 @@ import queryString from "query-string";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 
+import {
+  MAX_PASSWORD_LENGTH,
+  MIN_PASSWORD_LENGTH,
+  mustHaveAlpha,
+  mustHaveDigit,
+} from "~/lib/passwords";
+
 import { NextPageWithLayout } from "../_app";
 import Layout from "../../components/pages/auth/layout";
 import Input from "../../components/forms/input";
@@ -126,7 +133,29 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
             label={t("registrationForm.password")}
             required
             register={register}
+            registerOptions={{
+              minLength: MIN_PASSWORD_LENGTH,
+              maxLength: MAX_PASSWORD_LENGTH,
+              validate: {
+                mustHaveDigit: (password) => mustHaveDigit(password as string),
+                mustHaveAlpha: (password) => mustHaveAlpha(password as string),
+              },
+            }}
             errors={errors}
+            additionalErrorMessages={
+              <>
+                {errors.password?.type === "mustHaveDigit" && (
+                  <div className="pt-1 pl-2 text-sm">
+                    {t("registrationForm.passwordsMustHaveDigits")}
+                  </div>
+                )}
+                {errors.password?.type === "mustHaveAlpha" && (
+                  <div className="pt-1 pl-2 text-sm">
+                    {t("registrationForm.passwordsMustHaveAlpha")}
+                  </div>
+                )}
+              </>
+            }
           />
           <Input
             id="passwordConfirmation"
