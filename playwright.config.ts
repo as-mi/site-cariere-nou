@@ -38,12 +38,9 @@ const config: PlaywrightTestConfig = {
   use: {
     /* Maximum time each action such as `click()` can take. Defaults to 0 (no limit). */
     actionTimeout: 0,
-
     /* Base URL to use in actions like `await page.goto('/')`. */
     baseURL,
-
     headless: opts.headless,
-
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: "on-first-retry",
   },
@@ -54,6 +51,10 @@ const config: PlaywrightTestConfig = {
     url: "http://0.0.0.0:3000",
     timeout: 10 * 1000,
     reuseExistingServer: !process.env.CI,
+    env: {
+      CARIERE_SHOW_PROFILE_LINK: "true",
+      CARIERE_REGISTRATION_ENABLED: "true",
+    },
   },
   /* Configure projects for major browsers */
   projects: [
