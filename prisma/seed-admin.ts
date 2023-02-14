@@ -1,7 +1,7 @@
 import { PrismaClient, Role } from "@prisma/client";
 import { createInterface as readlineCreateInterface } from "readline";
 import { stdin as input, stdout as output } from "process";
-import { hashPassword } from "../src/lib/accounts";
+import { hashPassword } from "~/lib/accounts";
 
 const prisma = new PrismaClient();
 

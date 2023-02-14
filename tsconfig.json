@@ -20,6 +20,10 @@
     }
   },
   "ts-node": {
+    "require": [
+      // Add support for handling path aliases
+      "tsconfig-paths/register"
+    ],
     "compilerOptions": {
       "module": "CommonJS"
     }
