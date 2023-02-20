@@ -49,6 +49,8 @@ model User {
   passwordHash           String?
   passwordResetToken     String?
   role                   Role
+  createdAt              DateTime                            @default(now())
+  updatedAt              DateTime                            @updatedAt
   accounts               Account[]
   profile                Profile?
   resumes                Resume[]
