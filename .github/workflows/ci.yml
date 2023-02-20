@@ -56,8 +56,10 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+        ports:
+          - 5432:5432
     env:
-      DATABASE_URL: postgresql://postgres:ci@postgres:5432/cariere?schema=public
+      DATABASE_URL: postgresql://postgres:ci@localhost:5432/cariere?schema=public
       # Don't try to actually deliver e-mails in CI
       MAILER_DISABLE_EMAIL_SENDING: 1
     steps:
@@ -71,6 +73,9 @@ jobs:
 
       - name: Install dependencies using npm
         run: npm ci
+
+      - name: Run migrations to set up database
+        run: npx prisma migrate deploy
 
       - name: Run integration tests using Jest
         run: npm run test:integration
