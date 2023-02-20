@@ -26,6 +26,7 @@ const registerSchema = z
     name: z.string().trim(),
     email: z.string().trim(),
     password: z.string(),
+    consent: z.boolean(),
     language: z.enum(["ro", "en"]).default("ro"),
   })
   .strict();
@@ -111,7 +112,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const parseResult = registerSchema.safeParse(req.body);
 
   if (!parseResult.success) {
-    throw new BadRequestError();
+    throw new BadRequestError(
+      "invalid-params",
+      `Request body is invalid: ${parseResult.error.toString()}`
+    );
   }
 
   const data = parseResult.data;

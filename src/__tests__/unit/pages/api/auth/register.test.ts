@@ -49,6 +49,7 @@ const fakeUserRegistrationParams = {
   name: "Test User",
   email: "hello@example.com",
   password: "1234abc*",
+  consent: true,
 };
 
 describe("/api/auth/register", () => {

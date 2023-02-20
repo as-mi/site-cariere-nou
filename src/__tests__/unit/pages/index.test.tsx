@@ -11,7 +11,13 @@ jest.mock("~/hooks/use-role", () => ({
 
 describe("Home", () => {
   it("renders a heading", () => {
-    render(<HomePage companiesByPackageType={{}} />);
+    render(
+      <HomePage
+        showComingSoonMessage={true}
+        hideProfileLink={true}
+        companiesByPackageType={{}}
+      />
+    );
 
     const heroImage = screen.getByAltText("Cariere v12.0");
 
