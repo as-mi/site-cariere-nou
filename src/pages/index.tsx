@@ -8,9 +8,11 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import _ from "lodash";
 
-import { PackageType } from "@prisma/client";
+import { PackageType, Role } from "@prisma/client";
 
 import { getSettingValue } from "~/lib/settings/get";
+
+import useRole from "~/hooks/use-role";
 
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
@@ -28,16 +30,20 @@ import prisma from "~/lib/prisma";
 
 type PageProps = {
   showComingSoonMessage: boolean;
+  alwaysShowCompaniesForAdmin: boolean;
   hideProfileLink: boolean;
   companiesByPackageType: CompaniesByPackageType;
 };
 
 const HomePage: NextPage<PageProps> = ({
   showComingSoonMessage,
+  alwaysShowCompaniesForAdmin,
   hideProfileLink,
   companiesByPackageType,
 }) => {
   const { t } = useTranslation("home");
+
+  const role = useRole();
 
   return (
     <>
@@ -58,7 +64,11 @@ const HomePage: NextPage<PageProps> = ({
         <AboutSection t={t} />
         <PartnersSection
           t={t}
-          showComingSoonMessage={showComingSoonMessage}
+          showComingSoonMessage={
+            alwaysShowCompaniesForAdmin
+              ? role !== Role.ADMIN
+              : showComingSoonMessage
+          }
           companiesByPackageType={companiesByPackageType}
         />
         <ContactSection t={t} />
@@ -80,6 +90,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   ]);
 
   const showComingSoonMessage = await getSettingValue("showComingSoonMessage");
+  const alwaysShowCompaniesForAdmin = await getSettingValue(
+    "alwaysShowCompaniesForAdmin"
+  );
   const showProfileLink = await getSettingValue("showProfileLink");
   const hideProfileLink = !showProfileLink;
 
@@ -89,6 +102,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
       props: {
         ...ssrConfig,
         showComingSoonMessage,
+        alwaysShowCompaniesForAdmin,
         hideProfileLink,
         companiesByPackageType: {},
       },
@@ -121,6 +135,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
     props: {
       ...ssrConfig,
       showComingSoonMessage,
+      alwaysShowCompaniesForAdmin,
       hideProfileLink,
       companiesByPackageType,
     },

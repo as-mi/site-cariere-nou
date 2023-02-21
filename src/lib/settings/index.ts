@@ -5,6 +5,12 @@ export const SETTINGS = {
   showComingSoonMessage: {
     key: "showComingSoonMessage",
     label: `Afișează mesajul de „În curând” pe prima pagină`,
+    hint: `Pe prima pagină se va afișa un mesaj că proiectul va avea loc „În curând” și va fi ascunsă lista cu companiile.`,
+    schema: z.boolean().default(true),
+  },
+  alwaysShowCompaniesForAdmin: {
+    key: "alwaysShowCompaniesForAdmin",
+    label: `Afișează companiile pentru admin chiar dacă sunt ascunse pentru utilizatori`,
     schema: z.boolean().default(true),
   },
   showProfileLink: {
