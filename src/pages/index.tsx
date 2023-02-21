@@ -14,12 +14,13 @@ import { getSettingValue } from "~/lib/settings/get";
 
 import { useIsAdmin } from "~/hooks/use-role";
 
+import Footer from "~/components/common/footer";
+
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
 import LogosSection from "~/components/pages/home/logos";
 import AboutSection from "~/components/pages/home/about";
 import ContactSection from "~/components/pages/home/contact";
-import Footer from "~/components/pages/home/footer";
 import ScrollToTopButton from "~/components/pages/home/scroll-to-top";
 import PartnersSection, {
   CompaniesByPackageType,

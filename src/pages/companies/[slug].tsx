@@ -11,6 +11,7 @@ import showdown from "showdown";
 import { getServerSession } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 
+import Footer from "~/components/common/footer";
 import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
   Position,
@@ -77,6 +78,8 @@ const CompanyPage: NextPage<PageProps> = ({ company, applyToPositionId }) => {
           )}
         </section>
       </main>
+
+      <Footer />
     </>
   );
 };
