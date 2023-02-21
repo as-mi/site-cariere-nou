@@ -56,8 +56,8 @@ type PartnerCardProps = {
 
 const MEDAL_COLORS = {
   [PackageType.GOLD]: "text-yellow-300",
-  [PackageType.SILVER]: "text-silver-300",
-  [PackageType.BRONZE]: "text-yellow-500",
+  [PackageType.SILVER]: "text-zinc-400",
+  [PackageType.BRONZE]: "text-amber-600",
 };
 
 const PartnerCard: React.FC<PartnerCardProps> = ({
