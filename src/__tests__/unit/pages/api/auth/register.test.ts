@@ -102,6 +102,24 @@ describe("/api/auth/register", () => {
     expect(res._isEndCalled()).toBe(true);
   });
 
+  it("returns an error if consent is not explicitly given", async () => {
+    const { req, res } = createMocks({
+      method: "POST",
+      body: {
+        ...fakeUserRegistrationParams,
+        consent: false,
+      },
+    });
+
+    await handler(
+      req as unknown as NextApiRequest,
+      res as unknown as NextApiResponse
+    );
+
+    expect(res.statusCode).toBe(400);
+    expect(res._isEndCalled()).toBe(true);
+  });
+
   it("returns an error if password doesn't meet minimum requirements", async () => {
     const { req, res } = createMocks({
       method: "POST",

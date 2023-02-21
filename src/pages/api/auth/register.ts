@@ -26,7 +26,7 @@ const registerSchema = z
     name: z.string().trim(),
     email: z.string().trim(),
     password: z.string(),
-    consent: z.boolean(),
+    consent: z.literal(true),
     language: z.enum(["ro", "en"]).default("ro"),
   })
   .strict();
