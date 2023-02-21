@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 
-import PartnersSection from "~/components/pages/home/partners";
+import PartnersSection from "~/components/pages/home/partners/section";
 
 jest.mock("~/hooks/use-role", () => ({
   __esModule: true,
