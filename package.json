@@ -10,7 +10,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "jest --watch",
-    "test:ci": "jest",
+    "test:unit": "jest src/__tests__/unit",
+    "test:integration": "jest src/__tests__/integration",
     "test:e2e": "playwright test",
     "seed:admin": "ts-node-esm prisma/seed-admin.ts"
   },

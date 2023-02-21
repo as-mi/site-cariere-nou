@@ -44,6 +44,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
         name: data.name,
         email: data.email,
         password: data.password,
+        consent: data.consent,
         language: i18n.language,
       };
       const body = JSON.stringify(payload);

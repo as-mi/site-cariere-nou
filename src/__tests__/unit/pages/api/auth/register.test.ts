@@ -49,6 +49,7 @@ const fakeUserRegistrationParams = {
   name: "Test User",
   email: "hello@example.com",
   password: "1234abc*",
+  consent: true,
 };
 
 describe("/api/auth/register", () => {
@@ -90,6 +91,24 @@ describe("/api/auth/register", () => {
     const { req, res } = createMocks({
       method: "POST",
       body: {},
+    });
+
+    await handler(
+      req as unknown as NextApiRequest,
+      res as unknown as NextApiResponse
+    );
+
+    expect(res.statusCode).toBe(400);
+    expect(res._isEndCalled()).toBe(true);
+  });
+
+  it("returns an error if consent is not explicitly given", async () => {
+    const { req, res } = createMocks({
+      method: "POST",
+      body: {
+        ...fakeUserRegistrationParams,
+        consent: false,
+      },
     });
 
     await handler(
