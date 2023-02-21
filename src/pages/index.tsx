@@ -124,6 +124,9 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
         },
       },
     },
+    orderBy: {
+      name: "asc",
+    },
   });
 
   const companiesByPackageType = _.groupBy(companies, "packageType") as Partial<
