@@ -6,7 +6,7 @@ import { z } from "zod";
 import prisma from "~/lib/prisma";
 import { Setting, SETTINGS } from "~/lib/settings";
 
-import { revalidateHomePage } from "~/api/revalidation";
+import { revalidateAllPages } from "~/api/revalidation";
 
 const UpdateInput = z.object({
   key: z.string(),
@@ -53,6 +53,6 @@ export const settingRouter = router({
     });
 
     // Some settings affect static pages, therefore we must regenerate them
-    revalidateHomePage(ctx);
+    revalidateAllPages(ctx);
   }),
 });
