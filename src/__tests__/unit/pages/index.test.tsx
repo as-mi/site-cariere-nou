@@ -14,6 +14,7 @@ describe("Home", () => {
     render(
       <HomePage
         showComingSoonMessage={true}
+        alwaysShowCompaniesForAdmin={true}
         hideProfileLink={true}
         companiesByPackageType={{}}
       />
