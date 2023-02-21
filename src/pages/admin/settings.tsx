@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useState } from "react";
+import { Fragment, ReactElement, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
 import _ from "lodash";
@@ -8,14 +8,16 @@ import { GetServerSideProps } from "next";
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 
+import { SettingValue } from "@prisma/client";
+
 import prisma from "~/lib/prisma";
 import { trpc } from "~/lib/trpc";
 import { SETTINGS, Setting } from "~/lib/settings";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
-import { SettingValue } from "@prisma/client";
 import { SubmitButton, TextAreaField } from "~/components/pages/admin/forms";
+import CheckboxField from "~/components/pages/admin/forms/checkbox-field";
 
 type SettingsEditorProps = {
   setting: Setting;
@@ -52,6 +54,11 @@ const SettingEditor = ({ setting, value }: SettingsEditorProps) => {
     }
   }, [successfullySaved]);
 
+  const valueType = typeof JSON.parse(value);
+  if (valueType === "boolean") {
+    value = JSON.parse(value);
+  }
+
   const {
     handleSubmit,
     register,
@@ -65,6 +72,10 @@ const SettingEditor = ({ setting, value }: SettingsEditorProps) => {
   const onSubmit: SubmitHandler<SettingEditorFieldValues> = (data) => {
     setSuccessfullySaved(false);
 
+    if (valueType === "boolean") {
+      data.value = JSON.stringify(data.value);
+    }
+
     mutation.mutate({ key: setting.key, value: data.value });
   };
 
@@ -75,14 +86,24 @@ const SettingEditor = ({ setting, value }: SettingsEditorProps) => {
         <code>{setting.key}</code>
       </p>
       {setting.hint && <p className="mt-2 text-sm">{setting.hint}</p>}
-      <TextAreaField
-        label="Valoare"
-        name="value"
-        required
-        register={register}
-        errors={errors}
-        wrapperClassName="mt-3"
-      />
+      {valueType === "boolean" ? (
+        <CheckboxField
+          label="Valoare"
+          name="value"
+          register={register}
+          errors={errors}
+          wrapperClassName="mt-3"
+        />
+      ) : (
+        <TextAreaField
+          label="Valoare"
+          name="value"
+          required
+          register={register}
+          errors={errors}
+          wrapperClassName="mt-3"
+        />
+      )}
       <SubmitButton label="Salvează" className="mt-3" />
 
       {mutation.error && (
@@ -117,6 +138,20 @@ const AdminSettingsPage: NextPageWithLayout<PageProps> = ({ initialData }) => {
 
   const settingValuesByKey = query.data;
 
+  const settingEditors = Object.entries(SETTINGS).map(([key, setting]) => {
+    let value = settingValuesByKey[key]?.value;
+    if (value === undefined) {
+      const result = setting.schema.safeParse(undefined);
+      if (result.success) {
+        value = result.data;
+      }
+    }
+
+    value = JSON.stringify(value);
+
+    return <SettingEditor key={key} setting={setting} value={value} />;
+  });
+
   return (
     <>
       <header>
@@ -129,19 +164,13 @@ const AdminSettingsPage: NextPageWithLayout<PageProps> = ({ initialData }) => {
         </p>
       </header>
       <div className="max-w-md space-y-6">
-        {Object.entries(SETTINGS).map(([key, setting]) => {
-          let value = settingValuesByKey[key]?.value;
-          if (value === undefined) {
-            const result = setting.schema.safeParse(undefined);
-            if (result.success) {
-              value = result.data;
-            }
-          }
-
-          value = JSON.stringify(value);
-
-          return <SettingEditor key={key} setting={setting} value={value} />;
-        })}
+        <hr />
+        {settingEditors.map((editor) => (
+          <Fragment key={editor.key}>
+            {editor}
+            <hr />
+          </Fragment>
+        ))}
       </div>
     </>
   );
