@@ -68,7 +68,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({
   <div className="rounded-md bg-white">
     <Link
       href={`/companies/${company.slug}`}
-      className="flex w-full max-w-xl flex-row items-center py-8 px-8 pt-10"
+      className="flex h-full w-full max-w-xl flex-row items-center py-8 px-8 pt-10"
     >
       <div className="w-2/4">
         <PartnerLogo t={t} company={company} className="my-auto" />
