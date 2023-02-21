@@ -17,7 +17,7 @@ const companyWithLogo = Prisma.validator<Prisma.CompanyArgs>()({
   },
 });
 
-type CompanyWithLogo = Prisma.CompanyGetPayload<typeof companyWithLogo>;
+export type CompanyWithLogo = Prisma.CompanyGetPayload<typeof companyWithLogo>;
 
 type CompanyLogoProps = {
   company: CompanyWithLogo;

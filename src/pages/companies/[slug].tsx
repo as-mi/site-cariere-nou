@@ -65,7 +65,7 @@ const CompanyPage: NextPage<PageProps> = ({
       <NavBar companyId={company.id} />
       <main className="min-h-screen bg-black pt-32 md:pt-40 lg:pt-48">
         <header className="flex flex-col items-center justify-center bg-black py-8 text-white sm:py-12 md:py-20">
-          <div className="mx-10 mb-8 max-w-xs rounded-lg xs:mb-12 sm:mb-16">
+          <div className="mx-10 mb-8 max-w-sm rounded-lg bg-white p-4 xs:mb-12 xs:p-8 sm:mb-16 sm:p-12">
             <CompanyLogo company={company} />
           </div>
           <h1 className="mb-2 font-display text-3xl sm:text-5xl">
@@ -88,17 +88,19 @@ const CompanyPage: NextPage<PageProps> = ({
             </h3>
           )}
         </header>
-        <section className="bg-white p-4">
-          {company.descriptionHtml ? (
-            <div
-              className="prose mx-auto max-w-prose"
-              dangerouslySetInnerHTML={{ __html: company.descriptionHtml }}
-            />
-          ) : (
-            <div className="py-8 text-center italic">
-              Acest partener nu a publicat încă o descriere a companiei.
-            </div>
-          )}
+        <section className="bg-white p-4 xs:py-8 xs:px-6 sm:py-12 md:py-16">
+          <div className="prose mx-auto max-w-prose">
+            {company.descriptionHtml ? (
+              <div
+                dangerouslySetInnerHTML={{ __html: company.descriptionHtml }}
+              />
+            ) : (
+              <div className="sm:py-4">
+                {company.name} este Partener {company.packageType} în cadrul
+                Cariere v12. Nu a fost publicată încă o descriere a companiei.
+              </div>
+            )}
+          </div>
         </section>
         {showAvailablePositions && (
           <section className="flex flex-col items-center bg-black p-3 pt-8 text-white sm:pb-16">

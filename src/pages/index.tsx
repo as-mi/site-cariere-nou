@@ -25,7 +25,7 @@ import ScrollToTopButton from "~/components/pages/home/scroll-to-top";
 import PartnersSection, {
   CompaniesByPackageType,
   Company,
-} from "~/components/pages/home/partners";
+} from "~/components/pages/home/partners/section";
 
 import prisma from "~/lib/prisma";
 
