@@ -10,7 +10,7 @@ export const SETTINGS = {
   },
   alwaysShowCompaniesForAdmin: {
     key: "alwaysShowCompaniesForAdmin",
-    label: `Afișează companiile pentru admin chiar dacă sunt ascunse pentru utilizatori`,
+    label: `Afișează companiile pentru admin chiar dacă sunt ascunse pentru participanți`,
     schema: z.boolean().default(true),
   },
   showProfileLink: {
@@ -40,6 +40,16 @@ export const SETTINGS = {
           ? !!process.env.CARIERE_REGISTRATION_ENABLED
           : false
       ),
+  },
+  showAvailablePositions: {
+    key: "showAvailablePositions",
+    label: `Afișează posturile disponibile pe paginile companiilor`,
+    schema: z.boolean().default(false),
+  },
+  alwaysShowAvailablePositionsForAdmin: {
+    key: "alwaysShowAvailablePositionsForAdmin",
+    label: `Afișează posturile disponibile pentru admin chiar dacă sunt ascunse pentru participanți`,
+    schema: z.boolean().default(true),
   },
 } as const;
 

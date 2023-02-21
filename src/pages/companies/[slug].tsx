@@ -9,7 +9,10 @@ import { PackageType, Role } from "@prisma/client";
 import showdown from "showdown";
 
 import { getServerSession } from "~/lib/auth";
+import { getSettingValue } from "~/lib/settings/get";
 import prisma from "~/lib/prisma";
+
+import { useIsAdmin } from "~/hooks/use-role";
 
 import Footer from "~/components/common/footer";
 import NavBar from "~/components/pages/companies/navbar";
@@ -18,6 +21,7 @@ import PositionCard, {
 } from "~/components/pages/companies/position-card";
 
 type Company = {
+  id: number;
   name: string;
   descriptionHtml: string;
   packageType: PackageType;
@@ -26,18 +30,30 @@ type Company = {
 
 type PageProps = {
   company: Company;
+  showAvailablePositions: boolean;
+  alwayShowAvailablePositionsForAdmin: boolean;
   applyToPositionId: number | null;
 };
 
-const CompanyPage: NextPage<PageProps> = ({ company, applyToPositionId }) => {
+const CompanyPage: NextPage<PageProps> = ({
+  company,
+  showAvailablePositions,
+  alwayShowAvailablePositionsForAdmin,
+  applyToPositionId,
+}) => {
   const pageTitle = `${company.name} - Cariere v12.0`;
+
+  const isAdmin = useIsAdmin();
+
+  showAvailablePositions =
+    showAvailablePositions || (alwayShowAvailablePositionsForAdmin && isAdmin);
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <NavBar />
+      <NavBar companyId={company.id} />
       <main className="min-h-screen bg-black pt-32 md:pt-40 lg:pt-48">
         <header className="flex flex-col items-center justify-center bg-black py-8 text-white sm:py-12 md:py-20">
           <h1 className="mb-2 font-display text-3xl sm:text-5xl">
@@ -47,36 +63,42 @@ const CompanyPage: NextPage<PageProps> = ({ company, applyToPositionId }) => {
             Partener {company.packageType}
           </h2>
         </header>
-        {company.descriptionHtml && (
-          <section className="bg-white p-4">
+        <section className="bg-white p-4">
+          {company.descriptionHtml ? (
             <div
               className="prose mx-auto max-w-prose"
               dangerouslySetInnerHTML={{ __html: company.descriptionHtml }}
             />
-          </section>
-        )}
-        <section className="flex flex-col items-center bg-black p-3 pt-8 text-white sm:pb-16">
-          <header className="mb-3">
-            <h2 className="font-display text-2xl">Poziții deschise</h2>
-          </header>
-          {company.positions.length === 0 ? (
-            <div className="px-8 py-6 text-center sm:py-12">
-              Acest partener nu a publicat încă nicio poziție.
-            </div>
           ) : (
-            <div className="flex w-full flex-col items-center gap-4 xs:px-3">
-              {company.positions.map((position) => (
-                <PositionCard
-                  key={position.id}
-                  position={position}
-                  initiallyShowApplicationForm={
-                    position.id === applyToPositionId
-                  }
-                />
-              ))}
+            <div className="py-8 text-center italic">
+              Acest partener nu a publicat încă o descriere a companiei.
             </div>
           )}
         </section>
+        {showAvailablePositions && (
+          <section className="flex flex-col items-center bg-black p-3 pt-8 text-white sm:pb-16">
+            <header className="mb-3">
+              <h2 className="font-display text-2xl">Poziții deschise</h2>
+            </header>
+            {company.positions.length === 0 ? (
+              <div className="px-8 py-6 text-center sm:py-12">
+                Acest partener nu a publicat încă nicio poziție.
+              </div>
+            ) : (
+              <div className="flex w-full flex-col items-center gap-4 xs:px-3">
+                {company.positions.map((position) => (
+                  <PositionCard
+                    key={position.id}
+                    position={position}
+                    initiallyShowApplicationForm={
+                      position.id === applyToPositionId
+                    }
+                  />
+                ))}
+              </div>
+            )}
+          </section>
+        )}
       </main>
 
       <Footer />
@@ -228,15 +250,25 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     })
   );
 
+  const showAvailablePositions = await getSettingValue(
+    "showAvailablePositions"
+  );
+  const alwayShowAvailablePositionsForAdmin = await getSettingValue(
+    "alwaysShowAvailablePositionsForAdmin"
+  );
+
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "ro", ["common", "home"])),
       company: {
+        id: company.id,
         name: company.name,
         packageType: company.packageType,
         descriptionHtml: converter.makeHtml(company.description),
         positions,
       },
+      showAvailablePositions,
+      alwayShowAvailablePositionsForAdmin,
       applyToPositionId,
     },
   };

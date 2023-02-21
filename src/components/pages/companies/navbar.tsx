@@ -2,17 +2,39 @@ import Link from "next/link";
 
 import { useTranslation } from "next-i18next";
 
+import { useIsAdmin } from "~/hooks/use-role";
+
 import CommonNavBar from "~/components/common/navbar";
 
-const NavBar: React.FC = () => {
+type NavBarProps = {
+  companyId: number;
+};
+
+const NavBar: React.FC<NavBarProps> = ({ companyId }) => {
   const { t } = useTranslation("common");
+
+  const isAdmin = useIsAdmin();
 
   return (
     <CommonNavBar
       renderLinks={() => (
-        <Link href="/" className="block px-5 py-3">
-          {t("navbar.home")}
-        </Link>
+        <>
+          <li className="md:inline-block">
+            <Link href="/" className="block px-5 py-3">
+              {t("navbar.home")}
+            </Link>
+          </li>
+          {isAdmin && (
+            <li className="md:inline-block">
+              <Link
+                href={`/admin/companies/${companyId}/edit`}
+                className="block px-5 py-3"
+              >
+                Editează detaliile companiei
+              </Link>
+            </li>
+          )}
+        </>
       )}
     />
   );
