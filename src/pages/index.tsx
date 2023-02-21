@@ -8,11 +8,11 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import _ from "lodash";
 
-import { PackageType, Role } from "@prisma/client";
+import { PackageType } from "@prisma/client";
 
 import { getSettingValue } from "~/lib/settings/get";
 
-import useRole from "~/hooks/use-role";
+import { useIsAdmin } from "~/hooks/use-role";
 
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
@@ -43,7 +43,7 @@ const HomePage: NextPage<PageProps> = ({
 }) => {
   const { t } = useTranslation("home");
 
-  const role = useRole();
+  const isAdmin = useIsAdmin();
 
   return (
     <>
@@ -65,9 +65,7 @@ const HomePage: NextPage<PageProps> = ({
         <PartnersSection
           t={t}
           showComingSoonMessage={
-            alwaysShowCompaniesForAdmin
-              ? role !== Role.ADMIN
-              : showComingSoonMessage
+            alwaysShowCompaniesForAdmin ? !isAdmin : showComingSoonMessage
           }
           companiesByPackageType={companiesByPackageType}
         />

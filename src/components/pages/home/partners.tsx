@@ -1,11 +1,17 @@
 import _ from "lodash";
+import classNames from "classnames";
 
 import Link from "next/link";
 import Image from "next/image";
 
 import { TFunction } from "next-i18next";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMedal, faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import { PackageType } from "@prisma/client";
+
+import { useIsAdmin } from "~/hooks/use-role";
 
 export type Logo = {
   id: number;
@@ -42,6 +48,53 @@ const PartnerLogo: React.FC<PartnerLogoProps> = ({
   />
 );
 
+type PartnerCardProps = {
+  t: TFunction;
+  packageType: PackageType;
+  company: Company;
+};
+
+const MEDAL_COLORS = {
+  [PackageType.GOLD]: "text-yellow-300",
+  [PackageType.SILVER]: "text-silver-300",
+  [PackageType.BRONZE]: "text-yellow-500",
+};
+
+const PartnerCard: React.FC<PartnerCardProps> = ({
+  t,
+  packageType,
+  company,
+}) => (
+  <div className="rounded-md bg-white">
+    <Link
+      href={`/companies/${company.slug}`}
+      className="flex w-full max-w-xl flex-row items-center py-8 px-8 pt-10"
+    >
+      <div className="w-2/4">
+        <PartnerLogo t={t} company={company} className="my-auto" />
+      </div>
+      <div className="w-2/4 content-center pl-6 text-black">
+        <span className="block font-display text-xl font-bold">
+          {company.name}
+        </span>
+        <hr />
+        <span className="mt-6 block">
+          <FontAwesomeIcon
+            icon={faMedal}
+            className={classNames(
+              "mr-3 inline-block h-4 w-4",
+              MEDAL_COLORS[packageType]
+            )}
+          />
+          Partener{" "}
+          {packageType.charAt(0).toUpperCase() +
+            packageType.toLowerCase().slice(1)}
+        </span>
+      </div>
+    </Link>
+  </div>
+);
+
 type PartnersSectionSubsectionProps = {
   t: TFunction;
   packageType: PackageType;
@@ -61,20 +114,12 @@ const PartnersSectionSubsection: React.FC<PartnersSectionSubsectionProps> = ({
     </header>
     <div className="flex flex-row flex-wrap justify-center gap-4">
       {companies.map((company) => (
-        <div
+        <PartnerCard
           key={company.id}
-          className="min-h-[12rem] w-64 p-2 xs:p-4 sm:p-8 md:min-h-[18rem] md:w-80 lg:min-h-[22rem] lg:w-96"
-        >
-          <Link
-            href={`/companies/${company.slug}`}
-            className="flex h-full flex-col"
-          >
-            <span className="block text-center font-display text-2xl font-semibold">
-              {company.name}
-            </span>
-            <PartnerLogo t={t} company={company} className="my-auto p-3" />
-          </Link>
-        </div>
+          t={t}
+          packageType={packageType}
+          company={company}
+        />
       ))}
     </div>
   </section>
@@ -98,6 +143,8 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
   companiesByPackageType,
 }) => {
   showComingSoonMessage ||= _.isEmpty(companiesByPackageType);
+
+  const isAdmin = useIsAdmin();
 
   return (
     <section
@@ -129,6 +176,20 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
                 companies={companies!}
               />
             ))}
+        </div>
+      )}
+      {isAdmin && (
+        <div className="mx-auto mt-10 flex max-w-md flex-row justify-center">
+          <Link
+            href="/admin/companies/new"
+            className="inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
+          >
+            <FontAwesomeIcon
+              icon={faPlus}
+              className="mr-2 inline-block h-4 w-4"
+            />
+            Adaugă o companie nouă
+          </Link>
         </div>
       )}
     </section>
