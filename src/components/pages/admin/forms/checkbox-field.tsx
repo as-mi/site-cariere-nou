@@ -5,6 +5,7 @@ import { CommonFieldProps, useFieldId } from "./common";
 export interface CheckboxFieldProps<IFormValues extends FieldValues>
   extends CommonFieldProps<IFormValues> {
   hint?: string;
+  wrapperClassName?: string;
 }
 
 const CheckboxField = <IFormValues extends FieldValues>({
@@ -15,11 +16,12 @@ const CheckboxField = <IFormValues extends FieldValues>({
   register,
   errors,
   fieldErrors,
+  wrapperClassName,
 }: CheckboxFieldProps<IFormValues>) => {
   const inputId = useFieldId(name);
   const error = fieldErrors || (errors && errors[name]);
   return (
-    <div>
+    <div className={wrapperClassName}>
       <span className="align-baseline">
         <input
           id={inputId}
