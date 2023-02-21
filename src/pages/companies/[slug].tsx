@@ -15,16 +15,25 @@ import prisma from "~/lib/prisma";
 import { useIsAdmin } from "~/hooks/use-role";
 
 import Footer from "~/components/common/footer";
+import CompanyLogo from "~/components/common/company-logo";
 import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
   Position,
 } from "~/components/pages/companies/position-card";
+
+type Logo = {
+  id: number;
+  width: number;
+  height: number;
+};
 
 type Company = {
   id: number;
   name: string;
   descriptionHtml: string;
   packageType: PackageType;
+  siteUrl: string;
+  logo: Logo;
   positions: Position[];
 };
 
@@ -56,12 +65,28 @@ const CompanyPage: NextPage<PageProps> = ({
       <NavBar companyId={company.id} />
       <main className="min-h-screen bg-black pt-32 md:pt-40 lg:pt-48">
         <header className="flex flex-col items-center justify-center bg-black py-8 text-white sm:py-12 md:py-20">
+          <div className="mx-10 mb-8 max-w-xs rounded-lg xs:mb-12 sm:mb-16">
+            <CompanyLogo company={company} />
+          </div>
           <h1 className="mb-2 font-display text-3xl sm:text-5xl">
             {company.name}
           </h1>
           <h2 className="font-display text-xl">
             Partener {company.packageType}
           </h2>
+          {company.siteUrl && (
+            <h3 className="mt-1 font-display text-lg">
+              Link:{" "}
+              <a
+                href={company.siteUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-zinc-200 active:text-zinc-300"
+              >
+                {company.siteUrl}
+              </a>
+            </h3>
+          )}
         </header>
         <section className="bg-white p-4">
           {company.descriptionHtml ? (
@@ -140,6 +165,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       name: true,
       description: true,
       packageType: true,
+      siteUrl: true,
+      logo: {
+        select: {
+          id: true,
+          width: true,
+          height: true,
+        },
+      },
       positions: {
         select: {
           id: true,
@@ -264,6 +297,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         id: company.id,
         name: company.name,
         packageType: company.packageType,
+        siteUrl: company.siteUrl,
+        logo: company.logo,
         descriptionHtml: converter.makeHtml(company.description),
         positions,
       },

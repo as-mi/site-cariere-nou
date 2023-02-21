@@ -20,5 +20,6 @@
     "user-not-found": "utilizatorul nu a fost găsit",
     "email-sending-failed": "nu s-a putut trimite e-mail-ul",
     "email-not-verified": "adresa de e-mail nu a fost încă confirmată"
-  }
+  },
+  "companyLogo": "Logo {{companyName}}"
 }

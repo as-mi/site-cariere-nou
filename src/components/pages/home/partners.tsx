@@ -2,7 +2,6 @@ import _ from "lodash";
 import classNames from "classnames";
 
 import Link from "next/link";
-import Image from "next/image";
 
 import { TFunction } from "next-i18next";
 
@@ -12,6 +11,8 @@ import { faMedal, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { PackageType } from "@prisma/client";
 
 import { useIsAdmin } from "~/hooks/use-role";
+
+import CompanyLogo from "~/components/common/company-logo";
 
 export type Logo = {
   id: number;
@@ -27,26 +28,6 @@ export type Company = {
 };
 
 export type CompaniesByPackageType = Partial<Record<PackageType, Company[]>>;
-
-type PartnerLogoProps = {
-  t: TFunction;
-  company: Company;
-  className?: string;
-};
-
-const PartnerLogo: React.FC<PartnerLogoProps> = ({
-  t,
-  company: { name, logo },
-  className,
-}) => (
-  <Image
-    src={`http://localhost:${process.env.PORT ?? 3000}/api/images/${logo.id}`}
-    width={logo.width}
-    height={logo.height}
-    alt={t("partnersSection.logo", { partnerName: name })}
-    className={className}
-  />
-);
 
 type PartnerCardProps = {
   t: TFunction;
@@ -71,7 +52,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({
       className="flex h-full w-full max-w-xl flex-row items-center py-8 px-8 pt-10"
     >
       <div className="w-2/4">
-        <PartnerLogo t={t} company={company} className="my-auto" />
+        <CompanyLogo company={company} className="my-auto" />
       </div>
       <div className="w-2/4 content-center pl-6 text-black">
         <span className="block font-display text-xl font-bold">

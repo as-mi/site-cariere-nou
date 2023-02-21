@@ -23,8 +23,7 @@
     "title": "Partenerii noștri",
     "comingSoon": "Vom anunța firmele participante la ediția de anul acesta în curând.",
     "followOurSocialMediaPages": "Urmărește paginile noastre de social media pentru a fi la curent cu toate actualizările.",
-    "subsectionHeader": "Parteneri {{packageType}}",
-    "logo": "Logo {{partnerName}}"
+    "subsectionHeader": "Parteneri {{packageType}}"
   },
   "contactSection": {
     "telephone": "Telefon",
