@@ -37,16 +37,10 @@ npm install
 Dacă s-au adăugat migrații noi și s-a modificat schema bazei de date, trebuie să le aplicăm pe baza de date din producție rulând comanda:
 
 ```sh
-npx prisma migrate deploy
+npm run migrate:production
 ```
 
-După aceea, e bine să rulăm și
-
-```sh
-npx prisma generate
-```
-
-ca să ne asigurăm că se actualizează și codul client auto-generat de Prisma.
+Aceasta va actualiza și codul client auto-generat de Prisma.
 
 ## Compilarea versiunii de producție a aplicației
 
