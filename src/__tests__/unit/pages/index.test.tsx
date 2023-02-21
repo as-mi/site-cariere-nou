@@ -7,6 +7,7 @@ import HomePage from "~/pages/index";
 jest.mock("~/hooks/use-role", () => ({
   __esModule: true,
   default: () => undefined,
+  useIsAdmin: () => false,
 }));
 
 describe("Home", () => {

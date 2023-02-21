@@ -2,6 +2,11 @@ import { render, screen } from "@testing-library/react";
 
 import PartnersSection from "~/components/pages/home/partners";
 
+jest.mock("~/hooks/use-role", () => ({
+  __esModule: true,
+  useIsAdmin: () => false,
+}));
+
 describe("PartnersSection", () => {
   it("renders subsection in correct order", () => {
     // Mock the `t` function to also include the `packageType` interpolation parameter in the returned string
@@ -18,6 +23,7 @@ describe("PartnersSection", () => {
     render(
       <PartnersSection
         t={tFunction}
+        showComingSoonMessage={false}
         companiesByPackageType={companiesByPackageType}
       />
     );
