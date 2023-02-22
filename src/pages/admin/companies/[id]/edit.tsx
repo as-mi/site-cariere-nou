@@ -1,21 +1,23 @@
 import { ReactElement, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 
 import { PackageType } from "@prisma/client";
 
+import { trpc } from "~/lib/trpc";
+
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import {
+  FileField,
   SelectField,
   SubmitButton,
   TextAreaField,
   TextField,
 } from "~/components/pages/admin/forms";
-
-import { trpc } from "~/lib/trpc";
-import { GetServerSideProps } from "next";
+import CompanyLogo from "~/components/common/company-logo";
 
 type PageProps = {
   companyId: number;
@@ -26,6 +28,7 @@ type EditCompanyFieldValues = {
   slug: string;
   siteUrl: string;
   packageType: PackageType;
+  logo: FileList;
   description: string;
 };
 
@@ -38,8 +41,9 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
     onSuccess: () => setSuccessfullySaved(true),
   });
 
-  // const [isUploadingImage, setIsUploadingImage] = useState(false);
-  // const [fileUploadError, setFileUploadError] = useState("");
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
+  const [fileUploadError, setFileUploadError] = useState("");
+  const [imageVersion, setImageVersion] = useState(1);
 
   const {
     register,
@@ -50,6 +54,39 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
 
   const onSubmit: SubmitHandler<EditCompanyFieldValues> = async (data) => {
     setSuccessfullySaved(false);
+    setFileUploadError("");
+
+    if (data.logo.length > 0) {
+      setIsUploadingImage(true);
+
+      try {
+        const formData = new FormData();
+        formData.append("id", query.data!.logoImageId.toString());
+        formData.append("file", data.logo[0]);
+
+        const options = {
+          method: "PUT",
+          body: formData,
+        };
+        const response = await fetch("/api/images/upload", options);
+        if (!response.ok) {
+          throw new Error(
+            `Failed to upload image: status code ${response.status}`
+          );
+        }
+      } catch (e) {
+        if (e instanceof Error) {
+          setFileUploadError(e.message);
+        } else {
+          setFileUploadError("Failed to upload logo");
+        }
+        return;
+      } finally {
+        setIsUploadingImage(false);
+      }
+    }
+
+    setImageVersion((value) => value + 1);
 
     const payload = {
       id: companyId,
@@ -60,7 +97,12 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
 
   useEffect(() => {
     if (query.data) {
-      reset(query.data);
+      const formData = {
+        ...query.data,
+        logo: undefined,
+      };
+
+      reset(formData);
     }
   }, [query.data, reset]);
 
@@ -114,15 +156,22 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
             errors={errors}
           />
 
-          {/* TODO: allow editing company logo */}
-          {/* <FileField
-            name="logo"
-            label="Logo"
-            accept="image/png, image/jpeg"
-            required
-            register={register}
-            errors={errors}
-          /> */}
+          <div>
+            <FileField
+              name="logo"
+              label="Logo"
+              accept="image/png, image/jpeg"
+              register={register}
+              errors={errors}
+            />
+            <div className="mx-auto mt-6 mb-8 max-w-xs">
+              <CompanyLogo
+                company={query.data}
+                queryString={`v=${imageVersion}`}
+                className="max-h-32 rounded-md bg-white object-contain p-4"
+              />
+            </div>
+          </div>
 
           <TextAreaField
             name="description"
@@ -135,10 +184,13 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
 
         <SubmitButton
           label="Salvează"
-          disabled={mutation.isLoading}
+          disabled={isUploadingImage || mutation.isLoading}
           className="mt-6"
         />
 
+        {fileUploadError && (
+          <div className="my-3 text-red-400">{fileUploadError}</div>
+        )}
         {mutation.error && (
           <div className="mt-3 text-red-400">{mutation.error.message}</div>
         )}

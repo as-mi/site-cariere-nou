@@ -21,17 +21,21 @@ export type CompanyWithLogo = Prisma.CompanyGetPayload<typeof companyWithLogo>;
 
 type CompanyLogoProps = {
   company: CompanyWithLogo;
+  queryString?: string;
   className?: string;
 };
 
 const CompanyLogo: React.FC<CompanyLogoProps> = ({
   company: { name: companyName, logo },
+  queryString,
   className,
 }) => {
   const { t } = useTranslation("common");
   return (
     <Image
-      src={`http://localhost:${process.env.PORT ?? 3000}/api/images/${logo.id}`}
+      src={`http://localhost:${process.env.PORT ?? 3000}/api/images/${logo.id}${
+        queryString ? `?${queryString}` : ""
+      }`}
       width={logo.width}
       height={logo.height}
       alt={t("companyLogo", { companyName })}
