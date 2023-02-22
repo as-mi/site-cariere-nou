@@ -19,13 +19,13 @@ const PartnersSectionSubsection: React.FC<PartnersSectionSubsectionProps> = ({
   packageType,
   companies,
 }) => (
-  <section>
+  <section className="mx-auto max-w-7xl">
     <header className="mb-6 text-center">
       <h3 className="xs:border-b-solid inline-block px-6 font-display text-3xl font-bold xs:border-b-2 xs:border-b-white">
         {t("partnersSection.subsectionHeader", { packageType })}
       </h3>
     </header>
-    <div className="flex flex-row flex-wrap justify-center gap-4">
+    <div className="flex flex-row flex-wrap justify-center gap-4 px-4 sm:gap-6">
       {companies.map((company) => (
         <PartnerCard
           key={company.id}

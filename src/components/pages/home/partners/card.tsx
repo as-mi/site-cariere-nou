@@ -26,13 +26,13 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ packageType, company }) => (
   <div className="rounded-md bg-white">
     <Link
       href={`/companies/${company.slug}`}
-      className="flex h-full w-full max-w-xl flex-row items-center py-8 px-8 pt-10"
+      className="flex h-full w-full max-w-xl flex-col items-center gap-4 p-4 sm:flex-row sm:py-8 sm:px-8 sm:pt-10"
     >
-      <div className="w-2/4">
+      <div className="max-w-xs p-4 sm:w-2/4">
         <CompanyLogo company={company} className="my-auto" />
       </div>
-      <div className="w-2/4 content-center pl-6 text-black">
-        <span className="block font-display text-xl font-bold">
+      <div className="content-center text-black sm:w-2/4 sm:pl-6">
+        <span className="block text-center font-display text-xl font-bold sm:text-left">
           {company.name}
         </span>
         <hr />
