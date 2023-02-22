@@ -2,7 +2,11 @@ import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 
 import prisma from "~/lib/prisma";
-import { Question, QuestionsSchema } from "~/lib/technical-tests-schema";
+import {
+  Question,
+  QuestionsSchema,
+  sanitizeQuestions,
+} from "~/lib/technical-tests-schema";
 
 import TechnicalTest from "~/components/pages/technical-tests/technical-test";
 
@@ -116,11 +120,14 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     throw new Error("Failed to parse questions JSON");
   }
 
+  const questions = result.data;
+  sanitizeQuestions(questions);
+
   return {
     props: {
       technicalTest: {
         ...technicalTest,
-        questions: result.data,
+        questions,
       },
     },
   };

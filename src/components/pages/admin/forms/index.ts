@@ -5,6 +5,8 @@ import EmailField from "./email-field";
 import PasswordField from "./password-field";
 import FileField from "./file-field";
 import SelectField from "./select-field";
+import CheckboxField from "./checkbox-field";
+import ControlledRadioField from "./controlled-radio-field";
 import SubmitButton from "./submit-button";
 
 export {
@@ -15,5 +17,7 @@ export {
   PasswordField,
   FileField,
   SelectField,
+  CheckboxField,
+  ControlledRadioField,
   SubmitButton,
 };

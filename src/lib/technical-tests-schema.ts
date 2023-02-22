@@ -22,6 +22,7 @@ export const QuestionSchema = z
     title: z.string(),
     details: z.string().default(""),
     kind: z.nativeEnum(QuestionKind),
+    correctChoiceId: IdSchema.optional(),
     choices: z.array(ChoiceSchema).optional(),
   })
   .strict();
@@ -40,6 +41,21 @@ export const AnswerSchema = z
 export type Answer = z.infer<typeof AnswerSchema>;
 
 export const AnswersSchema = z.array(AnswerSchema);
+
+/**
+ * Removes sensitive data from the questions array,
+ * before they get sent to the front end to be rendered.
+ */
+export function sanitizeQuestions(questions: Question[]) {
+  questions.forEach((question) => {
+    if (question.kind !== QuestionKind.SINGLE_CHOICE) {
+      // Remove leftover choices array if question is no longer single choice
+      delete question.choices;
+    } else {
+      delete question.correctChoiceId;
+    }
+  });
+}
 
 export function validateAnswers(answers: Answer[], questions: Question[]) {
   if (answers.length > questions.length) {

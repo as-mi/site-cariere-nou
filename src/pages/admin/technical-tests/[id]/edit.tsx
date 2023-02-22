@@ -26,7 +26,10 @@ const AdminEditTechnicalTestPage: NextPageWithLayout<PageProps> = ({
 }) => {
   const [successfullySaved, setSuccessfullySaved] = useState(false);
 
-  const query = trpc.admin.technicalTest.read.useQuery({ id: technicalTestId });
+  const query = trpc.admin.technicalTest.read.useQuery(
+    { id: technicalTestId },
+    { retry: false }
+  );
 
   const mutation = trpc.admin.technicalTest.update.useMutation({
     onSuccess: () => setSuccessfullySaved(true),
@@ -60,8 +63,12 @@ const AdminEditTechnicalTestPage: NextPageWithLayout<PageProps> = ({
     }
   }, [query.data, reset]);
 
-  if (!query.data) {
+  if (query.isLoading) {
     return <p>Loading...</p>;
+  }
+
+  if (!query.data) {
+    return <p>Error while loading data: {query.error!.message}</p>;
   }
 
   return (
