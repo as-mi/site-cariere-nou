@@ -48,11 +48,12 @@ export const AnswersSchema = z.array(AnswerSchema);
  */
 export function sanitizeQuestions(questions: Question[]) {
   questions.forEach((question) => {
-    if (question.kind !== QuestionKind.SINGLE_CHOICE) {
+    if (question.kind === QuestionKind.SINGLE_CHOICE) {
+      // Participants should not know which is the correct choice
+      delete question.correctChoiceId;
+    } else {
       // Remove leftover choices array if question is no longer single choice
       delete question.choices;
-    } else {
-      delete question.correctChoiceId;
     }
   });
 }
