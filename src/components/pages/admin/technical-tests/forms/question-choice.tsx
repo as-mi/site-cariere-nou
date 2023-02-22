@@ -7,7 +7,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
 
-import { TextField } from "../../forms";
+import { ControlledRadioField, TextField } from "../../forms";
 import { CommonFieldValues } from "./common";
 
 type QuestionChoiceProps = {
@@ -30,12 +30,19 @@ const QuestionChoice: React.FC<QuestionChoiceProps> = ({
   removeChoice,
 }) => {
   const {
-    formState: { errors },
+    control,
     register,
+    formState: { errors },
+    watch,
   } = useFormContext<CommonFieldValues>();
-  const name = `questions.${questionIndex}.choices.${choiceIndex}` as const;
-  const labelError =
-    errors?.questions?.[questionIndex]?.choices?.[choiceIndex]?.label;
+
+  const questionFieldName = `questions.${questionIndex}` as const;
+  const name = `${questionFieldName}.choices.${choiceIndex}` as const;
+
+  const questionError = errors?.questions?.[questionIndex];
+  const choiceError = questionError?.choices?.[choiceIndex];
+
+  const id = watch(`${name}.id`);
 
   const item: DragItem = { index: choiceIndex };
   const [{ isDragging }, drag, dragPreview] = useDrag(() => ({
@@ -85,19 +92,29 @@ const QuestionChoice: React.FC<QuestionChoiceProps> = ({
           </span>
         </button>
       </div>
-      <input
-        type="hidden"
-        {...register(`${name}.id`, { valueAsNumber: true })}
-        className="hidden"
-      />
-      <TextField
-        name={`${name}.label`}
-        label={`Varianta #${choiceIndex + 1}`}
-        required
-        register={register}
-        fieldErrors={labelError}
-        wrapperClassName="grow"
-      />
+      <div>
+        <input
+          type="hidden"
+          {...register(`${name}.id`, { valueAsNumber: true })}
+          className="hidden"
+        />
+        <TextField
+          name={`${name}.label`}
+          label={`Varianta #${choiceIndex + 1}`}
+          required
+          register={register}
+          fieldErrors={choiceError?.label}
+          wrapperClassName="grow"
+        />
+        <ControlledRadioField
+          name={`${questionFieldName}.correctChoiceId`}
+          value={id}
+          label={"Este răspunsul corect"}
+          control={control}
+          fieldErrors={questionError?.correctChoiceId}
+          wrapperClassName="mt-1"
+        />
+      </div>
     </div>
   );
 };

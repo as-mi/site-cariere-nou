@@ -1,7 +1,12 @@
-import { useFieldArray, useFormContext, UseFormWatch } from "react-hook-form";
+import { useCallback, useEffect, useMemo } from "react";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+
+import _ from "lodash";
+
+import useMemoCompare from "~/hooks/use-memo-compare";
 
 import { QuestionKind } from "~/lib/technical-tests-schema";
 
@@ -35,34 +40,51 @@ const QuestionsEditor: React.FC = () => {
     });
   };
 
-  const reorderQuestions = (fromIndex: number, toIndex: number) => {
-    move(fromIndex, toIndex);
-  };
+  const reorderQuestions = useCallback(
+    (fromIndex: number, toIndex: number) => {
+      move(fromIndex, toIndex);
+    },
+    [move]
+  );
 
-  const removeQuestion = (questionIndex: number) => {
-    if (
-      window.confirm(
-        "Sigur vrei să ștergi această întrebare și toate datele asociate ei?"
-      )
-    ) {
-      remove(questionIndex);
-    }
-  };
+  useEffect(() => {
+    return () => {
+      console.log("unmounting top");
+    };
+  }, []);
+
+  const removeQuestion = useCallback(
+    (questionIndex: number) => {
+      if (
+        window.confirm(
+          "Sigur vrei să ștergi această întrebare și toate datele asociate ei?"
+        )
+      ) {
+        remove(questionIndex);
+      }
+    },
+    [remove]
+  );
+
+  const memoizedFields = useMemoCompare(fields, _.isEqual);
+  const questionCards = useMemo(
+    () =>
+      memoizedFields.map((question, index) => (
+        <QuestionCard
+          key={question.id}
+          index={index}
+          reorderQuestions={reorderQuestions}
+          removeQuestion={removeQuestion}
+        />
+      )),
+    [memoizedFields, reorderQuestions, removeQuestion]
+  );
 
   return (
     <div>
       <h2 className="font-display text-xl font-semibold">Întrebări</h2>
       <DndProvider backend={HTML5Backend}>
-        <div className="pl-2 pt-1">
-          {fields.map((question, index) => (
-            <QuestionCard
-              key={question.id}
-              index={index}
-              reorderQuestions={reorderQuestions}
-              removeQuestion={removeQuestion}
-            />
-          ))}
-        </div>
+        <div className="space-y-6 pl-2 pt-1">{questionCards}</div>
       </DndProvider>
       <button
         type="button"
