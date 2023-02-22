@@ -33,7 +33,12 @@ const upload = multer({
 
 apiRoute.use(upload.single("file"));
 
-apiRoute.post(async (req: NextApiRequestWithFile, res) => {
+apiRoute.all(async (req: NextApiRequestWithFile, res) => {
+  if (req.method !== "POST" && req.method !== "PUT") {
+    res.status(405).json({ error: "method-not-supported" });
+    return;
+  }
+
   const session = await getServerSession(req, res, authOptions);
 
   if (!session?.user) {
@@ -84,17 +89,49 @@ apiRoute.post(async (req: NextApiRequestWithFile, res) => {
     return;
   }
 
-  const image = await prisma.image.create({
-    data: {
-      fileName: file.originalname,
-      contentType: file.mimetype,
-      width,
-      height,
-      data: file.buffer,
-    },
-  });
+  const data = {
+    fileName: file.originalname,
+    contentType: file.mimetype,
+    width,
+    height,
+    data: file.buffer,
+  };
 
-  res.status(200).json({ id: image.id });
+  if (req.method === "POST") {
+    const image = await prisma.image.create({ data });
+
+    res.status(200).json({ id: image.id });
+  } else {
+    const id = req.body.id;
+
+    if (!id) {
+      res.status(400).json({
+        error: "missing-id",
+        message: "request is missing ID of image to replace",
+      });
+      return;
+    }
+
+    if (typeof id !== "string") {
+      res.status(400).json({ error: "invalid-id" });
+      return;
+    }
+
+    const imageId = parseInt(id);
+    if (Number.isNaN(imageId)) {
+      res.status(400).json({ error: "invalid-id" });
+      return;
+    }
+
+    await prisma.image.update({
+      where: {
+        id: imageId,
+      },
+      data,
+    });
+
+    res.status(200).end("OK");
+  }
 });
 
 export default apiRoute;

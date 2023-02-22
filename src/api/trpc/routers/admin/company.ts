@@ -43,8 +43,25 @@ export const companyRouter = router({
   }),
   read: adminProcedure.input(ReadInput).query(async ({ input }) => {
     const { id } = input;
-    const user = await prisma.company.findUnique({ where: { id } });
-    return user;
+    const company = await prisma.company.findUnique({
+      where: { id },
+      select: {
+        name: true,
+        slug: true,
+        siteUrl: true,
+        packageType: true,
+        logoImageId: true,
+        logo: {
+          select: {
+            id: true,
+            width: true,
+            height: true,
+          },
+        },
+        description: true,
+      },
+    });
+    return company;
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input, ctx }) => {
     const { name, slug, siteUrl, packageType, logoImageId, description } =
