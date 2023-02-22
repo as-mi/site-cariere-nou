@@ -18,7 +18,6 @@ const CreateInput = z.object({
   packageType: AllPackageTypes,
   logoImageId: EntityId,
   description: z.string().default(""),
-  positionsExternalUrl: z.string().nullable().default(null),
 });
 const UpdateInput = z.object({
   id: EntityId,
@@ -27,7 +26,6 @@ const UpdateInput = z.object({
   siteUrl: z.string().default(""),
   packageType: AllPackageTypes,
   description: z.string().default(""),
-  positionsExternalUrl: z.string().nullable().default(null),
 });
 const DeleteInput = z.object({
   id: EntityId,
@@ -61,21 +59,13 @@ export const companyRouter = router({
           },
         },
         description: true,
-        positionsExternalUrl: true,
       },
     });
     return company;
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input, ctx }) => {
-    const {
-      name,
-      slug,
-      siteUrl,
-      packageType,
-      logoImageId,
-      description,
-      positionsExternalUrl,
-    } = input;
+    const { name, slug, siteUrl, packageType, logoImageId, description } =
+      input;
 
     await prisma.company.create({
       data: {
@@ -85,7 +75,6 @@ export const companyRouter = router({
         packageType,
         logoImageId,
         description,
-        positionsExternalUrl,
       },
     });
 
@@ -94,15 +83,7 @@ export const companyRouter = router({
     await revalidateCompanyPage(ctx, slug);
   }),
   update: adminProcedure.input(UpdateInput).mutation(async ({ input, ctx }) => {
-    const {
-      id,
-      name,
-      slug,
-      siteUrl,
-      packageType,
-      description,
-      positionsExternalUrl,
-    } = input;
+    const { id, name, slug, siteUrl, packageType, description } = input;
 
     await prisma.company.update({
       where: { id },
@@ -112,7 +93,6 @@ export const companyRouter = router({
         siteUrl,
         packageType,
         description,
-        positionsExternalUrl,
       },
     });
 
