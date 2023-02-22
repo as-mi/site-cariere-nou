@@ -15,7 +15,6 @@ import prisma from "~/lib/prisma";
 import { useIsAdmin } from "~/hooks/use-role";
 
 import Footer from "~/components/common/footer";
-import ExternalLink from "~/components/common/external-link";
 import CompanyLogo from "~/components/common/company-logo";
 import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
@@ -35,7 +34,6 @@ type Company = {
   packageType: PackageType;
   siteUrl: string;
   logo: Logo;
-  positionsExternalUrl: string | null;
   positions: Position[];
 };
 
@@ -109,14 +107,7 @@ const CompanyPage: NextPage<PageProps> = ({
             <header className="mb-3">
               <h2 className="font-display text-2xl">Poziții deschise</h2>
             </header>
-            {company.positionsExternalUrl !== null ? (
-              <div className="text-xl">
-                Aplică{" "}
-                <ExternalLink href={company.positionsExternalUrl}>
-                  aici
-                </ExternalLink>
-              </div>
-            ) : company.positions.length === 0 ? (
+            {company.positions.length === 0 ? (
               <div className="px-8 py-6 text-center sm:py-12">
                 Acest partener nu a publicat încă nicio poziție.
               </div>
@@ -184,7 +175,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
           height: true,
         },
       },
-      positionsExternalUrl: true,
       positions: {
         select: {
           id: true,
@@ -312,7 +302,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         siteUrl: company.siteUrl,
         logo: company.logo,
         descriptionHtml: converter.makeHtml(company.description),
-        positionsExternalUrl: company.positionsExternalUrl,
         positions,
       },
       showAvailablePositions,

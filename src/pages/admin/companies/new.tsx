@@ -17,7 +17,6 @@ import {
 } from "~/components/pages/admin/forms";
 
 import { trpc } from "~/lib/trpc";
-import CheckboxField from "~/components/pages/admin/forms/checkbox-field";
 
 type AddCompanyFieldValues = {
   name: string;
@@ -26,8 +25,6 @@ type AddCompanyFieldValues = {
   packageType: PackageType;
   logo: FileList;
   description: string;
-  useExternalUrlForPositions: boolean;
-  positionsExternalUrl: string | null;
 };
 
 const AdminNewCompanyPage: NextPageWithLayout = () => {
@@ -48,7 +45,6 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<AddCompanyFieldValues>();
 
   const onSubmit: SubmitHandler<AddCompanyFieldValues> = async (data) => {
@@ -102,8 +98,6 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
 
     mutation.mutate(payload);
   };
-
-  const watchUseExternalUrlForPositions = watch("useExternalUrlForPositions");
 
   return (
     <>
@@ -167,24 +161,6 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             errors={errors}
             className="min-h-[8rem]"
           />
-
-          <CheckboxField
-            name="useExternalUrlForPositions"
-            label="Folosește link extern pentru joburi"
-            register={register}
-            errors={errors}
-          />
-
-          {watchUseExternalUrlForPositions && (
-            <TextField
-              name="positionsExternalUrl"
-              label="Link extern pentru joburi"
-              placeholder="https://www.example.com/careers"
-              required
-              register={register}
-              errors={errors}
-            />
-          )}
         </div>
 
         <SubmitButton
