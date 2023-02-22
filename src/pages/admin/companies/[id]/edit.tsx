@@ -18,6 +18,7 @@ import {
   TextField,
 } from "~/components/pages/admin/forms";
 import CompanyLogo from "~/components/common/company-logo";
+import CheckboxField from "~/components/pages/admin/forms/checkbox-field";
 
 type PageProps = {
   companyId: number;
@@ -30,6 +31,8 @@ type EditCompanyFieldValues = {
   packageType: PackageType;
   logo: FileList;
   description: string;
+  useExternalUrlForPositions: boolean;
+  positionsExternalUrl: string | null;
 };
 
 const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
@@ -50,6 +53,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
     handleSubmit,
     reset,
     formState: { errors },
+    watch,
   } = useForm<EditCompanyFieldValues>();
 
   const onSubmit: SubmitHandler<EditCompanyFieldValues> = async (data) => {
@@ -92,6 +96,9 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
       id: companyId,
       ...data,
     };
+    if (!data.useExternalUrlForPositions) {
+      payload.positionsExternalUrl = null;
+    }
     mutation.mutate(payload);
   };
 
@@ -100,6 +107,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
       const formData = {
         ...query.data,
         logo: undefined,
+        useExternalUrlForPositions: !!query.data.positionsExternalUrl,
       };
 
       reset(formData);
@@ -109,6 +117,8 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
   if (!query.data) {
     return <p>Loading...</p>;
   }
+
+  const watchUseExternalUrlForPositions = watch("useExternalUrlForPositions");
 
   return (
     <>
@@ -180,6 +190,24 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
             errors={errors}
             className="min-h-[8rem] min-w-[24rem]"
           />
+
+          <CheckboxField
+            name="useExternalUrlForPositions"
+            label="Folosește link extern pentru joburi"
+            register={register}
+            errors={errors}
+          />
+
+          {watchUseExternalUrlForPositions && (
+            <TextField
+              name="positionsExternalUrl"
+              label="Link extern pentru joburi"
+              placeholder="https://www.example.com/careers"
+              required
+              register={register}
+              errors={errors}
+            />
+          )}
         </div>
 
         <SubmitButton
