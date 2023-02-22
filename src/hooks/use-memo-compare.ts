@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Custom hook used for memoizing a value while using a custom comparison function.
+ * Custom hook used to memoize a value by using a custom comparison function.
  *
  * Based on https://usehooks.com/useMemoCompare/
  *
- * @param value
- * @param compare
- * @returns
+ * @param value the new value of the object to memoize
+ * @param compare the comparison function
+ * @returns the new value of the object if the comparison function says it has changed, or the old reference otherwise
  */
 const useMemoCompare = <T>(value: T, compare: (a?: T, b?: T) => boolean): T => {
   // Ref for storing previous value
