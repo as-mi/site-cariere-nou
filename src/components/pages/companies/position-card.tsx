@@ -234,47 +234,13 @@ const PositionCard: React.FC<PositionCardProps> = ({
   return (
     <div className="w-full max-w-md rounded-md bg-white p-3 text-black">
       <h3 className="mb-1 font-display text-xl">{position.title}</h3>
-      <div className="space-y-1">
-        {position.category && (
-          <div>
-            <span className="font-semibold">Categorie:</span>{" "}
-            {position.category}
-          </div>
-        )}
-        {position.requiredSkills && (
-          <div>
-            <span className="font-semibold">Skill-uri necesare:</span>{" "}
-            {position.requiredSkills}
-          </div>
-        )}
-        {position.workSchedule && (
-          <div>
-            <span className="font-semibold">Program de lucru:</span>{" "}
-            {position.workSchedule}
-          </div>
-        )}
-        {position.workModel && (
-          <div>
-            <span className="font-semibold">Mod de lucru:</span>{" "}
-            {position.workModel}
-          </div>
-        )}
-        {position.duration && (
-          <div>
-            <span className="font-semibold">Durata:</span> {position.duration}
-          </div>
-        )}
-      </div>
       {position.descriptionHtml ? (
-        <div className="my-1">
-          <span className="font-semibold">Descriere</span>
-          <div
-            className="prose mx-auto max-w-prose"
-            dangerouslySetInnerHTML={{
-              __html: position.descriptionHtml,
-            }}
-          />
-        </div>
+        <div
+          className="prose my-1 mx-auto max-w-prose"
+          dangerouslySetInnerHTML={{
+            __html: position.descriptionHtml,
+          }}
+        />
       ) : (
         <div className="italic text-zinc-500">
           Nu a fost setată o descriere pentru această poziție.
