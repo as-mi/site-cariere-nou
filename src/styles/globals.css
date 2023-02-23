@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  /*
+   * Make embedded YouTube videos responsive.
+   *
+   * Based on https://github.com/tailwindlabs/tailwindcss/discussions/7806#discussioncomment-2332949
+  */
+  .prose :where(iframe):not(:where([class~="not-prose"] *)) {
+    @apply aspect-video h-auto w-full;
+  }
+}
