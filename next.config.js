@@ -13,18 +13,7 @@ const nextConfig = {
         permanent: true,
       },
     ];
-  },
-  images: {
-    remotePatterns: [
-      // Allow loading images dynamically from the back end
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: `${process.env.PORT ?? 3000}`,
-        pathname: "/api/images/*",
-      },
-    ],
-  },
+  }
 };
 
 module.exports = nextConfig;
