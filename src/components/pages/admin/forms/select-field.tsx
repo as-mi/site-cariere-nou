@@ -1,5 +1,7 @@
 import { FieldValues } from "react-hook-form";
 
+import classNames from "classnames";
+
 import { CommonFieldProps, useFieldId } from "./common";
 
 type Option<T> = { value: T; label: string };
@@ -10,6 +12,7 @@ export interface SelectFieldProps<
 > extends CommonFieldProps<IFormValues> {
   hint?: string;
   options: Option<T>[];
+  inputClassName?: string;
 }
 
 const SelectField = <T extends string, IFormValues extends FieldValues>({
@@ -21,6 +24,7 @@ const SelectField = <T extends string, IFormValues extends FieldValues>({
   register,
   errors,
   fieldErrors,
+  inputClassName,
 }: SelectFieldProps<T, IFormValues>) => {
   const selectId = useFieldId(name);
   const error = fieldErrors || (errors && errors[name]);
@@ -32,7 +36,10 @@ const SelectField = <T extends string, IFormValues extends FieldValues>({
       <select
         id={selectId}
         {...register(name, { required })}
-        className="block bg-zinc-800 text-white"
+        className={classNames(
+          "block rounded-sm bg-zinc-800 px-2 py-1 text-white",
+          inputClassName
+        )}
       >
         {options.map(({ value, label }, index) => (
           <option key={index} value={value}>

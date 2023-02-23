@@ -35,7 +35,10 @@ const TextAreaField = <IFormValues extends FieldValues>({
         id={inputId}
         placeholder={placeholder}
         {...register(name, { required })}
-        className={classNames("block w-full bg-zinc-800 text-white", className)}
+        className={classNames(
+          "block w-full bg-zinc-800 px-2 py-1 text-white",
+          className
+        )}
       />
       {hint && <div className="mt-1 text-sm">{hint}</div>}
       {error &&

@@ -47,7 +47,7 @@ const InputField = <IFormValues extends FieldValues>({
         accept={accept}
         {...register(name, { required })}
         className={classNames(
-          "block bg-zinc-800 text-white",
+          "block rounded-sm bg-zinc-800 px-2 py-1 text-white",
           { "w-full": !inputClassName },
           inputClassName
         )}
