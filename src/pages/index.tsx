@@ -26,6 +26,7 @@ import PartnersSection, {
   CompaniesByPackageType,
   Company,
 } from "~/components/pages/home/partners/section";
+import EventsSection from "~/components/pages/home/events/section";
 
 import prisma from "~/lib/prisma";
 
@@ -72,6 +73,7 @@ const HomePage: NextPage<PageProps> = ({
           }
           companiesByPackageType={companiesByPackageType}
         />
+        <EventsSection t={t} />
         <ContactSection t={t} />
       </main>
 
