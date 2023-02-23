@@ -233,7 +233,7 @@ const PositionCard: React.FC<PositionCardProps> = ({
 
   return (
     <div className="w-full max-w-md rounded-md bg-white p-3 text-black">
-      <h3 className="mb-1 font-display text-xl">{position.title}</h3>
+      <h3 className="mb-1 font-display text-xl font-bold">{position.title}</h3>
       {position.descriptionHtml ? (
         <div
           className="prose my-1 mx-auto max-w-prose"
