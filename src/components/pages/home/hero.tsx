@@ -17,10 +17,18 @@ const HeroSection: React.FC<HeroSectionProps> = ({
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
 
-    const aboutSection = document.getElementById("about");
+    const anchorElement = event.target as HTMLAnchorElement;
+    const link = anchorElement.href;
+    const hashIndex = link.lastIndexOf("#");
+    if (hashIndex < 0) {
+      return;
+    }
 
-    if (aboutSection) {
-      aboutSection.scrollIntoView({ behavior: "smooth" });
+    const id = link.slice(hashIndex + 1);
+    const section = document.getElementById(id);
+
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -72,13 +80,31 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </p>
         )}
 
-        <a
-          className="mt-16 mb-8 inline-block rounded-full bg-white px-5 py-2 font-medium text-black"
-          href="#about"
-          onClick={handleClick}
-        >
-          {t("heroSection.about")}
-        </a>
+        <div className="mx-auto mt-16 mb-8 inline-flex flex-row flex-wrap items-center justify-center gap-4 px-4">
+          <a
+            className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
+            href="#about"
+            onClick={handleClick}
+          >
+            {t("heroSection.about")}
+          </a>
+
+          <a
+            className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
+            href="#partners"
+            onClick={handleClick}
+          >
+            {t("heroSection.partners")}
+          </a>
+
+          <a
+            className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
+            href="#events"
+            onClick={handleClick}
+          >
+            {t("heroSection.events")}
+          </a>
+        </div>
       </div>
     </section>
   );

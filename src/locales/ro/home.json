@@ -12,7 +12,9 @@
     "date": "28 februarie – 2 martie 2023",
     "teaser": "Cariere revine și anul acesta cu o mulțime de oportunități pentru studenți",
     "welcome": "Bine ai venit pe site-ul oficial al proiectului Cariere!",
-    "about": "Despre Cariere"
+    "about": "Despre Cariere",
+    "partners": "Partenerii noștri",
+    "events": "Evenimente"
   },
   "aboutSection": {
     "title": "Despre Cariere",
@@ -24,6 +26,15 @@
     "comingSoon": "Vom anunța firmele participante la ediția de anul acesta în curând.",
     "followOurSocialMediaPages": "Urmărește paginile noastre de social media pentru a fi la curent cu toate actualizările.",
     "subsectionHeader": "Parteneri {{packageType}}"
+  },
+  "eventsSection": {
+    "title": "Evenimente",
+    "card": {
+      "location": "Locație",
+      "date": "Data",
+      "time": "Timp",
+      "facebookEvent": "Eveniment pe Facebook"
+    }
   },
   "contactSection": {
     "telephone": "Telefon",
