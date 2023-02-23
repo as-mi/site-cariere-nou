@@ -9,6 +9,7 @@ import { PackageType } from "@prisma/client";
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import {
+  CheckboxField,
   FileField,
   SelectField,
   SubmitButton,
@@ -17,7 +18,6 @@ import {
 } from "~/components/pages/admin/forms";
 
 import { trpc } from "~/lib/trpc";
-import CheckboxField from "~/components/pages/admin/forms/checkbox-field";
 
 type AddCompanyFieldValues = {
   name: string;

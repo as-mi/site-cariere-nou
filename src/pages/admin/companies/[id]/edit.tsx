@@ -11,6 +11,7 @@ import { trpc } from "~/lib/trpc";
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import {
+  CheckboxField,
   FileField,
   SelectField,
   SubmitButton,
@@ -18,7 +19,6 @@ import {
   TextField,
 } from "~/components/pages/admin/forms";
 import CompanyLogo from "~/components/common/company-logo";
-import CheckboxField from "~/components/pages/admin/forms/checkbox-field";
 
 type PageProps = {
   companyId: number;
