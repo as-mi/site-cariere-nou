@@ -12,6 +12,11 @@ const nextConfig = {
         destination: "/auth/login",
         permanent: true,
       },
+      {
+        source: "/cookie-policy",
+        destination: "/legal/Politica de cookie-uri.pdf",
+        permanent: false,
+      },
     ];
   },
   experimental: {

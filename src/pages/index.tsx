@@ -10,6 +10,7 @@ import _ from "lodash";
 
 import { PackageType } from "@prisma/client";
 
+import prisma from "~/lib/prisma";
 import { getSettingValue } from "~/lib/settings/get";
 
 import { useIsAdmin } from "~/hooks/use-role";
@@ -27,8 +28,7 @@ import PartnersSection, {
   Company,
 } from "~/components/pages/home/partners/section";
 import EventsSection from "~/components/pages/home/events/section";
-
-import prisma from "~/lib/prisma";
+import CookieConsent from "~/components/common/cookie-consent";
 
 type PageProps = {
   showComingSoonMessage: boolean;
@@ -80,6 +80,8 @@ const HomePage: NextPage<PageProps> = ({
       <Footer />
 
       <ScrollToTopButton />
+
+      <CookieConsent />
     </>
   );
 };
