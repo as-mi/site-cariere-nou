@@ -32,7 +32,7 @@ const EventCard: React.FC<EventCardProps> = ({ t, event, className }) => {
   return (
     <div
       className={classNames(
-        "min-w-[16rem] max-w-sm rounded-lg border-2 border-gray-200 bg-white p-6 drop-shadow-md",
+        "min-w-[16rem] max-w-sm rounded-lg border-2 border-gray-200 bg-white p-6 text-start drop-shadow-md",
         className
       )}
     >

@@ -56,10 +56,12 @@ const EventsSection: React.FC<EventsSectionProps> = ({ t }) => {
           {t("eventsSection.title")}
         </h2>
       </header>
-      <div className="mx-auto flex max-w-5xl flex-1 flex-row justify-center gap-4 overflow-auto">
-        {events.map((event) => (
-          <EventCard key={event.id} t={t} event={event} className="flex-1" />
-        ))}
+      <div className="w-full overflow-x-auto text-center">
+        <div className="inline-flex max-w-5xl flex-1 flex-row justify-start gap-4">
+          {events.map((event) => (
+            <EventCard key={event.id} t={t} event={event} className="flex-1" />
+          ))}
+        </div>
       </div>
     </section>
   );
