@@ -1,5 +1,10 @@
 {
   "scrollToTop": "Derulează în sus",
+  "cookieConsent": {
+    "disclaimer": "Acest site utilizează cookie-uri pentru a livra funcționalitățile.",
+    "findOutMore": "Află mai multe",
+    "ok": "OK"
+  },
   "navbar": {
     "show": "Deschide meniul de navigare",
     "close": "Închide meniul de navigare",
