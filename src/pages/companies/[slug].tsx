@@ -84,7 +84,7 @@ const CompanyPage: NextPage<PageProps> = ({
             Partener {company.packageType}
           </h2>
           {company.siteUrl && (
-            <h3 className="mt-1 font-display text-lg">
+            <h3 className="mt-1 w-1/4 truncate font-display text-lg">
               Link:{" "}
               <a
                 href={company.siteUrl}
