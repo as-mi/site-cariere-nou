@@ -198,6 +198,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
           activeTechnicalTestId: true,
           technicalTestIsMandatory: true,
         },
+        orderBy: {
+          order: "asc",
+        },
       },
     },
     where: { slug },

@@ -6,10 +6,11 @@ import { CommonFieldProps, useFieldId } from "./common";
 
 export interface InputFieldProps<IFormValues extends FieldValues>
   extends CommonFieldProps<IFormValues> {
-  type: "text" | "email" | "password" | "file";
+  type: "text" | "number" | "email" | "password" | "file";
   placeholder?: string;
   hint?: string;
   accept?: string;
+  valueAsNumber?: boolean;
   wrapperClassName?: string;
   inputClassName?: string;
 }
@@ -27,6 +28,7 @@ const InputField = <IFormValues extends FieldValues>({
   hint,
   accept,
   required,
+  valueAsNumber,
   register,
   errors,
   fieldErrors,
@@ -45,7 +47,7 @@ const InputField = <IFormValues extends FieldValues>({
         type={type}
         placeholder={placeholder}
         accept={accept}
-        {...register(name, { required })}
+        {...register(name, { required, valueAsNumber })}
         className={classNames(
           "block rounded-sm bg-zinc-800 px-2 py-1 text-white",
           { "w-full": !inputClassName },

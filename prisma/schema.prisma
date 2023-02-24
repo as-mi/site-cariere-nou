@@ -108,6 +108,7 @@ model Position {
   companyId                Int
   company                  Company                      @relation(fields: [companyId], references: [id])
   title                    String
+  order                    Int?
   category                 String
   requiredSkills           String
   workSchedule             String

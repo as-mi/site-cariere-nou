@@ -9,6 +9,7 @@ import Select from "react-select";
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
 import {
+  NumberField,
   SubmitButton,
   TextAreaField,
   TextField,
@@ -19,6 +20,7 @@ import { trpc } from "~/lib/trpc";
 type AddPositionFieldValues = {
   company: { value: number; label: string };
   title: string;
+  order: number;
   category: string;
   requiredSkills: string;
   workSchedule: string;
@@ -109,6 +111,15 @@ const AdminNewPositionPage: NextPageWithLayout = () => {
           <TextField
             name="title"
             label="Titlu"
+            required
+            register={register}
+            errors={errors}
+          />
+
+          <NumberField
+            name="order"
+            label="Indice de ordine"
+            placeholder="1, 2, 3, ..."
             required
             register={register}
             errors={errors}
