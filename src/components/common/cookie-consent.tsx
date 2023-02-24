@@ -6,26 +6,37 @@ import Link from "next/link";
 
 import { useTranslation } from "next-i18next";
 
-const CONSENT_COOKIE_KEY = "cookie_consent";
-const CONSENT_COOKIE_EXPIRE_TIME = 365;
+const CONSENT_COOKIE_NAME = "cookies-consent";
+const CONSENT_COOKIE_EXPIRE_TIME = 30;
 
+/**
+ * Simple cookie consent banner, which allows the user to accept the usage of cookies.
+ *
+ * Based on https://codersteps.com/articles/how-to-add-cookie-consent-banner-with-next-js-and-tailwind-css
+ */
 const CookieConsent: React.FC = () => {
   const { t } = useTranslation();
 
+  // We start with this variable implicitly `true`, in order to avoid
+  // temporarily displaying the cookie consent form while reading the consent status.
   const [cookieConsentGiven, setCookieConsentGiven] = useState(true);
 
   useEffect(() => {
-    const cookieConsent = Cookies.get(CONSENT_COOKIE_KEY) === "true";
+    const cookieConsent = Cookies.get(CONSENT_COOKIE_NAME) === "true";
+
     setCookieConsentGiven(cookieConsent);
   }, []);
 
   const handleClick = useCallback(() => {
-    Cookies.set(CONSENT_COOKIE_KEY, "true", {
+    Cookies.set(CONSENT_COOKIE_NAME, "true", {
       expires: CONSENT_COOKIE_EXPIRE_TIME,
+      sameSite: "Strict",
     });
+
     setCookieConsentGiven(true);
   }, []);
 
+  // If the user already gave us consent to use cookies, don't display the notice anymore
   if (cookieConsentGiven) {
     return null;
   }
@@ -48,7 +59,7 @@ const CookieConsent: React.FC = () => {
             onClick={handleClick}
             className="rounded-sm bg-green-800 px-2 py-0.5"
           >
-            OK
+            {t("cookieConsent.ok")}
           </button>
         </div>
       </div>
