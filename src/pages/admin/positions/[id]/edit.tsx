@@ -12,10 +12,11 @@ import {
   SubmitButton,
   TextAreaField,
   TextField,
+  NumberField,
+  CheckboxField,
 } from "~/components/pages/admin/forms";
 
 import { trpc } from "~/lib/trpc";
-import CheckboxField from "~/components/pages/admin/forms/checkbox-field";
 
 type PageProps = {
   positionId: number;
@@ -25,6 +26,7 @@ type Option = { value: number; label: string };
 
 type EditPositionFieldValues = {
   title: string;
+  order: number;
   category: string;
   requiredSkills: string;
   workSchedule: string;
@@ -101,6 +103,7 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
 
       reset({
         ...query.data,
+        order: query.data.order || undefined,
         activeTechnicalTest,
       });
     }
@@ -123,6 +126,14 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
           <TextField
             name="title"
             label="Titlu"
+            required
+            register={register}
+            errors={errors}
+          />
+          <NumberField
+            name="order"
+            label="Indice de ordine"
+            placeholder="1, 2, 3, ..."
             required
             register={register}
             errors={errors}

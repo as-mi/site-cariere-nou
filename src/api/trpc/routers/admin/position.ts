@@ -6,6 +6,8 @@ import prisma from "~/lib/prisma";
 import { adminProcedure, router } from "../..";
 import { EntityId } from "../../schema";
 
+const OrderSchema = z.number().int().gte(1);
+
 const GetAllInput = z.object({
   companyId: EntityId,
 });
@@ -15,6 +17,7 @@ const ReadInput = z.object({
 const CreateInput = z.object({
   companyId: EntityId,
   title: z.string(),
+  order: OrderSchema,
   category: z.string().default(""),
   requiredSkills: z.string().default(""),
   workSchedule: z.string().default(""),
@@ -25,6 +28,7 @@ const CreateInput = z.object({
 const UpdateInput = z.object({
   id: EntityId,
   title: z.string(),
+  order: OrderSchema,
   category: z.string().default(""),
   requiredSkills: z.string().default(""),
   workSchedule: z.string().default(""),
