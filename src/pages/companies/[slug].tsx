@@ -1,6 +1,7 @@
 import { GetServerSideProps, NextPage } from "next";
 
 import Head from "next/head";
+import Link from "next/link";
 
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
@@ -21,6 +22,8 @@ import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
   Position,
 } from "~/components/pages/companies/position-card";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 type Logo = {
   id: number;
@@ -132,6 +135,18 @@ const CompanyPage: NextPage<PageProps> = ({
                   />
                 ))}
               </div>
+            )}
+            {isAdmin && (
+              <Link
+                href={`/admin/positions/new?companyId=${company.id}`}
+                className="mt-4 inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
+              >
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className="mr-2 inline-block h-3 w-3"
+                />
+                Adaugă un post nou
+              </Link>
             )}
           </section>
         )}

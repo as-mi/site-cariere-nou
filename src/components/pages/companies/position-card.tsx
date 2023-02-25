@@ -4,6 +4,9 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEdit, faListCheck } from "@fortawesome/free-solid-svg-icons";
+
 import { Role } from "@prisma/client";
 import useRole from "~/hooks/use-role";
 
@@ -232,7 +235,7 @@ const PositionCard: React.FC<PositionCardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-md rounded-md bg-white p-3 text-black">
+    <div className="w-full max-w-xl rounded-md bg-white p-3 text-black">
       <h3 className="mb-1 font-display text-xl font-bold">{position.title}</h3>
       {position.descriptionHtml ? (
         <div
@@ -291,6 +294,32 @@ const PositionCard: React.FC<PositionCardProps> = ({
             >
               Aplică acum
             </button>
+          )}
+        </div>
+      )}
+      {role === Role.ADMIN && (
+        <div className="mt-4 flex flex-row flex-wrap items-center justify-center gap-2">
+          <Link
+            href={`/admin/positions/${position.id}/edit`}
+            className="inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
+          >
+            <FontAwesomeIcon
+              icon={faEdit}
+              className="mr-2 inline-block h-3 w-3"
+            />
+            Editează postul
+          </Link>
+          {position.technicalTestId && (
+            <Link
+              href={`/technical-tests/${position.technicalTestId}`}
+              className="inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
+            >
+              <FontAwesomeIcon
+                icon={faListCheck}
+                className="mr-2 inline-block h-4 w-4"
+              />
+              Previzualizează testul tehnic
+            </Link>
           )}
         </div>
       )}

@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import { Answer, Question, QuestionKind } from "~/lib/technical-tests-schema";
 import { trpc } from "~/lib/trpc";
 
+import { useIsAdmin } from "~/hooks/use-role";
+
 type TechnicalTestFieldValues = {
   answers: Answer[];
 };
@@ -18,6 +20,7 @@ type TechnicalTestFieldValues = {
 type TechnicalTestQuestionProps = {
   index: number;
   question: Question;
+  disabled?: boolean;
   register: UseFormRegister<TechnicalTestFieldValues>;
   errors: FieldErrors<TechnicalTestFieldValues>;
 };
@@ -25,6 +28,7 @@ type TechnicalTestQuestionProps = {
 const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
   index,
   question,
+  disabled,
   register,
   errors,
 }) => {
@@ -37,6 +41,7 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
       input = (
         <input
           type="text"
+          disabled={disabled}
           {...register(valueName, { required: true })}
           className="mt-3 rounded-md bg-zinc-700 py-1 px-2"
         />
@@ -45,6 +50,7 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
     case QuestionKind.LONG_TEXT:
       input = (
         <textarea
+          disabled={disabled}
           {...register(valueName, { required: true })}
           className="mt-3 rounded-md bg-zinc-700 py-1 px-2"
         />
@@ -61,6 +67,7 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
                   id={inputId}
                   type="radio"
                   value={choice.id}
+                  disabled={disabled}
                   {...register(valueName, { required: true })}
                   className="mr-2"
                 />
@@ -84,6 +91,7 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
       {question.details && <p className="my-1">{question.details}</p>}
       <input
         type="hidden"
+        disabled={disabled}
         {...register(`${name}.questionId`, { value: question.id })}
         className="hidden"
       />
@@ -108,7 +116,10 @@ const TechnicalTest: React.FC<TechnicalTestProps> = ({
   technicalTestId,
   questions,
 }) => {
+  const isAdmin = useIsAdmin();
   const [successfullySaved, setSuccessfullySaved] = useState(false);
+
+  const disabled = isAdmin || successfullySaved;
 
   const router = useRouter();
 
@@ -143,6 +154,7 @@ const TechnicalTest: React.FC<TechnicalTestProps> = ({
           key={question.id}
           index={index}
           question={question}
+          disabled={disabled}
           register={register}
           errors={errors}
         />
@@ -150,8 +162,8 @@ const TechnicalTest: React.FC<TechnicalTestProps> = ({
 
       <button
         type="submit"
-        disabled={mutation.isLoading}
-        className="rounded-lg bg-blue-700 px-4 py-2 hover:bg-blue-600 active:bg-blue-500"
+        disabled={disabled || mutation.isLoading}
+        className="rounded-lg bg-blue-700 px-4 py-2 hover:bg-blue-600 active:bg-blue-500 disabled:bg-blue-900 disabled:text-gray-400"
       >
         Trimite
       </button>

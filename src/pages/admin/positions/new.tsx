@@ -1,4 +1,4 @@
-import { ReactElement, useMemo } from "react";
+import { ReactElement, useEffect, useMemo } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
 import Link from "next/link";
@@ -32,6 +32,14 @@ type AddPositionFieldValues = {
 const AdminNewPositionPage: NextPageWithLayout = () => {
   const router = useRouter();
 
+  // When using the "Add new position" button on a company's page,
+  // the company's ID is passed in as a query string parameter
+  const companyId = useMemo(() => {
+    if (typeof router.query.companyId === "string") {
+      return parseInt(router.query.companyId);
+    }
+  }, [router.query.companyId]);
+
   const companiesQuery = trpc.admin.company.getAll.useQuery();
 
   const companyOptions = useMemo(() => {
@@ -52,6 +60,7 @@ const AdminNewPositionPage: NextPageWithLayout = () => {
   });
 
   const {
+    setValue,
     register,
     control,
     handleSubmit,
@@ -66,6 +75,20 @@ const AdminNewPositionPage: NextPageWithLayout = () => {
     };
     mutation.mutate(payload);
   };
+
+  useEffect(() => {
+    if (companyOptions && companyId) {
+      const companyOption = companyOptions.find(
+        (option) => option.value === companyId
+      );
+
+      if (!companyOption) {
+        return;
+      }
+
+      setValue("company", companyOption);
+    }
+  }, [companyOptions, companyId, setValue]);
 
   if (companiesQuery.isLoading) {
     return <p>Se încarcă...</p>;
