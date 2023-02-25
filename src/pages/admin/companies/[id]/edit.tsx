@@ -33,6 +33,9 @@ type EditCompanyFieldValues = {
   description: string;
   useExternalUrlForPositions: boolean;
   positionsExternalUrl: string | null;
+  instagramUrl: string;
+  linkedinUrl: string;
+  facebookUrl: string;
 };
 
 const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
@@ -189,6 +192,31 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
             register={register}
             errors={errors}
             className="min-h-[8rem] min-w-[24rem]"
+          />
+
+          <br></br>
+          <br></br>
+          <label>Social media:</label>
+          <TextField
+            name="instagramUrl"
+            label="URL Instagram"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
+          />
+          <TextField
+            name="linkedinUrl"
+            label="URL LinkedIn"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
+          />
+          <TextField
+            name="facebookUrl"
+            label="URL Facebook"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
           />
 
           <CheckboxField

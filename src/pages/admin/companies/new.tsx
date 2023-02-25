@@ -28,6 +28,9 @@ type AddCompanyFieldValues = {
   description: string;
   useExternalUrlForPositions: boolean;
   positionsExternalUrl: string | null;
+  instagramUrl: string;
+  linkedinUrl: string;
+  facebookUrl: string;
 };
 
 const AdminNewCompanyPage: NextPageWithLayout = () => {
@@ -166,6 +169,30 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             register={register}
             errors={errors}
             className="min-h-[8rem]"
+          />
+          <br></br>
+          <br></br>
+          <label>Social media:</label>
+          <TextField
+            name="instagramUrl"
+            label="URL Instagram"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
+          />
+          <TextField
+            name="linkedinUrl"
+            label="URL LinkedIn"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
+          />
+          <TextField
+            name="facebookUrl"
+            label="URL Facebook"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
           />
 
           <CheckboxField
