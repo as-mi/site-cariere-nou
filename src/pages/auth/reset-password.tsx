@@ -109,7 +109,7 @@ const ResetPasswordForm: React.FC<ResetPasswordFormProps> = ({ onSuccess }) => {
             disabled={submitting}
             type="submit"
             value={t("resetPasswordForm.submit")!}
-            className="cursor-pointer rounded-full bg-blue-700 px-4 py-2 text-white disabled:cursor-default disabled:bg-blue-300"
+            className="cursor-pointer whitespace-normal rounded-full bg-blue-700 px-4 py-2 text-white disabled:cursor-default disabled:bg-blue-300"
           />
         </div>
       </form>
