@@ -1,6 +1,8 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 
+import { Role } from "@prisma/client";
+
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 import {
@@ -78,6 +80,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     return redirectToLoginPage(returnUrl);
   }
 
+  const { user } = session;
+
   const id = params?.id;
   if (typeof id !== "string" || !id) {
     if (process.env.NODE_ENV === "development") {
@@ -134,6 +138,20 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   const questions = result.data;
   sanitizeQuestions(questions);
+
+  if (user.role === Role.PARTICIPANT) {
+    const userId = user.id;
+
+    await prisma.participantStartTechnicalTest.upsert({
+      where: { userId_technicalTestId: { userId, technicalTestId } },
+      create: {
+        userId,
+        technicalTestId,
+        startTime: new Date(),
+      },
+      update: {},
+    });
+  }
 
   return {
     props: {

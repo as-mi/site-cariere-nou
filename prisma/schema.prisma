@@ -57,6 +57,7 @@ model User {
   resumes                     Resume[]
   applications                ParticipantApplyToPosition[]
   answers                     ParticipantAnswersToTechnicalTest[]
+  startedTechnicalTests       ParticipantStartTechnicalTest[]
 }
 
 model Profile {
@@ -147,7 +148,20 @@ model TechnicalTest {
   questions Json
 
   participantAnswers ParticipantAnswersToTechnicalTest[]
+  participantStarts  ParticipantStartTechnicalTest[]
   activePosition     Position?                           @relation("ActiveTechnicalTest")
+}
+
+model ParticipantStartTechnicalTest {
+  userId Int
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  technicalTestId Int
+  technicalTest   TechnicalTest @relation(fields: [technicalTestId], references: [id], onDelete: Cascade)
+
+  startTime DateTime @default(now())
+
+  @@id([userId, technicalTestId])
 }
 
 model ParticipantAnswersToTechnicalTest {
@@ -158,6 +172,8 @@ model ParticipantAnswersToTechnicalTest {
   technicalTest   TechnicalTest @relation(fields: [technicalTestId], references: [id], onDelete: Cascade)
 
   answers Json
+
+  createdAt DateTime @default(now())
 
   @@id([userId, technicalTestId])
 }
