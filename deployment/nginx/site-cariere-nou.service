@@ -9,4 +9,7 @@ server {
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
     }
+
+    # Increase max file upload size
+    client_max_body_size 8M;
 }
