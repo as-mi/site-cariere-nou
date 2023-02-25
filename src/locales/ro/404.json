@@ -1,6 +1,6 @@
 {
-    "pageNotFound": "Pagina nu a fost găsită",
-    "pageNotFoundText": "Pagina pe care o cauți nu există. Verifică dacă ai scris corect adresa sau dă click pe butonul de mai jos pentru a reveni la pagina principală.",
-    "goToHomePage": "Pagina principală"
+  "pageNotFound": "Pagina nu a fost găsită",
+  "pageNotFoundText": "Pagina pe care o cauți nu există. Verifică dacă ai scris corect adresa sau dă click pe butonul de mai jos pentru a reveni la pagina principală.",
+  "goToHomePage": "Pagina principală"
 
 }
