@@ -59,7 +59,7 @@ export const companyRouter = router({
         siteUrl: true,
         instagramUrl: true,
         facebookUrl: true,
-        linkedinUrl:true,
+        linkedinUrl: true,
         packageType: true,
         logoImageId: true,
         logo: {
