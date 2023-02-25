@@ -56,8 +56,9 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
 
     if (!response.ok) {
       if (
-        response.status === 500 &&
-        (await response.text()) === "File too large"
+        response.status === 413 ||
+        (response.status === 500 &&
+          (await response.text()) === "File too large")
       ) {
         setFileUploadError(t("resumeUploadForm.errors.file-too-big")!);
         return;
