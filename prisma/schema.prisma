@@ -41,21 +41,22 @@ enum Role {
 }
 
 model User {
-  id                     Int                                 @id @default(autoincrement())
-  name                   String
-  email                  String                              @unique
-  emailVerified          DateTime?
-  emailVerificationToken String?
-  passwordHash           String?
-  passwordResetToken     String?
-  role                   Role
-  createdAt              DateTime                            @default(now())
-  updatedAt              DateTime                            @updatedAt
-  accounts               Account[]
-  profile                Profile?
-  resumes                Resume[]
-  applications           ParticipantApplyToPosition[]
-  answers                ParticipantAnswersToTechnicalTest[]
+  id                          Int                                 @id @default(autoincrement())
+  name                        String
+  email                       String                              @unique
+  emailVerified               DateTime?
+  emailVerificationToken      String?
+  passwordHash                String?
+  passwordResetToken          String?
+  role                        Role
+  createdAt                   DateTime                            @default(now())
+  updatedAt                   DateTime                            @updatedAt
+  consentApplyToOtherPartners Boolean                             @default(false)
+  accounts                    Account[]
+  profile                     Profile?
+  resumes                     Resume[]
+  applications                ParticipantApplyToPosition[]
+  answers                     ParticipantAnswersToTechnicalTest[]
 }
 
 model Profile {

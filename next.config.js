@@ -17,6 +17,16 @@ const nextConfig = {
         destination: "/legal/Politica de cookie-uri.pdf",
         permanent: false,
       },
+      {
+        source: "/privacy-policy",
+        destination: "/legal/Politica de confidențialitate.pdf",
+        permanent: false,
+      },
+      {
+        source: "/terms-of-service",
+        destination: "/legal/Termeni și condiții.pdf",
+        permanent: false,
+      },
     ];
   },
   experimental: {

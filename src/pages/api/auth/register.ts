@@ -26,7 +26,11 @@ const registerSchema = z
     name: z.string().trim(),
     email: z.string().trim(),
     password: z.string(),
-    consent: z.literal(true),
+    consent: z.object({
+      termsOfService: z.literal(true),
+      privacyPolicy: z.literal(true),
+      applyToOtherPartners: z.boolean(),
+    }),
     language: z.enum(["ro", "en"]).default("ro"),
   })
   .strict();
@@ -74,6 +78,7 @@ const register = async (data: RegisterData) => {
         emailVerificationToken,
         passwordHash,
         role: Role.PARTICIPANT,
+        consentApplyToOtherPartners: data.consent.applyToOtherPartners,
       },
     });
   } catch {
