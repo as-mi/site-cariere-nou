@@ -83,9 +83,9 @@ model Company {
   description          String
   positionsExternalUrl String?
   positions            Position[]
-  instagramUrl         String?
-  linkedinUrl          String?
-  facebookUrl          String?
+  //instagramUrl         String      @default("")
+  //linkedinUrl          String      @default("")
+  //facebookUrl          String      @default("")
 }
 
 model Image {
