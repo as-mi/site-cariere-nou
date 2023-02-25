@@ -33,7 +33,7 @@ const ContactInfoDisplay: React.FC<ContactInfoDisplayProps> = ({
       </div>
       {role === Role.PARTICIPANT && (
         <div className="py-2">
-          <span className="font-semibold">{t("fields.phoneNumber")}:</span>{" "}
+          <span className="font-semibold">{t("fields.phoneNumber")}:</span>
           <span
             className={classNames("ml-2", {
               "text-gray-700": phoneNumberMissing,

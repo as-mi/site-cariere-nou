@@ -3,10 +3,11 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 
-import { TFunction } from "next-i18next";
+import { TFunction, useTranslation } from "next-i18next";
 
 import useRole from "~/hooks/use-role";
 
+import { PHONE_NUMBER_PATTERN } from "~/lib/phone-numbers";
 import { trpc } from "~/lib/trpc";
 
 import type { ContactInfo } from "./common";
@@ -26,6 +27,8 @@ const ContactInfoEditForm: React.FC<ContactInfoEditFormProps> = ({
   onCancel,
   onSuccess,
 }) => {
+  const { t: commonT } = useTranslation("common");
+
   const role = useRole();
 
   const queryClient = useQueryClient();
@@ -33,7 +36,10 @@ const ContactInfoEditForm: React.FC<ContactInfoEditFormProps> = ({
   const mutation = trpc.participant.profileUpdate.useMutation({
     onSuccess: (_, variables) => {
       const queryKey = getQueryKey(trpc.common.profileRead, undefined, "query");
-      queryClient.setQueryData(queryKey, variables);
+      queryClient.setQueryData(queryKey, {
+        ...contactInfo,
+        ...variables,
+      });
       onSuccess();
     },
   });
@@ -69,7 +75,9 @@ const ContactInfoEditForm: React.FC<ContactInfoEditFormProps> = ({
           {...register("name", { required: true })}
           className="m-1 rounded-md bg-gray-200 p-1"
         />
-        {errors.name && <div>{errors.name.message}</div>}
+        {errors.name?.type === "required" && (
+          <div>{commonT("forms.required")}</div>
+        )}
       </div>
       <div>
         <label htmlFor="phoneNumber">
@@ -78,10 +86,22 @@ const ContactInfoEditForm: React.FC<ContactInfoEditFormProps> = ({
         <input
           id="phoneNumber"
           type="tel"
-          {...register("phoneNumber", { required: true })}
+          {...register("phoneNumber", {
+            required: true,
+            pattern: PHONE_NUMBER_PATTERN,
+          })}
           className="m-1 rounded-md bg-gray-200 p-1"
         />
-        {errors.phoneNumber && <div>{errors.phoneNumber.message}</div>}
+        <div className="text-sm text-zinc-800">
+          Exemplu de format acceptat:{" "}
+          <span className="text-zinc-900">0712.345.678</span>
+        </div>
+        {errors.phoneNumber?.type === "required" && (
+          <div>{commonT("forms.required")}</div>
+        )}
+        {errors.phoneNumber?.type === "pattern" && (
+          <div>{commonT("forms.pattern")}</div>
+        )}
       </div>
       {process.env.NODE_ENV === "development" && role && (
         <div className="py-2">

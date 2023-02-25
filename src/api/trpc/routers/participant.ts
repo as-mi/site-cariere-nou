@@ -5,6 +5,7 @@ import { z } from "zod";
 import { getSettingValue } from "~/lib/settings/get";
 
 import prisma from "~/lib/prisma";
+import { PHONE_NUMBER_PATTERN } from "~/lib/phone-numbers";
 import {
   AnswersSchema,
   QuestionsSchema,
@@ -14,8 +15,8 @@ import {
 import { EntityId } from "../schema";
 
 const ProfileUpdateInput = z.object({
-  name: z.string(),
-  phoneNumber: z.string(),
+  name: z.string().trim(),
+  phoneNumber: z.string().trim().regex(PHONE_NUMBER_PATTERN),
 });
 
 const OptionsUpdateInput = z.object({
@@ -45,9 +46,6 @@ export const participantRouter = router({
     .mutation(async ({ input, ctx }) => {
       const id = ctx.user!.id;
       let { name, phoneNumber } = input;
-
-      name = name.trim();
-      phoneNumber = phoneNumber.trim();
 
       await prisma.user.update({
         where: { id },
