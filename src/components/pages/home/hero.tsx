@@ -8,11 +8,13 @@ import logoCariere from "~/images/logos/cariere-white.png";
 type HeroSectionProps = {
   t: TFunction;
   showComingSoonMessage: boolean;
+  showEventsSectionLink: boolean;
 };
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   t,
   showComingSoonMessage,
+  showEventsSectionLink,
 }) => {
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -97,13 +99,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({
             {t("heroSection.partners")}
           </a>
 
-          <a
-            className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
-            href="#events"
-            onClick={handleClick}
-          >
-            {t("heroSection.events")}
-          </a>
+          {showEventsSectionLink && (
+            <a
+              className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
+              href="#events"
+              onClick={handleClick}
+            >
+              {t("heroSection.events")}
+            </a>
+          )}
         </div>
       </div>
     </section>

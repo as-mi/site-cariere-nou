@@ -17,6 +17,8 @@ describe("Home", () => {
         showComingSoonMessage={true}
         alwaysShowCompaniesForAdmin={true}
         hideProfileLink={true}
+        showEvents={true}
+        alwaysShowEventsForAdmin={true}
         companiesByPackageType={{}}
       />
     );

@@ -34,6 +34,8 @@ type PageProps = {
   showComingSoonMessage: boolean;
   alwaysShowCompaniesForAdmin: boolean;
   hideProfileLink: boolean;
+  showEvents: boolean;
+  alwaysShowEventsForAdmin: boolean;
   companiesByPackageType: CompaniesByPackageType;
 };
 
@@ -41,11 +43,16 @@ const HomePage: NextPage<PageProps> = ({
   showComingSoonMessage,
   alwaysShowCompaniesForAdmin,
   hideProfileLink,
+  showEvents,
+  alwaysShowEventsForAdmin,
   companiesByPackageType,
 }) => {
   const { t } = useTranslation("home");
 
   const isAdmin = useIsAdmin();
+
+  const isEventsSectionVisible =
+    showEvents || (alwaysShowEventsForAdmin && isAdmin);
 
   return (
     <>
@@ -61,7 +68,11 @@ const HomePage: NextPage<PageProps> = ({
       <NavBar t={t} hideProfileLink={hideProfileLink} />
 
       <main>
-        <HeroSection t={t} showComingSoonMessage={showComingSoonMessage} />
+        <HeroSection
+          t={t}
+          showComingSoonMessage={showComingSoonMessage}
+          showEventsSectionLink={isEventsSectionVisible}
+        />
         <LogosSection />
         <AboutSection t={t} />
         <PartnersSection
@@ -73,7 +84,7 @@ const HomePage: NextPage<PageProps> = ({
           }
           companiesByPackageType={companiesByPackageType}
         />
-        <EventsSection t={t} />
+        {isEventsSectionVisible && <EventsSection t={t} />}
         <ContactSection t={t} />
       </main>
 
@@ -100,6 +111,10 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   );
   const showProfileLink = await getSettingValue("showProfileLink");
   const hideProfileLink = !showProfileLink;
+  const showEvents = await getSettingValue("showEvents");
+  const alwaysShowEventsForAdmin = await getSettingValue(
+    "alwaysShowEventsForAdmin"
+  );
 
   // When performing the initial static page build, we don't want to access the database
   if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
@@ -109,6 +124,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
         showComingSoonMessage,
         alwaysShowCompaniesForAdmin,
         hideProfileLink,
+        showEvents,
+        alwaysShowEventsForAdmin,
         companiesByPackageType: {},
       },
       // The page will be regenerated using the data from the database once the first request comes in
@@ -145,6 +162,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
       showComingSoonMessage,
       alwaysShowCompaniesForAdmin,
       hideProfileLink,
+      showEvents,
+      alwaysShowEventsForAdmin,
       companiesByPackageType,
     },
   };

@@ -41,6 +41,16 @@ export const SETTINGS = {
           : false
       ),
   },
+  showEvents: {
+    key: "showEvents",
+    label: `Afișează secțiunea cu evenimentele pe prima pagină`,
+    schema: z.boolean().default(false),
+  },
+  alwaysShowEventsForAdmin: {
+    key: "alwaysShowEventsForAdmin",
+    label: `Afișează evenimentele pentru admin chiar dacă este ascunsă pentru ceilalți utilizatori`,
+    schema: z.boolean().default(true),
+  },
   showAvailablePositions: {
     key: "showAvailablePositions",
     label: `Afișează posturile disponibile pe paginile companiilor`,
