@@ -27,6 +27,10 @@ type PageProps = {
     };
     questions: Question[];
   };
+  alreadyAnsweredAt: {
+    date: string;
+    time: string;
+  } | null;
 };
 
 const TechnicalTestPage: NextPage<PageProps> = ({
@@ -40,6 +44,7 @@ const TechnicalTestPage: NextPage<PageProps> = ({
     },
     questions,
   },
+  alreadyAnsweredAt,
 }) => {
   const pageTitle = `${title} - ${companyName} - Cariere v12.0`;
 
@@ -52,12 +57,19 @@ const TechnicalTestPage: NextPage<PageProps> = ({
         <main className="mx-auto max-w-prose text-center">
           <h1 className="font-display text-3xl font-bold">{title}</h1>
           {description && <p className="my-3">{description}</p>}
-          <TechnicalTest
-            companySlug={companySlug}
-            positionId={positionId}
-            technicalTestId={id}
-            questions={questions}
-          />
+          {alreadyAnsweredAt === null ? (
+            <TechnicalTest
+              companySlug={companySlug}
+              positionId={positionId}
+              technicalTestId={id}
+              questions={questions}
+            />
+          ) : (
+            <p className="my-4 mx-auto max-w-sm">
+              Deja ai trimis răspunsurile la acest test tehnic la data de{" "}
+              {alreadyAnsweredAt.date}, ora {alreadyAnsweredAt.time}.
+            </p>
+          )}
         </main>
       </div>
     </>
@@ -104,6 +116,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     }
   }
 
+  const userId = user.id;
+
   const technicalTest = await prisma.technicalTest.findUnique({
     where: { id: technicalTestId },
     select: {
@@ -122,12 +136,34 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         },
       },
       questions: true,
+      participantAnswers: {
+        where: { userId },
+        select: {
+          createdAt: true,
+        },
+      },
     },
   });
 
   if (!technicalTest) {
     return {
       notFound: true,
+    };
+  }
+
+  let alreadyAnsweredAt = null;
+  if (technicalTest.participantAnswers.length > 0) {
+    const answerTime = technicalTest.participantAnswers[0].createdAt;
+    alreadyAnsweredAt = {
+      date: answerTime.toLocaleDateString("ro", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }),
+      time: answerTime.toLocaleTimeString("ro", {
+        hour: "numeric",
+        minute: "numeric",
+      }),
     };
   }
 
@@ -140,8 +176,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   sanitizeQuestions(questions);
 
   if (user.role === Role.PARTICIPANT) {
-    const userId = user.id;
-
     await prisma.participantStartTechnicalTest.upsert({
       where: { userId_technicalTestId: { userId, technicalTestId } },
       create: {
@@ -158,7 +192,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       technicalTest: {
         ...technicalTest,
         questions,
+        participantAnswers: null,
       },
+      alreadyAnsweredAt,
     },
   };
 };
