@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 
 import { QuestionKind } from "~/lib/technical-tests-schema";
@@ -22,11 +23,20 @@ const QuestionEditor: React.FC<QuestionEditorProps> = ({ index }) => {
     formState: { errors },
     watch,
     register,
+    unregister,
   } = useFormContext<CommonFieldValues>();
 
   const name = `questions.${index}` as const;
   const fieldErrors = errors?.questions?.[index];
   const watchQuestionKind = watch(`${name}.kind`);
+
+  useEffect(() => {
+    if (watchQuestionKind !== QuestionKind.SINGLE_CHOICE) {
+      // Unregister the old `choices` field array,
+      // to prevent `react-hook-form` from trying to validate them
+      unregister(`${name}.choices`);
+    }
+  });
 
   return (
     <>
