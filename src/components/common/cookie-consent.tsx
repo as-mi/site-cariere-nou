@@ -48,7 +48,8 @@ const CookieConsent: React.FC = () => {
           {t("cookieConsent.disclaimer")}{" "}
           <Link
             href="/cookie-policy"
-            className="whitespace-nowrap text-green-300 hover:text-green-500"
+            prefetch={false}
+            className="whitespace-nowrap text-green-300 hover:text-green-500 active:text-green-600"
           >
             {t("cookieConsent.findOutMore")}
           </Link>
