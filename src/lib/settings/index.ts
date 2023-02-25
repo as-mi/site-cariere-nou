@@ -61,6 +61,11 @@ export const SETTINGS = {
     label: `Afișează posturile disponibile pentru admin chiar dacă sunt ascunse pentru participanți`,
     schema: z.boolean().default(true),
   },
+  allowParticipantsToApplyToPositions: {
+    key: "allowParticipantsToApplyToPositions",
+    label: `Permite participanților să aplice pe posturile disponibile`,
+    schema: z.boolean().default(false),
+  },
 } as const;
 
 export type Settings = typeof SETTINGS;

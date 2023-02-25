@@ -196,11 +196,13 @@ export type Position = {
 
 type PositionCardProps = {
   position: Position;
+  enableApplicationForm: boolean;
   initiallyShowApplicationForm?: boolean;
 };
 
 const PositionCard: React.FC<PositionCardProps> = ({
   position,
+  enableApplicationForm,
   initiallyShowApplicationForm,
 }) => {
   const router = useRouter();
@@ -249,7 +251,7 @@ const PositionCard: React.FC<PositionCardProps> = ({
           Nu a fost setată o descriere pentru această poziție.
         </div>
       )}
-      {role === Role.PARTICIPANT && (
+      {role === Role.PARTICIPANT && enableApplicationForm && (
         <div className="mt-3">
           {position.alreadyAppliedTo ? (
             <>

@@ -2,6 +2,8 @@ import { participantProcedure, router } from "..";
 
 import { z } from "zod";
 
+import { getSettingValue } from "~/lib/settings/get";
+
 import prisma from "~/lib/prisma";
 import {
   AnswersSchema,
@@ -134,6 +136,13 @@ export const participantRouter = router({
     .mutation(async ({ input, ctx }) => {
       const userId = ctx.user!.id;
       const { positionId, resumeId } = input;
+
+      const allowParticipantsToApplyToPositions = await getSettingValue(
+        "allowParticipantsToApplyToPositions"
+      );
+      if (!allowParticipantsToApplyToPositions) {
+        throw new Error("Applications are currently disabled");
+      }
 
       // Check that the user completed the active technical test for this position, if there is any
       const position = await prisma.position.findFirst({
