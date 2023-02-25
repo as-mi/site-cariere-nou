@@ -13,6 +13,7 @@
   "forms": {
     "required": "Câmp obligatoriu",
     "consentRequired": "Trebuie să îți dai consimțământul",
+    "pattern": "Format invalid",
     "minLength": "Trebuie să conțină cel puțin {{length}} caractere",
     "maxLength": "Trebuie să conțină cel mult {{length}} caractere"
   },
