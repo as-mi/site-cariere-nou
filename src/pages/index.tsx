@@ -85,7 +85,7 @@ const HomePage: NextPage<PageProps> = ({
           companiesByPackageType={companiesByPackageType}
         />
         {isEventsSectionVisible && <EventsSection t={t} />}
-        <ContactSection t={t} />
+        <ContactSection />
       </main>
 
       <Footer />

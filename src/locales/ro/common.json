@@ -8,7 +8,12 @@
   "navbar": {
     "show": "Deschide meniul de navigare",
     "close": "Închide meniul de navigare",
-    "home": "Acasă"
+    "home": "Acasă",
+    "about": "Despre",
+    "partners": "Parteneri",
+    "contact": "Contact",
+    "profile": "Contul meu",
+    "adminDashboard": "Panou de administrare"
   },
   "forms": {
     "required": "Câmp obligatoriu",
@@ -28,5 +33,16 @@
     "email-sending-failed": "nu s-a putut trimite e-mail-ul",
     "email-not-verified": "adresa de e-mail nu a fost încă confirmată"
   },
-  "companyLogo": "Logo {{companyName}}"
+  "contactSection": {
+    "telephone": "Telefon",
+    "e-mail": "E-mail",
+    "usefulLinks": "Link-uri utile",
+    "contactUs": "Contactează-ne!",
+    "weWillReplyASAP": "Îți vom răspunde pe cât de repede posibil."
+  },
+  "companyLogo": "Logo {{companyName}}",
+  "footer": {
+    "allRightsReserved": "Toate drepturile rezervate.",
+    "madeWithLove": "Site dezvoltat cu 💙 de voluntarii ASMI"
+  }
 }

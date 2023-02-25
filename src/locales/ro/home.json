@@ -35,16 +35,5 @@
       "time": "Timp",
       "facebookEvent": "Eveniment pe Facebook"
     }
-  },
-  "contactSection": {
-    "telephone": "Telefon",
-    "e-mail": "E-mail",
-    "usefulLinks": "Link-uri utile",
-    "contactUs": "Contactează-ne!",
-    "weWillReplyASAP": "Îți vom răspunde pe cât de repede posibil."
-  },
-  "footer": {
-    "allRightsReserved": "Toate drepturile rezervate.",
-    "madeWithLove": "Site dezvoltat cu 💙 de voluntarii ASMI"
   }
 }
