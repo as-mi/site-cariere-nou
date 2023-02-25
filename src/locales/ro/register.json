@@ -19,7 +19,6 @@
       "afterTermsOfService": " platformei.",
       "applyToOtherPartners": "Sunt de acord ca CV-ul meu să fie trimis și la firmele partenere la care nu am aplicat explicit"
     },
-    "consentRequired": "Trebuie să îți dai consimțământul înainte de crearea contului",
     "submit": "Înregistrează-te"
   },
   "registrationError": "Eroare la crearea contului: {{errorMessage}}",

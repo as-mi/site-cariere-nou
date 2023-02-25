@@ -9,6 +9,7 @@ export const commonRouter = router({
     const user = await prisma.user.findUnique({
       where: { id },
       select: {
+        email: true,
         name: true,
         profile: {
           select: {
@@ -23,6 +24,7 @@ export const commonRouter = router({
     }
 
     return {
+      email: user.email,
       name: user.name,
       phoneNumber: user.profile?.phoneNumber ?? "",
     };

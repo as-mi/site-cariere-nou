@@ -55,6 +55,10 @@ const ContactInfoEditForm: React.FC<ContactInfoEditFormProps> = ({
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="py-2">
+        <span className="font-semibold">{t("fields.email")}:</span>
+        <span className="ml-2">{contactInfo.email}</span>
+      </div>
       <div>
         <label htmlFor="name">
           <span className="font-semibold">{t("fields.name")}:</span>

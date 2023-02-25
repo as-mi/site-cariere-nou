@@ -15,9 +15,15 @@ const ProfileUpdateInput = z.object({
   name: z.string(),
   phoneNumber: z.string(),
 });
+
+const OptionsUpdateInput = z.object({
+  applyToOtherPartners: z.boolean(),
+});
+
 const ResumeDeleteInput = z.object({
   id: EntityId,
 });
+
 const ApplyToPositionInput = z.object({
   positionId: EntityId,
   resumeId: EntityId,
@@ -25,6 +31,7 @@ const ApplyToPositionInput = z.object({
 const WithdrawFromPositionInput = z.object({
   positionId: EntityId,
 });
+
 const AnswerTechnicalTestInput = z.object({
   technicalTestId: EntityId,
   answers: AnswersSchema,
@@ -54,6 +61,34 @@ export const participantRouter = router({
               },
             },
           },
+        },
+      });
+    }),
+  optionsGet: participantProcedure.query(async ({ ctx }) => {
+    const id = ctx.user!.id;
+
+    const user = await prisma.user.findUnique({
+      where: { id },
+      select: { consentApplyToOtherPartners: true },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    return {
+      applyToOtherPartners: user.consentApplyToOtherPartners,
+    };
+  }),
+  optionsUpdate: participantProcedure
+    .input(OptionsUpdateInput)
+    .mutation(async ({ ctx, input }) => {
+      const id = ctx.user!.id;
+
+      await prisma.user.update({
+        where: { id },
+        data: {
+          consentApplyToOtherPartners: input.applyToOtherPartners,
         },
       });
     }),

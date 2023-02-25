@@ -3,6 +3,7 @@
   "contactInfoSectionTitle": "Date de contact",
   "editProfile": "Editează-ți profilul",
   "fields": {
+    "email": "Adresă de e-mail",
     "name": "Nume complet",
     "phoneNumber": "Număr de telefon",
     "role": "Rol"
@@ -10,6 +11,10 @@
   "profileUpdateForm": {
     "cancel": "Anulează",
     "submit": "Salvează"
+  },
+  "optionsSectionTitle": "Opțiuni",
+  "options": {
+    "applyToOtherPartners": "Trimite CV-ul meu și la partenerii la care nu am aplicat explicit"
   },
   "resumesSectionTitle": "CV-uri",
   "uploadResume": "Adaugă un CV",
