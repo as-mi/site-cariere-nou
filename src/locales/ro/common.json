@@ -12,6 +12,7 @@
   },
   "forms": {
     "required": "Câmp obligatoriu",
+    "consentRequired": "Trebuie să îți dai consimțământul",
     "minLength": "Trebuie să conțină cel puțin {{length}} caractere",
     "maxLength": "Trebuie să conțină cel mult {{length}} caractere"
   },

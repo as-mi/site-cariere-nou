@@ -24,6 +24,10 @@ const ContactInfoDisplay: React.FC<ContactInfoDisplayProps> = ({
   return (
     <>
       <div className="py-2">
+        <span className="font-semibold">{t("fields.email")}:</span>
+        <span className="ml-2">{contactInfo.email}</span>
+      </div>
+      <div className="py-2">
         <span className="font-semibold">{t("fields.name")}:</span>
         <span className="ml-2">{contactInfo.name}</span>
       </div>

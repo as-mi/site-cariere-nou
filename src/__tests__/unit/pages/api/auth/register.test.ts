@@ -49,7 +49,11 @@ const fakeUserRegistrationParams = {
   name: "Test User",
   email: "hello@example.com",
   password: "1234abc*",
-  consent: true,
+  consent: {
+    privacyPolicy: true,
+    termsOfService: true,
+    applyToOtherPartners: true,
+  },
 };
 
 describe("/api/auth/register", () => {
@@ -107,7 +111,11 @@ describe("/api/auth/register", () => {
       method: "POST",
       body: {
         ...fakeUserRegistrationParams,
-        consent: false,
+        consent: {
+          privacyPolicy: true,
+          termsOfService: false,
+          applyToOtherPartners: false,
+        },
       },
     });
 
@@ -187,6 +195,7 @@ describe("/api/auth/register", () => {
         emailVerificationToken,
         role: Role.PARTICIPANT,
         passwordHash,
+        consentApplyToOtherPartners: true,
       },
     });
     expect(sendVerificationEmail).toHaveBeenCalledWith(

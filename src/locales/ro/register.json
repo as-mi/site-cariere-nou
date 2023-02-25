@@ -10,8 +10,15 @@
     "passwordMustHaveAlpha": "Parola trebuie să conțină cel puțin o literă",
     "passwordConfirmation": "Confirmă parola",
     "passwordsMustMatch": "Parolele nu corespund",
-    "consent": "Sunt de acord cu prelucrarea datelor mele personale de către ASMI",
-    "consentRequired": "Trebuie să îți dai consimțământul înainte de crearea contului",
+    "consent": {
+      "beforePrivacyPolicy": "Sunt de acord cu prelucrarea datelor mele personale de către ASMI în conformitate cu ",
+      "privacyPolicy": "politica de confidențialitate",
+      "afterPrivacyPolicy": ".",
+      "beforeTermsOfService": "Sunt de acord cu ",
+      "termsOfService": "termenii și condițiile",
+      "afterTermsOfService": " platformei.",
+      "applyToOtherPartners": "Sunt de acord ca CV-ul meu să fie trimis și la firmele partenere la care nu am aplicat explicit"
+    },
     "submit": "Înregistrează-te"
   },
   "registrationError": "Eroare la crearea contului: {{errorMessage}}",

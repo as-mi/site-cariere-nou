@@ -4,6 +4,10 @@ test("can create new account using e-mail and password", async ({ page }) => {
   // Visit the home page
   await page.goto("/");
 
+  // Accept cookies
+  const acceptCookiesButton = await page.waitForSelector(`button:text("OK")`);
+  await acceptCookiesButton.click();
+
   // Click on the "My account" button
   const myProfileLink = await page.waitForSelector(`text=Contul meu`);
   await myProfileLink.click();
@@ -32,7 +36,9 @@ test("can create new account using e-mail and password", async ({ page }) => {
   await page.fill(`[name=name]`, name);
   await page.fill(`[name=password]`, password);
   await page.fill(`[name=passwordConfirmation]`, password);
-  await page.check(`[name=consent]`);
+  await page.check(`[name="consent.privacyPolicy"]`);
+  await page.check(`[name="consent.termsOfService"]`);
+  await page.check(`[name="consent.applyToOtherPartners"]`);
 
   const registerButton = await page.waitForSelector(
     `input[type=submit]:is(:text("Înregistrează-te"))`

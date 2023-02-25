@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import Link from "next/link";
+
 import { useTranslation } from "next-i18next";
 
 import {
@@ -11,6 +13,7 @@ import {
 } from "~/lib/passwords";
 
 import Input from "~/components/forms/input";
+import ConsentCheckbox from "~/components/forms/consent-checkbox";
 
 type RegistrationFormProps = {
   onSuccess: () => void;
@@ -21,7 +24,11 @@ type RegistrationData = {
   name: string;
   password: string;
   passwordConfirmation: string;
-  consent: boolean;
+  consent: {
+    privacyPolicy: boolean;
+    termsOfService: boolean;
+    applyToOtherPartners: boolean;
+  };
 };
 
 const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
@@ -168,26 +175,51 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
             }
           />
 
-          <div>
-            <input
-              id="consent"
-              type="checkbox"
-              {...register("consent", { required: true })}
-              className={`m-1 h-4 w-4 p-1 ${
-                errors.consent ? "ring-1 ring-inset ring-red-400" : ""
-              }`}
-            />
-            <label htmlFor="consent" className="font-medium">
-              {t("registrationForm.consent")}
-            </label>
-            <div
-              className={`pt-1 pl-2 text-sm ${
-                errors.consent?.type === "required" ? "" : "hidden"
-              }`}
-            >
-              {t("registrationForm.consentRequired")}
-            </div>
-          </div>
+          <ConsentCheckbox
+            name="consent.privacyPolicy"
+            label={
+              <>
+                {t("registrationForm.consent.beforePrivacyPolicy")}
+                <Link
+                  href="/privacy-policy"
+                  className="text-green-900 hover:text-green-700 active:text-green-600"
+                >
+                  {t("registrationForm.consent.privacyPolicy")}
+                </Link>
+                {t("registrationForm.consent.afterPrivacyPolicy")}
+              </>
+            }
+            register={register}
+            required
+            fieldErrors={errors.consent?.privacyPolicy}
+          />
+
+          <ConsentCheckbox
+            name="consent.termsOfService"
+            label={
+              <>
+                {t("registrationForm.consent.beforeTermsOfService")}
+                <Link
+                  href="/terms-of-service"
+                  className="text-green-900 hover:text-green-700 active:text-green-600"
+                >
+                  {t("registrationForm.consent.termsOfService")}
+                </Link>
+                {t("registrationForm.consent.afterTermsOfService")}
+              </>
+            }
+            register={register}
+            required
+            fieldErrors={errors.consent?.termsOfService}
+          />
+
+          <ConsentCheckbox
+            name="consent.applyToOtherPartners"
+            label={t("registrationForm.consent.applyToOtherPartners")!}
+            register={register}
+            required={false}
+            fieldErrors={errors.consent?.applyToOtherPartners}
+          />
         </div>
 
         <div className="mt-6 text-center">
