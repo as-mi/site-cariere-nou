@@ -10,6 +10,7 @@ import { faEdit, faListCheck } from "@fortawesome/free-solid-svg-icons";
 import { Role } from "@prisma/client";
 import useRole from "~/hooks/use-role";
 
+import { getLoginPageUrl } from "~/lib/urls";
 import { trpc } from "~/lib/trpc";
 
 type TechnicalTestMessageProps = {
@@ -197,12 +198,14 @@ export type Position = {
 type PositionCardProps = {
   position: Position;
   enableApplicationForm: boolean;
+  returnUrl: string;
   initiallyShowApplicationForm?: boolean;
 };
 
 const PositionCard: React.FC<PositionCardProps> = ({
   position,
   enableApplicationForm,
+  returnUrl,
   initiallyShowApplicationForm,
 }) => {
   const router = useRouter();
@@ -251,54 +254,70 @@ const PositionCard: React.FC<PositionCardProps> = ({
           Nu a fost setată o descriere pentru această poziție.
         </div>
       )}
-      {role === Role.PARTICIPANT && enableApplicationForm && (
-        <div className="mt-3">
-          {position.alreadyAppliedTo ? (
-            <>
-              <p>Ai aplicat deja pentru această poziție.</p>
-              <div className="mt-2">
-                <button
-                  type="button"
-                  onClick={withdrawApplication}
-                  className="rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600 active:bg-red-700"
-                >
-                  Retrage aplicația
-                </button>
-              </div>
-            </>
-          ) : showApplicationSuccessMessage ? (
-            <ApplicationSuccessMessage />
-          ) : showApplicationForm ? (
-            showTechnicalTestMessage ? (
-              <TechnicalTestMessage
-                technicalTestId={position.technicalTestId!}
-                mandatory={position.technicalTestIsMandatory}
-                onSkip={() => setTechnicalTestSkipped(true)}
-                onCancel={() => setShowApplicationForm(false)}
-              />
-            ) : (
-              <ApplicationForm
-                onCancel={() => {
-                  setShowApplicationForm(false);
-                  setTechnicalTestSkipped(false);
-                }}
-                onSuccess={() => {
-                  setShowApplicationForm(false);
-                  setShowApplicationSuccessMessage(true);
-                }}
-                positionId={position.id}
-              />
-            )
-          ) : (
-            <button
-              onClick={() => setShowApplicationForm(true)}
-              className="rounded-lg bg-blue-500 px-3 py-2 text-white hover:bg-blue-400 active:bg-blue-300"
-            >
-              Aplică acum
-            </button>
-          )}
-        </div>
+      {role === undefined && enableApplicationForm && (
+        <p className="mt-3">
+          <Link
+            href={getLoginPageUrl(false, returnUrl)}
+            className="text-green-700 hover:text-green-600 active:text-green-500"
+          >
+            Intră în cont
+          </Link>{" "}
+          pentru a putea aplica pe această poziție.
+        </p>
       )}
+      {role === Role.PARTICIPANT &&
+        (enableApplicationForm ? (
+          <div className="mt-3">
+            {position.alreadyAppliedTo ? (
+              <>
+                <p>Ai aplicat deja pentru această poziție.</p>
+                <div className="mt-2">
+                  <button
+                    type="button"
+                    onClick={withdrawApplication}
+                    className="rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600 active:bg-red-700"
+                  >
+                    Retrage aplicația
+                  </button>
+                </div>
+              </>
+            ) : showApplicationSuccessMessage ? (
+              <ApplicationSuccessMessage />
+            ) : showApplicationForm ? (
+              showTechnicalTestMessage ? (
+                <TechnicalTestMessage
+                  technicalTestId={position.technicalTestId!}
+                  mandatory={position.technicalTestIsMandatory}
+                  onSkip={() => setTechnicalTestSkipped(true)}
+                  onCancel={() => setShowApplicationForm(false)}
+                />
+              ) : (
+                <ApplicationForm
+                  onCancel={() => {
+                    setShowApplicationForm(false);
+                    setTechnicalTestSkipped(false);
+                  }}
+                  onSuccess={() => {
+                    setShowApplicationForm(false);
+                    setShowApplicationSuccessMessage(true);
+                  }}
+                  positionId={position.id}
+                />
+              )
+            ) : (
+              <button
+                onClick={() => setShowApplicationForm(true)}
+                className="rounded-lg bg-blue-500 px-3 py-2 text-white hover:bg-blue-400 active:bg-blue-300"
+              >
+                Aplică acum
+              </button>
+            )}
+          </div>
+        ) : (
+          <p className="mt-3">
+            Aplicările pe posturi sunt momentan dezactivate.
+          </p>
+        ))}
       {role === Role.ADMIN && (
         <div className="mt-4 flex flex-row flex-wrap items-center justify-center gap-2">
           <Link
