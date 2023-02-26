@@ -33,6 +33,9 @@ type EditCompanyFieldValues = {
   description: string;
   useExternalUrlForPositions: boolean;
   positionsExternalUrl: string | null;
+  instagramUrl: string;
+  linkedinUrl: string;
+  facebookUrl: string;
 };
 
 const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
@@ -190,6 +193,37 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
             errors={errors}
             className="min-h-[8rem] min-w-[24rem]"
           />
+
+          <div className="py-4">
+            <fieldset>
+              <legend className="mb-1 font-semibold">
+                Link-uri social media
+              </legend>
+              <div className="space-y-2 px-2">
+                <TextField
+                  name="facebookUrl"
+                  label="Link pagină de Facebook"
+                  placeholder="https://www.facebook.com/asmi.ub/"
+                  register={register}
+                  errors={errors}
+                />
+                <TextField
+                  name="instagramUrl"
+                  label="Link pagină de Instagram"
+                  placeholder="https://www.instagram.com/asmi.ub/"
+                  register={register}
+                  errors={errors}
+                />
+                <TextField
+                  name="linkedinUrl"
+                  label="Link pagină de LinkedIn"
+                  placeholder="https://www.linkedin.com/company/asmi-ub/"
+                  register={register}
+                  errors={errors}
+                />
+              </div>
+            </fieldset>
+          </div>
 
           <CheckboxField
             name="useExternalUrlForPositions"

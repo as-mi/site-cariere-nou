@@ -9,6 +9,15 @@ import { PackageType, Role } from "@prisma/client";
 
 import showdown from "showdown";
 
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookF,
+  faInstagram,
+  faLinkedinIn,
+} from "@fortawesome/free-brands-svg-icons";
+import { faLink, faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import { getServerSession } from "~/lib/auth";
 import { getSettingValue } from "~/lib/settings/get";
 import prisma from "~/lib/prisma";
@@ -22,8 +31,31 @@ import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
   Position,
 } from "~/components/pages/companies/positions/position-card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+
+type SocialMediaLinkProps = {
+  href: string;
+  icon: IconProp;
+  title: string;
+  className?: string;
+};
+
+const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
+  href,
+  icon,
+  title,
+  className,
+}) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noreferrer"
+    className="mx-1 inline-block h-6 w-6 rounded-md bg-white text-center align-middle text-base text-black hover:bg-zinc-200 active:bg-zinc-300"
+  >
+    <span title={title}>
+      <FontAwesomeIcon icon={icon} className={className} />
+    </span>
+  </a>
+);
 
 type Logo = {
   id: number;
@@ -37,8 +69,12 @@ type Company = {
   descriptionHtml: string;
   packageType: PackageType;
   siteUrl: string;
+  instagramUrl: string;
+  facebookUrl: string;
+  linkedinUrl: string;
   logo: Logo;
   positionsExternalUrl: string | null;
+
   positions: Position[];
 };
 
@@ -83,8 +119,41 @@ const CompanyPage: NextPage<PageProps> = ({
           <h2 className="font-display text-xl">
             Partener {company.packageType}
           </h2>
+
+          <div className="mt-3 mb-1 flex flex-wrap">
+            {company.siteUrl && (
+              <div className="sm:hidden">
+                <SocialMediaLink
+                  href={company.siteUrl}
+                  icon={faLink}
+                  title="Website Link"
+                />
+              </div>
+            )}
+            {company.instagramUrl && (
+              <SocialMediaLink
+                href={company.instagramUrl}
+                icon={faInstagram}
+                title="Instagram"
+              />
+            )}
+            {company.facebookUrl && (
+              <SocialMediaLink
+                href={company.facebookUrl}
+                icon={faFacebookF}
+                title="Facebook"
+              />
+            )}
+            {company.linkedinUrl && (
+              <SocialMediaLink
+                href={company.linkedinUrl}
+                icon={faLinkedinIn}
+                title="LinkedIn"
+              />
+            )}
+          </div>
           {company.siteUrl && (
-            <h3 className="mt-1 font-display text-lg">
+            <h3 className="mt-1 hidden w-1/4 truncate text-center font-display text-lg sm:block">
               Link:{" "}
               <a
                 href={company.siteUrl}
@@ -201,6 +270,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       description: true,
       packageType: true,
       siteUrl: true,
+      instagramUrl: true,
+      facebookUrl: true,
+      linkedinUrl: true,
       logo: {
         select: {
           id: true,
@@ -340,6 +412,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         name: company.name,
         packageType: company.packageType,
         siteUrl: company.siteUrl,
+        instagramUrl: company.instagramUrl,
+        facebookUrl: company.facebookUrl,
+        linkedinUrl: company.linkedinUrl,
         logo: company.logo,
         descriptionHtml: converter.makeHtml(company.description),
         positionsExternalUrl: company.positionsExternalUrl,
