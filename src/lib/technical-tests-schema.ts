@@ -16,6 +16,9 @@ export enum QuestionKind {
   SINGLE_CHOICE = "singleChoice",
 }
 
+/** Default kind for newly added questions. */
+export const DEFAULT_QUESTION_KIND = QuestionKind.SHORT_TEXT;
+
 export const QuestionSchema = z
   .object({
     id: IdSchema,

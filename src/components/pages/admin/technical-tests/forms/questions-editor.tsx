@@ -8,7 +8,7 @@ import _ from "lodash";
 
 import useMemoCompare from "~/hooks/use-memo-compare";
 
-import { QuestionKind } from "~/lib/technical-tests-schema";
+import { DEFAULT_QUESTION_KIND } from "~/lib/technical-tests-schema";
 
 import { CommonFieldValues } from "./common";
 import QuestionCard from "./question-card";
@@ -36,7 +36,7 @@ const QuestionsEditor: React.FC = () => {
       id,
       title: "",
       details: "",
-      kind: QuestionKind.SINGLE_CHOICE,
+      kind: DEFAULT_QUESTION_KIND,
     });
   };
 

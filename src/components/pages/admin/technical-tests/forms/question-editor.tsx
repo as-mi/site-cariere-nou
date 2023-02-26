@@ -36,7 +36,7 @@ const QuestionEditor: React.FC<QuestionEditorProps> = ({ index }) => {
       // to prevent `react-hook-form` from trying to validate them
       unregister(`${name}.choices`);
     }
-  });
+  }, [watchQuestionKind, name, unregister]);
 
   return (
     <>
@@ -68,7 +68,7 @@ const QuestionEditor: React.FC<QuestionEditorProps> = ({ index }) => {
 
         <SelectField
           name={`${name}.kind`}
-          label="Tip întrebare"
+          label="Tip de răspuns"
           options={QUESTION_TYPE_OPTIONS}
           register={register}
           fieldErrors={fieldErrors?.kind}
