@@ -1,7 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 
-import Image from "next/image";
 import Head from "next/head";
 import Link from "next/link";
 
@@ -11,40 +9,6 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import CommonNavBar from "~/components/common/navbar";
 import Footer from "~/components/common/footer";
 import ContactSection from "~/components/pages/home/contact";
-
-import logoCariereSmall from "~/images/logos/cariere-small-white.png";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faClose } from "@fortawesome/free-solid-svg-icons";
-
-export type RenderLinksParams = {
-  showNavMenu: () => void;
-  closeNavMenu: () => void;
-};
-
-export type NavBarProps = {
-  renderLinks?: ({
-    showNavMenu,
-    closeNavMenu,
-  }: RenderLinksParams) => JSX.Element | null;
-};
-
-const useScrollPosition = (): number => {
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  useEffect(() => {
-    const updatePosition = () => {
-      setScrollPosition(window.pageYOffset);
-    };
-    window.addEventListener("scroll", updatePosition, { passive: true });
-    updatePosition();
-    return () => {
-      window.removeEventListener("scroll", updatePosition);
-    };
-  }, []);
-
-  return scrollPosition;
-};
 
 const NavBar: React.FC = () => {
   const { t } = useTranslation("common");
