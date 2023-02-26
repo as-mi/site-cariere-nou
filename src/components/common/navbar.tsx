@@ -19,6 +19,7 @@ export type NavBarProps = {
     showNavMenu,
     closeNavMenu,
   }: RenderLinksParams) => JSX.Element | null;
+  autoHideLogo?: boolean;
 };
 
 // Based on https://designcode.io/react-hooks-handbook-usescrollposition-hook
@@ -39,7 +40,7 @@ const useScrollPosition = (): number => {
   return scrollPosition;
 };
 
-const NavBar: React.FC<NavBarProps> = ({ renderLinks }) => {
+const NavBar: React.FC<NavBarProps> = ({ renderLinks, autoHideLogo }) => {
   const { t } = useTranslation("common");
 
   const [navMenuShown, setNavMenuShown] = useState(false);
@@ -67,7 +68,7 @@ const NavBar: React.FC<NavBarProps> = ({ renderLinks }) => {
           // makes this image look very blurry
           unoptimized
           className={`opacity-0 transition-opacity duration-500 ${
-            scrolled ? "opacity-100" : "invisible"
+            !autoHideLogo || scrolled ? "opacity-100" : "invisible"
           }`}
         />
       </div>
@@ -103,4 +104,5 @@ export default NavBar;
 
 NavBar.defaultProps = {
   renderLinks: () => null,
+  autoHideLogo: true,
 };

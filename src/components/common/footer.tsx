@@ -1,7 +1,7 @@
 import { useTranslation } from "next-i18next";
 
 const Footer: React.FC = () => {
-  const { t } = useTranslation("home");
+  const { t } = useTranslation("common");
   return (
     <footer className="bg-black py-5 text-sm text-white">
       <p className="mb-2 text-center">
