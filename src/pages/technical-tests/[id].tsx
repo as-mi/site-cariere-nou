@@ -1,14 +1,16 @@
 import { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 
+import showdown from "showdown";
+
 import { Role } from "@prisma/client";
 
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 import {
-  Question,
+  QuestionKind,
   QuestionsSchema,
-  sanitizeQuestions,
+  RenderedQuestion,
 } from "~/lib/technical-tests-schema";
 
 import TechnicalTest from "~/components/pages/technical-tests/technical-test";
@@ -25,7 +27,7 @@ type PageProps = {
         slug: string;
       };
     };
-    questions: Question[];
+    questions: RenderedQuestion[];
   };
   alreadyAnsweredAt: {
     date: string;
@@ -172,8 +174,21 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     throw new Error("Failed to parse questions JSON");
   }
 
+  const converter = new showdown.Converter({ tables: true });
+
   const questions = result.data;
-  sanitizeQuestions(questions);
+  const renderedQuestions: RenderedQuestion[] = questions.map((question) => {
+    const detailsHtml = converter.makeHtml(question.details);
+
+    return {
+      id: question.id,
+      title: question.title,
+      detailsHtml: detailsHtml,
+      kind: question.kind,
+      choices:
+        question.kind === QuestionKind.SINGLE_CHOICE ? question.choices : [],
+    };
+  });
 
   if (user.role === Role.PARTICIPANT) {
     await prisma.participantStartTechnicalTest.upsert({
@@ -191,7 +206,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     props: {
       technicalTest: {
         ...technicalTest,
-        questions,
+        questions: renderedQuestions,
         participantAnswers: null,
       },
       alreadyAnsweredAt,

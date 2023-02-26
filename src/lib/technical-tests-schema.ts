@@ -32,6 +32,12 @@ export const QuestionSchema = z
 
 export type Question = z.infer<typeof QuestionSchema>;
 
+export type SanitizedQuestion = Omit<Question, "correctChoiceId">;
+
+export type RenderedQuestion = Omit<SanitizedQuestion, "details"> & {
+  detailsHtml: string;
+};
+
 export const QuestionsSchema = z.array(QuestionSchema);
 
 export const AnswerSchema = z
@@ -44,22 +50,6 @@ export const AnswerSchema = z
 export type Answer = z.infer<typeof AnswerSchema>;
 
 export const AnswersSchema = z.array(AnswerSchema);
-
-/**
- * Removes sensitive data from the questions array,
- * before they get sent to the front end to be rendered.
- */
-export function sanitizeQuestions(questions: Question[]) {
-  questions.forEach((question) => {
-    if (question.kind === QuestionKind.SINGLE_CHOICE) {
-      // Participants should not know which is the correct choice
-      delete question.correctChoiceId;
-    } else {
-      // Remove leftover choices array if question is no longer single choice
-      delete question.choices;
-    }
-  });
-}
 
 export function validateAnswers(answers: Answer[], questions: Question[]) {
   if (answers.length > questions.length) {

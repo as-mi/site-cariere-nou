@@ -8,7 +8,11 @@ import {
 
 import { useRouter } from "next/router";
 
-import { Answer, Question, QuestionKind } from "~/lib/technical-tests-schema";
+import {
+  Answer,
+  RenderedQuestion,
+  QuestionKind,
+} from "~/lib/technical-tests-schema";
 import { trpc } from "~/lib/trpc";
 
 import { useIsAdmin } from "~/hooks/use-role";
@@ -19,7 +23,7 @@ type TechnicalTestFieldValues = {
 
 type TechnicalTestQuestionProps = {
   index: number;
-  question: Question;
+  question: RenderedQuestion;
   disabled?: boolean;
   register: UseFormRegister<TechnicalTestFieldValues>;
   errors: FieldErrors<TechnicalTestFieldValues>;
@@ -88,7 +92,11 @@ const TechnicalTestQuestion: React.FC<TechnicalTestQuestionProps> = ({
         <span className="font-semibold">Întrebarea #{index + 1}:</span>{" "}
         {question.title}
       </h2>
-      {question.details && <p className="my-1">{question.details}</p>}
+      {question.detailsHtml && (
+        <div className="prose prose-invert my-1 mx-auto max-w-prose">
+          <div dangerouslySetInnerHTML={{ __html: question.detailsHtml }} />
+        </div>
+      )}
       <input
         type="hidden"
         disabled={disabled}
@@ -107,7 +115,7 @@ type TechnicalTestProps = {
   companySlug: string;
   positionId: number;
   technicalTestId: number;
-  questions: Question[];
+  questions: RenderedQuestion[];
 };
 
 const TechnicalTest: React.FC<TechnicalTestProps> = ({
