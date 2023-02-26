@@ -40,6 +40,16 @@ const events: Event[] = [
     startTime: "12:00",
     facebookEventUrl: "https://www.facebook.com/events/573060301522184/",
   },
+  {
+    id: 3,
+    name: "Prezentare Cariere: Essensys",
+    type: "Prezentare",
+    location: "Facultatea de Matematică și Informatică",
+    date: "27 februarie",
+    timeInterval: "16:00 - 17:00",
+    facebookEventUrl:
+      "https://www.facebook.com/events/s/prezentare-cariere-essensys/178829411524823/",
+  },
 ];
 
 const EventsSection: React.FC<EventsSectionProps> = ({ t }) => {
