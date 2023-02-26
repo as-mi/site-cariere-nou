@@ -9,6 +9,15 @@ import { PackageType, Role } from "@prisma/client";
 
 import showdown from "showdown";
 
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookF,
+  faInstagram,
+  faLinkedinIn,
+} from "@fortawesome/free-brands-svg-icons";
+import { faLink, faPlus } from "@fortawesome/free-solid-svg-icons";
+
 import { getServerSession } from "~/lib/auth";
 import { getSettingValue } from "~/lib/settings/get";
 import prisma from "~/lib/prisma";
@@ -22,18 +31,6 @@ import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
   Position,
 } from "~/components/pages/companies/positions/position-card";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
-
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebookF,
-  faInstagram,
-  faLinkedinIn,
-} from "@fortawesome/free-brands-svg-icons";
-
-import { faLink } from "@fortawesome/free-solid-svg-icons";
 
 type SocialMediaLinkProps = {
   href: string;
@@ -52,7 +49,7 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     href={href}
     target="_blank"
     rel="noreferrer"
-    className=" mx-1 inline-block h-6 w-6 rounded-md bg-white text-center align-middle text-base text-black hover:bg-green-700"
+    className="mx-1 inline-block h-6 w-6 rounded-md bg-white text-center align-middle text-base text-black hover:bg-zinc-200 active:bg-zinc-300"
   >
     <span title={title}>
       <FontAwesomeIcon icon={icon} className={className} />
@@ -123,8 +120,7 @@ const CompanyPage: NextPage<PageProps> = ({
             Partener {company.packageType}
           </h2>
 
-          <div className="flex">
-            {""}
+          <div className="mt-3 mb-1 flex flex-wrap">
             {company.siteUrl && (
               <div className="sm:hidden">
                 <SocialMediaLink
@@ -157,7 +153,7 @@ const CompanyPage: NextPage<PageProps> = ({
             )}
           </div>
           {company.siteUrl && (
-            <h3 className=" mt-1  hidden w-1/4 truncate font-display text-lg sm:block">
+            <h3 className="mt-1 hidden w-1/4 truncate text-center font-display text-lg sm:block">
               Link:{" "}
               <a
                 href={company.siteUrl}
