@@ -21,7 +21,7 @@ import CompanyLogo from "~/components/common/company-logo";
 import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
   Position,
-} from "~/components/pages/companies/position-card";
+} from "~/components/pages/companies/positions/position-card";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
@@ -114,7 +114,9 @@ const CompanyPage: NextPage<PageProps> = ({
         {showAvailablePositions && (
           <section className="flex flex-col items-center bg-black p-3 pt-8 text-white sm:pb-16">
             <header className="mb-3">
-              <h2 className="font-display text-2xl">Poziții deschise</h2>
+              <h2 className="font-display text-2xl sm:mb-6 sm:text-3xl">
+                Poziții deschise
+              </h2>
             </header>
             {company.positionsExternalUrl !== null ? (
               <div className="text-xl">
@@ -128,7 +130,7 @@ const CompanyPage: NextPage<PageProps> = ({
                 Acest partener nu a publicat încă nicio poziție.
               </div>
             ) : (
-              <div className="flex w-full flex-col items-center gap-4 xs:px-3">
+              <div className="flex w-full max-w-6xl flex-row flex-wrap items-center justify-center gap-4 xs:px-3 md:gap-8">
                 {company.positions.map((position) => (
                   <PositionCard
                     key={position.id}

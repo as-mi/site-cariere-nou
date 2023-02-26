@@ -56,7 +56,7 @@ const NavBar: React.FC<NavBarProps> = ({ renderLinks }) => {
   const scrolled = scrollPosition > 200;
 
   return (
-    <header className="fixed z-20 flex w-full items-center bg-black px-2 py-3 text-white">
+    <header className="fixed z-30 flex w-full items-center bg-black px-2 py-3 text-white">
       <div>
         <Image
           src={logoCariereSmall}
