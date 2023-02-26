@@ -5,7 +5,7 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { appWithTranslation } from "next-i18next";
 
-import { Open_Sans, Jost } from "@next/font/google";
+import { Open_Sans, Jost } from "next/font/google";
 
 import { trpc } from "~/lib/trpc";
 
