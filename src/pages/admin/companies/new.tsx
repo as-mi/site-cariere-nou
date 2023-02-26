@@ -170,30 +170,37 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             errors={errors}
             className="min-h-[8rem]"
           />
-          <br></br>
-          <br></br>
-          <label>Social media:</label>
-          <TextField
-            name="instagramUrl"
-            label="URL Instagram"
-            placeholder="https://www.example.com"
-            register={register}
-            errors={errors}
-          />
-          <TextField
-            name="linkedinUrl"
-            label="URL LinkedIn"
-            placeholder="https://www.example.com"
-            register={register}
-            errors={errors}
-          />
-          <TextField
-            name="facebookUrl"
-            label="URL Facebook"
-            placeholder="https://www.example.com"
-            register={register}
-            errors={errors}
-          />
+
+          <div className="py-4">
+            <fieldset>
+              <legend className="mb-1 font-semibold">
+                Link-uri social media
+              </legend>
+              <div className="space-y-2 px-2">
+                <TextField
+                  name="facebookUrl"
+                  label="Link pagină de Facebook"
+                  placeholder="https://www.facebook.com/asmi.ub/"
+                  register={register}
+                  errors={errors}
+                />
+                <TextField
+                  name="instagramUrl"
+                  label="Link pagină de Instagram"
+                  placeholder="https://www.instagram.com/asmi.ub/"
+                  register={register}
+                  errors={errors}
+                />
+                <TextField
+                  name="linkedinUrl"
+                  label="Link pagină de LinkedIn"
+                  placeholder="https://www.linkedin.com/company/asmi-ub/"
+                  register={register}
+                  errors={errors}
+                />
+              </div>
+            </fieldset>
+          </div>
 
           <CheckboxField
             name="useExternalUrlForPositions"
