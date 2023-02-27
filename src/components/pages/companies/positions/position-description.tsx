@@ -24,7 +24,7 @@ const PositionDescription: React.FC<PositionDescriptionProps> = ({
       })}
     >
       <div
-        className="prose mx-auto max-w-prose"
+        className="prose mx-auto min-h-[5rem] max-w-prose"
         dangerouslySetInnerHTML={{
           __html: descriptionHtml,
         }}

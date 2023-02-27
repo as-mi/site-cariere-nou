@@ -111,9 +111,7 @@ const PositionCard: React.FC<PositionCardProps> = ({
             onExpand={setExpanded}
           />
         ) : (
-          <div className="italic text-zinc-500">
-            Nu a fost setată o descriere pentru această poziție.
-          </div>
+          <div className="min-h-[5rem] italic text-zinc-500"></div>
         )}
         {role === undefined && enableApplicationForm && (
           <p className="mt-3">
