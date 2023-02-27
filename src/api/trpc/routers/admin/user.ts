@@ -32,17 +32,21 @@ export const userRouter = router({
   create: adminProcedure.input(CreateInput).mutation(async ({ input }) => {
     const { name, email, password, role } = input;
 
-    try {
-      validatePassword(password);
-    } catch (e) {
-      if (e instanceof BadRequestError) {
-        throw new Error(`Password validation error: ${e.message}`);
-      } else {
-        throw e;
+    let passwordHash;
+    if (password) {
+      try {
+        validatePassword(password);
+      } catch (e) {
+        if (e instanceof BadRequestError) {
+          throw new Error(`Password validation error: ${e.message}`);
+        } else {
+          throw e;
+        }
       }
+      passwordHash = await hashPassword(password);
+    } else {
+      passwordHash = "";
     }
-
-    const passwordHash = password ? await hashPassword(password) : "";
 
     await prisma.user.create({
       data: {
