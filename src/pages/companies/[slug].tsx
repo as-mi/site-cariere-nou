@@ -43,7 +43,6 @@ type Company = {
   linkedinUrl: string;
   logo: Logo;
   positionsExternalUrl: string | null;
-
   positions: Position[];
 };
 
