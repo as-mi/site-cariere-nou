@@ -11,6 +11,7 @@ import {
   faFile,
   faGear,
   faHouse,
+  faImage,
   faListCheck,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
@@ -31,6 +32,11 @@ const links = [
     href: "/admin/users",
     icon: faUser,
     label: "Utilizatori",
+  },
+  {
+    href: "/admin/images",
+    icon: faImage,
+    label: "Imagini",
   },
   {
     href: "/admin/companies",
