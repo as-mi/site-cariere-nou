@@ -9,14 +9,8 @@ import { PackageType, Role } from "@prisma/client";
 
 import showdown from "showdown";
 
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebookF,
-  faInstagram,
-  faLinkedinIn,
-} from "@fortawesome/free-brands-svg-icons";
-import { faLink, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 import { getServerSession } from "~/lib/auth";
 import { getSettingValue } from "~/lib/settings/get";
@@ -25,37 +19,12 @@ import prisma from "~/lib/prisma";
 import { useIsAdmin } from "~/hooks/use-role";
 
 import Footer from "~/components/common/footer";
+import Header from "~/components/pages/companies/header";
 import ExternalLink from "~/components/common/external-link";
-import CompanyLogo from "~/components/common/company-logo";
 import NavBar from "~/components/pages/companies/navbar";
 import PositionCard, {
   Position,
 } from "~/components/pages/companies/positions/position-card";
-
-type SocialMediaLinkProps = {
-  href: string;
-  icon: IconProp;
-  title: string;
-  className?: string;
-};
-
-const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
-  href,
-  icon,
-  title,
-  className,
-}) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noreferrer"
-    className="mx-1 inline-block h-6 w-6 rounded-md bg-white text-center align-middle text-base text-black hover:bg-zinc-200 active:bg-zinc-300"
-  >
-    <span title={title}>
-      <FontAwesomeIcon icon={icon} className={className} />
-    </span>
-  </a>
-);
 
 type Logo = {
   id: number;
@@ -69,8 +38,8 @@ type Company = {
   descriptionHtml: string;
   packageType: PackageType;
   siteUrl: string;
-  instagramUrl: string;
   facebookUrl: string;
+  instagramUrl: string;
   linkedinUrl: string;
   logo: Logo;
   positionsExternalUrl: string | null;
@@ -109,63 +78,7 @@ const CompanyPage: NextPage<PageProps> = ({
       </Head>
       <NavBar companyId={company.id} />
       <main className="min-h-screen bg-black pt-32 md:pt-40 lg:pt-48">
-        <header className="flex flex-col items-center justify-center bg-black py-8 text-white sm:py-12 md:py-20">
-          <div className="mx-10 mb-8 max-w-sm rounded-lg bg-white p-4 xs:mb-12 xs:p-8 sm:mb-16 sm:p-12">
-            <CompanyLogo company={company} />
-          </div>
-          <h1 className="mb-2 font-display text-3xl sm:text-5xl">
-            {company.name}
-          </h1>
-          <h2 className="font-display text-xl">
-            Partener {company.packageType}
-          </h2>
-
-          <div className="mt-3 mb-1 flex flex-wrap">
-            {company.siteUrl && (
-              <div className="sm:hidden">
-                <SocialMediaLink
-                  href={company.siteUrl}
-                  icon={faLink}
-                  title="Website Link"
-                />
-              </div>
-            )}
-            {company.instagramUrl && (
-              <SocialMediaLink
-                href={company.instagramUrl}
-                icon={faInstagram}
-                title="Instagram"
-              />
-            )}
-            {company.facebookUrl && (
-              <SocialMediaLink
-                href={company.facebookUrl}
-                icon={faFacebookF}
-                title="Facebook"
-              />
-            )}
-            {company.linkedinUrl && (
-              <SocialMediaLink
-                href={company.linkedinUrl}
-                icon={faLinkedinIn}
-                title="LinkedIn"
-              />
-            )}
-          </div>
-          {company.siteUrl && (
-            <h3 className="mt-1 hidden w-1/4 truncate text-center font-display text-lg sm:block">
-              Link:{" "}
-              <a
-                href={company.siteUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-zinc-200 active:text-zinc-300"
-              >
-                {company.siteUrl}
-              </a>
-            </h3>
-          )}
-        </header>
+        <Header company={company} />
         <section className="bg-white p-4 xs:py-8 xs:px-6 sm:py-12 md:py-16">
           <div className="prose mx-auto max-w-prose">
             {company.descriptionHtml ? (
@@ -270,8 +183,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       description: true,
       packageType: true,
       siteUrl: true,
-      instagramUrl: true,
       facebookUrl: true,
+      instagramUrl: true,
       linkedinUrl: true,
       logo: {
         select: {
@@ -412,8 +325,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         name: company.name,
         packageType: company.packageType,
         siteUrl: company.siteUrl,
-        instagramUrl: company.instagramUrl,
         facebookUrl: company.facebookUrl,
+        instagramUrl: company.instagramUrl,
         linkedinUrl: company.linkedinUrl,
         logo: company.logo,
         descriptionHtml: converter.makeHtml(company.description),
