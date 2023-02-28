@@ -4,10 +4,12 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { Prisma } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
+
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 import { trpc } from "~/lib/trpc";
 
@@ -112,7 +114,29 @@ AdminPositionsPage.getLayout = (page: ReactElement) => (
   <Layout title="Posturi">{page}</Layout>
 );
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+  resolvedUrl,
+}) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
+  if (session.user.role !== Role.ADMIN) {
+    return {
+      props: {
+        session,
+        positionsCount: 0,
+        positions: [],
+      },
+    };
+  }
+
   const positionsCount = await prisma.position.count();
   const positions = await prisma.position.findMany({
     ...positionWithCompanyName,
@@ -121,6 +145,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
   return {
     props: {
+      session,
       positionsCount,
       positions,
     },

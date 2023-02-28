@@ -319,6 +319,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "ro", ["common", "home"])),
+      session,
       company: {
         id: company.id,
         name: company.name,

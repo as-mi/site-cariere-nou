@@ -4,6 +4,9 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
+import { Role } from "@prisma/client";
+
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 import { trpc } from "~/lib/trpc";
 
@@ -119,7 +122,29 @@ AdminTechnicalTestsPage.getLayout = (page: ReactElement) => (
   <Layout title="Teste tehnice">{page}</Layout>
 );
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+  resolvedUrl,
+}) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
+  if (session.user.role !== Role.ADMIN) {
+    return {
+      props: {
+        session,
+        technicalTestsCount: 0,
+        technicalTests: [],
+      },
+    };
+  }
+
   const technicalTestsCount = await prisma.technicalTest.count();
   const technicalTests = await prisma.technicalTest.findMany({
     select: {
@@ -146,6 +171,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
   return {
     props: {
+      session,
       technicalTestsCount,
       technicalTests,
     },

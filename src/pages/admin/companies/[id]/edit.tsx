@@ -6,6 +6,7 @@ import Link from "next/link";
 
 import { PackageType } from "@prisma/client";
 
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import { trpc } from "~/lib/trpc";
 
 import { NextPageWithLayout } from "~/pages/_app";
@@ -271,8 +272,19 @@ AdminEditCompanyPage.getLayout = (page: ReactElement) => (
 );
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+  resolvedUrl,
   params,
 }) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
   const id = params?.id;
   if (typeof id !== "string") {
     return {
@@ -289,6 +301,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   return {
     props: {
+      session,
       companyId,
     },
   };

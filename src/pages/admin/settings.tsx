@@ -8,8 +8,9 @@ import { GetServerSideProps } from "next";
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 
-import { SettingValue } from "@prisma/client";
+import { Role, SettingValue } from "@prisma/client";
 
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 import { trpc } from "~/lib/trpc";
 import { SETTINGS, Setting } from "~/lib/settings";
@@ -182,7 +183,28 @@ AdminSettingsPage.getLayout = (page: ReactElement) => (
   <Layout title="Setări">{page}</Layout>
 );
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+  resolvedUrl,
+}) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
+  if (session.user.role !== Role.ADMIN) {
+    return {
+      props: {
+        session,
+        initialData: {},
+      },
+    };
+  }
+
   const settingValues = await prisma.settingValue.findMany();
   const settingValuesByKey = _.keyBy(
     settingValues,
@@ -191,6 +213,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
   return {
     props: {
+      session,
       initialData: settingValuesByKey,
     },
   };

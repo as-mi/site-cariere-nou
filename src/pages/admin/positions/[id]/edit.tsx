@@ -16,6 +16,7 @@ import {
   CheckboxField,
 } from "~/components/pages/admin/forms";
 
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import { trpc } from "~/lib/trpc";
 
 type PageProps = {
@@ -232,8 +233,19 @@ AdminEditPositionPage.getLayout = (page: ReactElement) => (
 );
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+  resolvedUrl,
   params,
 }) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
   const id = params?.id;
   if (typeof id !== "string") {
     return {
@@ -250,6 +262,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   return {
     props: {
+      session,
       positionId,
     },
   };

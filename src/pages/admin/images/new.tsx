@@ -1,21 +1,15 @@
 import { ReactElement, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { PackageType } from "@prisma/client";
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
-import {
-  CheckboxField,
-  FileField,
-  SelectField,
-  SubmitButton,
-  TextAreaField,
-  TextField,
-} from "~/components/pages/admin/forms";
+import { FileField, SubmitButton } from "~/components/pages/admin/forms";
 
 type AddImageFieldValues = {
   file: FileList;
@@ -31,13 +25,11 @@ const AdminNewImagePage: NextPageWithLayout = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch,
   } = useForm<AddImageFieldValues>();
 
   const onSubmit: SubmitHandler<AddImageFieldValues> = async (data) => {
     setIsUploadingImage(true);
 
-    let logoImageId: number | undefined;
     try {
       const formData = new FormData();
       formData.append("file", data.file[0]);
@@ -115,3 +107,23 @@ export default AdminNewImagePage;
 AdminNewImagePage.getLayout = (page: ReactElement) => (
   <Layout title="Încarcă o nouă imagine">{page}</Layout>
 );
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  resolvedUrl,
+}) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+};

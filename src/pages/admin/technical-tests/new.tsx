@@ -6,11 +6,13 @@ import {
   useForm,
 } from "react-hook-form";
 
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
 import Select from "react-select";
 
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import { trpc } from "~/lib/trpc";
 
 import { NextPageWithLayout } from "~/pages/_app";
@@ -198,3 +200,23 @@ export default AdminNewTechnicalTestPage;
 AdminNewTechnicalTestPage.getLayout = (page: ReactElement) => (
   <Layout title="Adaugă un nou test tehnic">{page}</Layout>
 );
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  resolvedUrl,
+}) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+};
