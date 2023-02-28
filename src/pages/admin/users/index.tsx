@@ -4,12 +4,15 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import { User } from "@prisma/client";
+import { Role, User } from "@prisma/client";
 
 import { NextPageWithLayout } from "~/pages/_app";
-import Layout from "~/components/pages/admin/layout";
+
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 import { trpc } from "~/lib/trpc";
+
+import Layout from "~/components/pages/admin/layout";
 
 type PageProps = {
   usersCount: number;
@@ -107,7 +110,29 @@ AdminUsersPage.getLayout = (page: ReactElement) => (
   <Layout title="Utilizatori">{page}</Layout>
 );
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+  resolvedUrl,
+}) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
+  if (session.user.role !== Role.ADMIN) {
+    return {
+      props: {
+        session,
+        usersCount: 0,
+        users: [],
+      },
+    };
+  }
+
   const usersCount = await prisma.user.count();
   const users = await prisma.user.findMany({
     select: {
@@ -121,6 +146,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
 
   return {
     props: {
+      session,
       usersCount,
       users,
     },

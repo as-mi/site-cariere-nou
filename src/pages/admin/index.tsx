@@ -3,15 +3,12 @@ import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 
-import { getServerSession } from "next-auth";
-import { useSession } from "next-auth/react";
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 
-import { Role } from "@prisma/client";
+import useUser from "~/hooks/use-user";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
-import { authOptions } from "~/lib/next-auth-options";
-import { redirectToLoginPage } from "~/lib/auth";
 
 type LinkData = {
   href: string;
@@ -29,21 +26,13 @@ const links: LinkData[] = [
 ];
 
 const AdminHomePage: NextPageWithLayout = () => {
-  const { data: session } = useSession();
-
-  if (!session || !session.user) {
-    return null;
-  }
-
-  if (session.user.role !== Role.ADMIN) {
-    return <p>Nu ai dreptul să accesezi această pagină.</p>;
-  }
+  const user = useUser();
 
   return (
     <div className="mx-auto mt-6 max-w-xs xs:mt-12 sm:mt-20">
       <header>
         <h2 className="font-display text-2xl xs:text-3xl">
-          Salut, {session.user.name}
+          Salut, {user!.name}
         </h2>
         <p className="py-2">
           Bine ai venit în interfața de administrare a platformei Cariere.
@@ -98,7 +87,7 @@ AdminHomePage.getLayout = (page: ReactElement) => (
 );
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, authOptions);
+  const session = await getServerSession(context.req, context.res);
 
   const returnUrl = context.resolvedUrl;
 

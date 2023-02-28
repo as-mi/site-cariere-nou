@@ -1,6 +1,7 @@
 import { ReactElement, useEffect, useMemo } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
@@ -15,6 +16,7 @@ import {
   TextField,
 } from "~/components/pages/admin/forms";
 
+import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import { trpc } from "~/lib/trpc";
 
 type AddPositionFieldValues = {
@@ -216,3 +218,23 @@ export default AdminNewPositionPage;
 AdminNewPositionPage.getLayout = (page: ReactElement) => (
   <Layout title="Adaugă un nou post">{page}</Layout>
 );
+
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  resolvedUrl,
+}) => {
+  const session = await getServerSession(req, res);
+
+  const returnUrl = resolvedUrl;
+
+  if (!session || !session.user) {
+    return redirectToLoginPage(returnUrl);
+  }
+
+  return {
+    props: {
+      session,
+    },
+  };
+};

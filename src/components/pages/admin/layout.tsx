@@ -3,6 +3,10 @@ import { useState } from "react";
 import Head from "next/head";
 import Link from "next/link";
 
+import { useSession } from "next-auth/react";
+
+import { Role } from "@prisma/client";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAddressCard,
@@ -106,19 +110,38 @@ const Sidebar: React.FC = () => {
   );
 };
 
-const Layout: React.FC<LayoutProps> = ({ title, renderSidebar, children }) => (
-  <>
-    <Head>
-      <title>{title}</title>
-    </Head>
-    <div className="sm:flex">
-      {renderSidebar && <Sidebar />}
-      <main className="min-h-screen flex-1 bg-black p-3 text-white">
-        {children}
-      </main>
-    </div>
-  </>
-);
+const Layout: React.FC<LayoutProps> = ({ title, renderSidebar, children }) => {
+  const { data: session } = useSession();
+
+  if (!session || !session.user || session.user.role !== Role.ADMIN) {
+    return (
+      <>
+        <Head>
+          <title>Acces interzis</title>
+        </Head>
+        <main className="flex min-h-screen w-full flex-row items-center justify-center bg-black text-white">
+          <p className="m-4 text-center text-lg xs:text-xl sm:text-2xl md:text-3xl">
+            Nu ai dreptul să accesezi această pagină.
+          </p>
+        </main>
+      </>
+    );
+  }
+
+  return (
+    <>
+      <Head>
+        <title>{title}</title>
+      </Head>
+      <div className="sm:flex">
+        {renderSidebar && <Sidebar />}
+        <main className="min-h-screen flex-1 bg-black p-3 text-white">
+          {children}
+        </main>
+      </div>
+    </>
+  );
+};
 
 Layout.defaultProps = {
   renderSidebar: true,
