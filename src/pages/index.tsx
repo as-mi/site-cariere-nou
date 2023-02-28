@@ -11,6 +11,7 @@ import _ from "lodash";
 import { PackageType } from "@prisma/client";
 
 import prisma from "~/lib/prisma";
+import { getBaseUrl } from "~/lib/base-url";
 import { getSettingValue } from "~/lib/settings/get";
 
 import { useIsAdmin } from "~/hooks/use-role";
@@ -31,6 +32,7 @@ import EventsSection from "~/components/pages/home/events/section";
 import CookieConsent from "~/components/common/cookie-consent";
 
 type PageProps = {
+  baseUrl: string;
   showComingSoonMessage: boolean;
   alwaysShowCompaniesForAdmin: boolean;
   hideProfileLink: boolean;
@@ -40,6 +42,7 @@ type PageProps = {
 };
 
 const HomePage: NextPage<PageProps> = ({
+  baseUrl,
   showComingSoonMessage,
   alwaysShowCompaniesForAdmin,
   hideProfileLink,
@@ -60,8 +63,15 @@ const HomePage: NextPage<PageProps> = ({
         <title>Cariere v12.0</title>
         <meta
           name="description"
-          content="Cariere este un târg de job-uri și internship-uri dedicat studenților"
+          content="Cariere este un târg de job-uri și internship-uri dedicat studenților."
         />
+        <meta name="og:title" content="Cariere v12.0" />
+        <meta name="og:url" content={`${baseUrl}/`} />
+        <meta
+          name="og:image"
+          content={`${baseUrl}/images/open-graph-image.png`}
+        />
+        <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
@@ -105,6 +115,8 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
     "home",
   ]);
 
+  const baseUrl = getBaseUrl();
+
   const showComingSoonMessage = await getSettingValue("showComingSoonMessage");
   const alwaysShowCompaniesForAdmin = await getSettingValue(
     "alwaysShowCompaniesForAdmin"
@@ -121,6 +133,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
     return {
       props: {
         ...ssrConfig,
+        baseUrl,
         showComingSoonMessage,
         alwaysShowCompaniesForAdmin,
         hideProfileLink,
@@ -159,6 +172,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   return {
     props: {
       ...ssrConfig,
+      baseUrl,
       showComingSoonMessage,
       alwaysShowCompaniesForAdmin,
       hideProfileLink,
