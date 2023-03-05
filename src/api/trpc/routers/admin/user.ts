@@ -8,6 +8,10 @@ import { AllRoles, EntityId } from "../../schema";
 import { adminProcedure, router } from "../..";
 
 const ReadInput = z.object({ id: EntityId });
+const ReadManyInput = z.object({
+  pageIndex: z.number().int().gte(0),
+  pageSize: z.number().int().gte(10).lte(50).multipleOf(10),
+});
 const CreateInput = z.object({
   name: z.string(),
   email: z.string(),
@@ -28,6 +32,31 @@ export const userRouter = router({
     const { id } = input;
     const user = await prisma.user.findUnique({ where: { id } });
     return user;
+  }),
+  readMany: adminProcedure.input(ReadManyInput).query(async ({ input }) => {
+    const { pageIndex, pageSize } = input;
+    const skip = pageIndex * pageSize;
+    const take = pageSize;
+
+    const usersCount = await prisma.user.count();
+    const pageCount = Math.ceil(usersCount / pageSize);
+
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+      skip,
+      take,
+      orderBy: { id: "asc" },
+    });
+
+    return {
+      pageCount,
+      users,
+    };
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input }) => {
     const { name, email, password, role } = input;

@@ -22,3 +22,6 @@ export const adminRouter = router({
     await revalidateHomePage(ctx);
   }),
 });
+
+// Export type definition of API
+export type AdminRouter = typeof adminRouter;
