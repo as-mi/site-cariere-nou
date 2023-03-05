@@ -10,7 +10,7 @@ import { adminProcedure, router } from "../..";
 const ReadInput = z.object({ id: EntityId });
 const ReadManyInput = z.object({
   pageIndex: z.number().int().gte(0),
-  pageSize: z.number().int().gte(10).lte(50).multipleOf(10),
+  pageSize: z.number().int().gte(5).lte(50),
 });
 const CreateInput = z.object({
   name: z.string(),

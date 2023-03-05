@@ -33,13 +33,17 @@ type AdminRouterOutput = inferRouterOutputs<AdminRouter>;
 type UserReadMany = AdminRouterOutput["user"]["readMany"];
 
 type AdminUsersTableProps = {
+  initialPageSize?: number;
   initialData?: UserReadMany;
 };
 
-const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
+const AdminUsersTable: React.FC<AdminUsersTableProps> = ({
+  initialPageSize,
+  initialData,
+}) => {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: initialPageSize ?? 5,
   });
 
   const [queryInitialData, setQueryInitialData] = useState(initialData);
@@ -49,7 +53,7 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
 
   const query = trpc.admin.user.readMany.useQuery(
     { ...pagination },
-    { initialData: queryInitialData }
+    { initialData: queryInitialData, staleTime: 1000 }
   );
 
   const router = useRouter();

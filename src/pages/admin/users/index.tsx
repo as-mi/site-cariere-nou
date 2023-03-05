@@ -13,6 +13,8 @@ import prisma from "~/lib/prisma";
 import Layout from "~/components/pages/admin/layout";
 import AdminUsersTable, { User } from "~/components/pages/admin/users/table";
 
+const INITIAL_PAGE_SIZE = 5;
+
 type PageProps = {
   usersCount: number;
   users: User[];
@@ -41,7 +43,11 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
       </p>
     </header>
     <AdminUsersTable
-      initialData={{ pageCount: Math.ceil(users.length / 10), users }}
+      initialPageSize={INITIAL_PAGE_SIZE}
+      initialData={{
+        pageCount: Math.ceil(usersCount / INITIAL_PAGE_SIZE),
+        users,
+      }}
     />
   </>
 );
@@ -83,7 +89,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       name: true,
       role: true,
     },
-    take: 10,
+    take: INITIAL_PAGE_SIZE,
     orderBy: [{ id: "asc" }],
   });
 
