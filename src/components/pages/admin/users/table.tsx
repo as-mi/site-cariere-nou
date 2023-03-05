@@ -14,6 +14,9 @@ import {
 
 import { User as PrismaUser } from "@prisma/client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
+
 import type { inferRouterOutputs } from "@trpc/server";
 
 import { trpc } from "~/lib/trpc";
@@ -125,8 +128,8 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({
     [handleUserResetPassword, handleUserDelete]
   );
 
-  const [data, setData] = useState<User[]>([]);
-  const [pageCount, setPageCount] = useState(-1);
+  const [data, setData] = useState<User[]>(initialData?.users ?? []);
+  const [pageCount, setPageCount] = useState(initialData?.pageCount ?? -1);
 
   useEffect(() => {
     if (query.data) {
@@ -158,8 +161,8 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({
   }
 
   return (
-    <div className="relative overflow-x-auto">
-      <div className="relative">
+    <div>
+      <div className="relative overflow-x-auto">
         {query.isLoading && (
           <div className="absolute flex h-full w-full items-center justify-center bg-slate-900 bg-opacity-80">
             <span className="font-display text-3xl font-bold">
@@ -209,28 +212,30 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({
           </tbody>
         </table>
       </div>
-      <div className="mt-3">
-        <span>
+      <div className="mt-5 mb-5 flex flex-row flex-wrap items-center justify-center gap-4 sm:mt-10">
+        <span className="mx-5">
           Pagina {table.getState().pagination.pageIndex + 1} din{" "}
           {table.getPageCount()}
         </span>
-        <span className="mx-3">
+        <span className="mx-5 inline-flex flex-row gap-3">
           <button
             onClick={() => table.previousPage()}
             disabled={!table.getCanPreviousPage()}
-            className="rounded border p-1"
+            className="rounded border py-1 px-3 disabled:text-gray-300"
           >
-            {"<"}
+            <FontAwesomeIcon icon={faArrowLeft} className="mr-2 h-4 w-4" />
+            Pagina anterioară
           </button>
           <button
             onClick={() => table.nextPage()}
             disabled={!table.getCanNextPage()}
-            className="rounded border p-1"
+            className="rounded border py-1 px-3"
           >
-            {">"}
+            <FontAwesomeIcon icon={faArrowRight} className="mr-2 h-4 w-4" />
+            Pagina următoare
           </button>
         </span>
-        <span className="mx-3 inline-flex items-center gap-1">
+        <span className="mx-5 inline-flex items-center gap-1">
           Mergi la pagina:
           <input
             type="number"
@@ -247,9 +252,9 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({
           onChange={(e) => {
             table.setPageSize(Number(e.target.value));
           }}
-          className="mx-3 rounded-lg bg-slate-800 px-2 py-1 text-white hover:cursor-pointer"
+          className="mx-5 rounded-lg bg-slate-800 px-2 py-1 text-white hover:cursor-pointer"
         >
-          {[10, 20, 30, 40, 50].map((pageSize) => (
+          {[5, 10, 25, 50].map((pageSize) => (
             <option key={pageSize} value={pageSize}>
               {pageSize} per pagină
             </option>
