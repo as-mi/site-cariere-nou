@@ -14,7 +14,7 @@
     "test:integration": "jest src/__tests__/integration",
     "test:e2e": "playwright test",
     "migrate:production": "dotenv -e .env.local -- prisma migrate deploy && dotenv -e .env.local -- prisma generate",
-    "seed:admin": "ts-node-esm prisma/seed-admin.ts"
+    "seed:admin": "ts-node-esm --transpile-only prisma/seed-admin.ts"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.2.1",
