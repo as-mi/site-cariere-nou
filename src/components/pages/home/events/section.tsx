@@ -1,14 +1,14 @@
 import { TFunction } from "next-i18next";
 
-import { Event } from "@prisma/client";
-
 import pattern from "~/images/pattern.png";
 
-import EventCard from "./card";
+import EventCard, { SerializedEvent } from "./card";
+
+export type { SerializedEvent };
 
 type EventsSectionProps = {
   t: TFunction;
-  events: Event[];
+  events: SerializedEvent[];
 };
 
 const EventsSection: React.FC<EventsSectionProps> = ({ t, events }) => (
@@ -25,11 +25,17 @@ const EventsSection: React.FC<EventsSectionProps> = ({ t, events }) => (
       </h2>
     </header>
     <div className="w-full overflow-x-auto text-center">
-      <div className="inline-flex max-w-5xl flex-1 flex-row justify-start gap-4">
-        {events.map((event) => (
-          <EventCard key={event.id} t={t} event={event} className="flex-1" />
-        ))}
-      </div>
+      {events.length > 0 ? (
+        <div className="inline-flex max-w-5xl flex-1 flex-row justify-start gap-4">
+          {events.map((event) => (
+            <EventCard key={event.id} t={t} event={event} className="flex-1" />
+          ))}
+        </div>
+      ) : (
+        <p className="text-2xl font-semibold">
+          Nu a fost adăugat încă niciun eveniment.
+        </p>
+      )}
     </div>
   </section>
 );

@@ -14,9 +14,11 @@ import { faFacebook } from "@fortawesome/free-brands-svg-icons";
 
 import ExternalLink from "~/components/common/external-link";
 
+export type SerializedEvent = Omit<Event, "date"> & { date: string };
+
 type EventCardProps = {
   t: TFunction;
-  event: Event;
+  event: SerializedEvent;
   className?: string;
 };
 

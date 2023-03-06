@@ -28,7 +28,9 @@ import PartnersSection, {
   CompaniesByPackageType,
   Company,
 } from "~/components/pages/home/partners/section";
-import EventsSection from "~/components/pages/home/events/section";
+import EventsSection, {
+  SerializedEvent,
+} from "~/components/pages/home/events/section";
 import CookieConsent from "~/components/common/cookie-consent";
 
 type PageProps = {
@@ -39,7 +41,7 @@ type PageProps = {
   showEvents: boolean;
   alwaysShowEventsForAdmin: boolean;
   companiesByPackageType: CompaniesByPackageType;
-  events: Event[];
+  events: SerializedEvent[];
 };
 
 const HomePage: NextPage<PageProps> = ({

@@ -32,7 +32,7 @@ const AdminEventsPage: NextPageWithLayout<PageProps> = ({
   const router = useRouter();
 
   const eventDeleteMutation = trpc.admin.event.delete.useMutation({
-    onSuccess: () => router.reload(),
+    onSuccess: () => router.push("/admin/events"),
     onError: (error) =>
       alert(`Eroare la ștergerea evenimentului: ${error.message}`),
   });
