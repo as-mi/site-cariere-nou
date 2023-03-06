@@ -3,6 +3,7 @@ import { adminProcedure, router } from "../..";
 import { revalidateHomePage } from "~/api/revalidation";
 
 import { settingRouter } from "./setting";
+import { eventRouter } from "./event";
 import { userRouter } from "./user";
 import { imageRouter } from "./image";
 import { companyRouter } from "./company";
@@ -11,6 +12,7 @@ import { technicalTestRouter } from "./technicalTest";
 
 export const adminRouter = router({
   setting: settingRouter,
+  event: eventRouter,
   user: userRouter,
   image: imageRouter,
   company: companyRouter,

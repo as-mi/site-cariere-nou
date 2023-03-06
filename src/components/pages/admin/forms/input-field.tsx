@@ -6,7 +6,7 @@ import { CommonFieldProps, useFieldId } from "./common";
 
 export interface InputFieldProps<IFormValues extends FieldValues>
   extends CommonFieldProps<IFormValues> {
-  type: "text" | "number" | "email" | "password" | "file";
+  type: "text" | "number" | "email" | "password" | "file" | "date";
   placeholder?: string;
   hint?: string;
   accept?: string;

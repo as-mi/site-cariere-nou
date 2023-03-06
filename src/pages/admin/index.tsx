@@ -16,6 +16,7 @@ type LinkData = {
 };
 
 const links: LinkData[] = [
+  { href: "/admin/events", label: "Evenimente" },
   { href: "/admin/users", label: "Utilizatori" },
   { href: "/admin/images", label: "Imagini" },
   { href: "/admin/companies", label: "Companii" },

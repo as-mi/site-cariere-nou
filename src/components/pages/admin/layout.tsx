@@ -12,6 +12,7 @@ import {
   faAddressCard,
   faBars,
   faBuilding,
+  faCalendar,
   faFile,
   faGear,
   faHouse,
@@ -31,6 +32,11 @@ const links = [
     href: "/admin",
     icon: faHouse,
     label: "Acasă",
+  },
+  {
+    href: "/admin/events",
+    icon: faCalendar,
+    label: "Evenimente",
   },
   {
     href: "/admin/users",
