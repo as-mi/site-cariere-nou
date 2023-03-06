@@ -2,6 +2,8 @@ import { z } from "zod";
 
 import { EventKind } from "@prisma/client";
 
+import { revalidateHomePage } from "~/api/revalidation";
+
 import prisma from "~/lib/prisma";
 
 import { EntityId } from "../../schema";
@@ -29,16 +31,22 @@ export const eventRouter = router({
 
     return event;
   }),
-  create: adminProcedure.input(CreateInput).mutation(async ({ input }) => {
+  create: adminProcedure.input(CreateInput).mutation(async ({ input, ctx }) => {
     await prisma.event.create({ data: input });
+
+    await revalidateHomePage(ctx);
   }),
-  update: adminProcedure.input(UpdateInput).mutation(async ({ input }) => {
+  update: adminProcedure.input(UpdateInput).mutation(async ({ input, ctx }) => {
     await prisma.event.update({
       where: { id: input.id },
       data: input,
     });
+
+    await revalidateHomePage(ctx);
   }),
-  delete: adminProcedure.input(DeleteInput).mutation(async ({ input }) => {
+  delete: adminProcedure.input(DeleteInput).mutation(async ({ input, ctx }) => {
     await prisma.event.delete({ where: { id: input.id } });
+
+    await revalidateHomePage(ctx);
   }),
 });
