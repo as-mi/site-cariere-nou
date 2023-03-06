@@ -36,7 +36,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({ t, events }) => {
       </header>
       <div className="w-full overflow-x-auto text-center">
         {events.length > 0 ? (
-          <div className="inline-flex max-w-5xl flex-1 flex-row justify-start gap-4">
+          <div className="inline-flex max-w-5xl flex-1 flex-row justify-start gap-4 lg:flex-wrap">
             {events.map((event) => (
               <EventCard
                 key={event.id}
