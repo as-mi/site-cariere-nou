@@ -15,6 +15,21 @@ model SettingValue {
   value Json
 }
 
+enum EventKind {
+  WORKSHOP
+  PRESENTATION
+}
+
+model Event {
+  id               Int       @id @default(autoincrement())
+  name             String
+  kind             EventKind
+  location         String    @default("")
+  date             DateTime  @db.Date
+  time             String    @default("")
+  facebookEventUrl String    @default("")
+}
+
 model Account {
   id                Int     @id @default(autoincrement())
   userId            Int

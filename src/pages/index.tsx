@@ -8,7 +8,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import _ from "lodash";
 
-import { PackageType } from "@prisma/client";
+import { Event, PackageType } from "@prisma/client";
 
 import prisma from "~/lib/prisma";
 import { getBaseUrl } from "~/lib/base-url";
@@ -28,7 +28,9 @@ import PartnersSection, {
   CompaniesByPackageType,
   Company,
 } from "~/components/pages/home/partners/section";
-import EventsSection from "~/components/pages/home/events/section";
+import EventsSection, {
+  SerializedEvent,
+} from "~/components/pages/home/events/section";
 import CookieConsent from "~/components/common/cookie-consent";
 
 type PageProps = {
@@ -39,6 +41,7 @@ type PageProps = {
   showEvents: boolean;
   alwaysShowEventsForAdmin: boolean;
   companiesByPackageType: CompaniesByPackageType;
+  events: SerializedEvent[];
 };
 
 const HomePage: NextPage<PageProps> = ({
@@ -49,6 +52,7 @@ const HomePage: NextPage<PageProps> = ({
   showEvents,
   alwaysShowEventsForAdmin,
   companiesByPackageType,
+  events,
 }) => {
   const { t } = useTranslation("home");
 
@@ -94,7 +98,7 @@ const HomePage: NextPage<PageProps> = ({
           }
           companiesByPackageType={companiesByPackageType}
         />
-        {isEventsSectionVisible && <EventsSection t={t} />}
+        {isEventsSectionVisible && <EventsSection t={t} events={events} />}
         <ContactSection />
       </main>
 
@@ -140,6 +144,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
         showEvents,
         alwaysShowEventsForAdmin,
         companiesByPackageType: {},
+        events: [],
       },
       // The page will be regenerated using the data from the database once the first request comes in
       revalidate: 1,
@@ -169,6 +174,21 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
     Record<PackageType, Company[]>
   >;
 
+  const events = await prisma.event.findMany({
+    select: {
+      id: true,
+      name: true,
+      kind: true,
+      location: true,
+      date: true,
+      time: true,
+      facebookEventUrl: true,
+    },
+    orderBy: {
+      date: "asc",
+    },
+  });
+
   return {
     props: {
       ...ssrConfig,
@@ -179,6 +199,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
       showEvents,
       alwaysShowEventsForAdmin,
       companiesByPackageType,
+      events: events.map((event) => ({
+        ...event,
+        date: event.date.toLocaleDateString("ro", {
+          day: "numeric",
+          month: "long",
+        }),
+      })),
     },
   };
 };
