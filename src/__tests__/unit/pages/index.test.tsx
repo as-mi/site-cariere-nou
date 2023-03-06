@@ -14,12 +14,14 @@ describe("Home", () => {
   it("renders a heading", () => {
     render(
       <HomePage
+        baseUrl="http://localhost:3000/"
         showComingSoonMessage={true}
         alwaysShowCompaniesForAdmin={true}
         hideProfileLink={true}
         showEvents={true}
         alwaysShowEventsForAdmin={true}
         companiesByPackageType={{}}
+        events={[]}
       />
     );
 
