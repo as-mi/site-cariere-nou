@@ -3,28 +3,35 @@ import { ReactElement } from "react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faAddressCard, faHome } from "@fortawesome/free-solid-svg-icons";
+
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 
 import useUser from "~/hooks/use-user";
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/admin/layout";
+import {
+  LinkData,
+  links as adminPagesLinks,
+} from "~/components/pages/admin/links";
 
-type LinkData = {
-  href: string;
-  label: string;
-};
+const links = adminPagesLinks.filter((link) => link.href !== "/admin");
 
-const links: LinkData[] = [
-  { href: "/admin/events", label: "Evenimente" },
-  { href: "/admin/users", label: "Utilizatori" },
-  { href: "/admin/images", label: "Imagini" },
-  { href: "/admin/companies", label: "Companii" },
-  { href: "/admin/positions", label: "Posturi" },
-  { href: "/admin/technical-tests", label: "Teste tehnice" },
-  { href: "/admin/resumes", label: "CV-uri" },
-  { href: "/admin/settings", label: "Setări" },
-];
+type ListItemProps = LinkData;
+
+const ListItem: React.FC<ListItemProps> = ({ href, icon, label }) => (
+  <li>
+    <Link
+      href={href}
+      className="flex items-center p-3 hover:bg-white hover:bg-opacity-20 active:bg-opacity-30"
+    >
+      <FontAwesomeIcon icon={icon} className="mr-3 h-6 w-6" />
+      {label}
+    </Link>
+  </li>
+);
 
 const AdminHomePage: NextPageWithLayout = () => {
   const user = useUser();
@@ -45,34 +52,13 @@ const AdminHomePage: NextPageWithLayout = () => {
         </h3>
         <ul className="flex flex-col">
           {links.map((link, index) => (
-            <li key={index}>
-              <Link
-                href={link.href}
-                className="block p-3 hover:bg-white hover:bg-opacity-20 active:bg-opacity-30"
-              >
-                {link.label}
-              </Link>
-            </li>
+            <ListItem key={index} {...link} />
           ))}
         </ul>
         <h3 className="mt-3 font-display text-xl xs:text-2xl">Alte pagini</h3>
         <ul className="flex flex-col">
-          <li>
-            <Link
-              href="/"
-              className="block p-3 hover:bg-white hover:bg-opacity-20 active:bg-opacity-30"
-            >
-              Pagina principală
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/profile"
-              className="block p-3 hover:bg-white hover:bg-opacity-20"
-            >
-              Contul meu
-            </Link>
-          </li>
+          <ListItem href="/" icon={faHome} label="Pagina principală" />
+          <ListItem href="/profile" icon={faAddressCard} label="Contul meu" />
         </ul>
       </nav>
     </div>
