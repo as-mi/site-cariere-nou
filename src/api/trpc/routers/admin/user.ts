@@ -88,7 +88,7 @@ export const userRouter = router({
       },
     });
   }),
-  createFakeUser: adminProcedure.mutation(async () => {
+  createFake: adminProcedure.mutation(async () => {
     const { _max } = await prisma.user.aggregate({ _max: { id: true } });
 
     const id = _max.id ?? 1;

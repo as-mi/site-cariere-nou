@@ -2,7 +2,6 @@ import { ReactElement } from "react";
 
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { Role } from "@prisma/client";
 
@@ -14,11 +13,9 @@ import { trpc } from "~/lib/trpc";
 
 import Layout from "~/components/pages/admin/layout";
 
-type Event = {
-  id: number;
-  name: string;
-  date: string;
-};
+import CreateFakeObjectButton from "~/components/pages/admin/common/create-fake-object-button";
+import AdminEventsTable from "~/components/pages/admin/events/table";
+import { DEFAULT_PAGE_SIZE } from "~/components/pages/admin/common/table";
 
 type PageProps = {
   eventsCount: number;
@@ -28,76 +25,40 @@ type PageProps = {
 const AdminEventsPage: NextPageWithLayout<PageProps> = ({
   eventsCount,
   events,
-}) => {
-  const router = useRouter();
-
-  const eventDeleteMutation = trpc.admin.event.delete.useMutation({
-    onSuccess: () => router.push("/admin/events"),
-    onError: (error) =>
-      alert(`Eroare la ștergerea evenimentului: ${error.message}`),
-  });
-
-  const handleEventDelete = (eventId: number) => {
-    if (window.confirm("Sigur vrei să ștergi acest eveniment?")) {
-      eventDeleteMutation.mutate({ id: eventId });
-    }
-  };
-
-  return (
-    <>
-      <header>
-        <h1 className="my-2 font-display text-3xl">Evenimente</h1>
-        <p className="my-2">
-          {eventsCount == 1
-            ? `Există 1 eveniment`
-            : `Sunt ${eventsCount} evenimente`}{" "}
-          în platformă.
-        </p>
-        <p className="my-4">
-          <Link
-            href="/admin/events/new"
-            className="inline-block rounded-md bg-blue-600 py-2 px-3"
-          >
-            Adaugă un eveniment nou
-          </Link>
-        </p>
-      </header>
-      <div className="overflow-x-auto">
-        <table className="w-full text-center">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nume</th>
-              <th>Dată</th>
-              <th>Acțiuni</th>
-            </tr>
-          </thead>
-          <tbody>
-            {events.map((event) => (
-              <tr key={event.id}>
-                <th scope="row" className="px-3">
-                  {event.id}
-                </th>
-                <td className="px-3">{event.name}</td>
-                <td className="px-3">{event.date}</td>
-                <td className="flex flex-col px-3">
-                  <Link href={`/admin/events/${event.id}/edit`}>Editează</Link>
-                  <button
-                    onClick={() => handleEventDelete(event.id)}
-                    className="block"
-                  >
-                    Șterge
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
-};
-
+}) => (
+  <>
+    <header>
+      <h1 className="my-2 font-display text-3xl">Evenimente</h1>
+      <p className="my-2">
+        {eventsCount == 1
+          ? `Există 1 eveniment`
+          : `Sunt ${eventsCount} evenimente`}{" "}
+        în platformă.
+      </p>
+      <p className="my-4 space-x-4">
+        <Link
+          href="/admin/events/new"
+          className="inline-block rounded-md bg-blue-600 py-2 px-3"
+        >
+          Adaugă un eveniment nou
+        </Link>
+        {process.env.NODE_ENV === "development" && (
+          <CreateFakeObjectButton
+            label="Generează un nou eveniment cu date fake"
+            createFakeObjectProcedure={trpc.admin.event.createFake}
+            invalidateQueryProcedure={trpc.admin.event.readMany}
+          />
+        )}
+      </p>
+    </header>
+    <AdminEventsTable
+      initialData={{
+        pageCount: Math.ceil(eventsCount / DEFAULT_PAGE_SIZE),
+        results: events,
+      }}
+    />
+  </>
+);
 export default AdminEventsPage;
 
 AdminEventsPage.getLayout = (page: ReactElement) => (

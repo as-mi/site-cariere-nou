@@ -9,11 +9,12 @@ import { NextPageWithLayout } from "~/pages/_app";
 
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
+import { trpc } from "~/lib/trpc";
 
 import Layout from "~/components/pages/admin/layout";
 
 import Button from "~/components/pages/admin/common/button";
-import CreateFakeUserButton from "~/components/pages/admin/users/create-fake-user-button";
+import CreateFakeObjectButton from "~/components/pages/admin/common/create-fake-object-button";
 
 import { DEFAULT_PAGE_SIZE } from "~/components/pages/admin/common/table";
 import AdminUsersTable, { User } from "~/components/pages/admin/users/table";
@@ -40,7 +41,13 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
         <Button element={Link} href="/admin/users/new">
           Adaugă un utilizator nou
         </Button>
-        {process.env.NODE_ENV === "development" && <CreateFakeUserButton />}
+        {process.env.NODE_ENV === "development" && (
+          <CreateFakeObjectButton
+            label="Generează un nou utilizator cu date fake"
+            createFakeObjectProcedure={trpc.admin.user.createFake}
+            invalidateQueryProcedure={trpc.admin.user.readMany}
+          />
+        )}
       </p>
     </header>
     <AdminUsersTable
