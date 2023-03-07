@@ -8,7 +8,7 @@ import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import _ from "lodash";
 
-import { Event, PackageType } from "@prisma/client";
+import { PackageType } from "@prisma/client";
 
 import prisma from "~/lib/prisma";
 import { getBaseUrl } from "~/lib/base-url";
