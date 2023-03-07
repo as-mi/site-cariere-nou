@@ -20,7 +20,7 @@ const AdminEventsPageHeader: React.FC<AdminEventsPageHeaderProps> = ({
         : `Sunt ${eventsCount} evenimente`}{" "}
       în platformă.
     </p>
-    <p className="my-4 space-x-4">
+    <p className="my-4 flex flex-row flex-wrap justify-center gap-4 md:justify-start">
       <Button element={Link} href="/admin/events/new">
         Adaugă un eveniment nou
       </Button>

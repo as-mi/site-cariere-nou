@@ -8,8 +8,6 @@ import { revalidateHomePage } from "~/api/revalidation";
 import prisma from "~/lib/prisma";
 import { randomChoice } from "~/lib/random";
 
-import Events from "~/data/events";
-
 import { EntityId } from "../../schema";
 import { adminProcedure, router } from "../..";
 
@@ -38,7 +36,37 @@ export const eventRouter = router({
   }),
   readMany: adminProcedure.input(ReadManyInput).query(async ({ input }) => {
     const { pageIndex, pageSize } = input;
-    return await Events.getPaginated(pageIndex, pageSize);
+
+    const skip = pageIndex * pageSize;
+    const take = pageSize;
+
+    const eventsCount = await prisma.event.count();
+    const pageCount = Math.ceil(eventsCount / pageSize);
+
+    const events = await prisma.event.findMany({
+      select: {
+        id: true,
+        name: true,
+        date: true,
+      },
+      skip,
+      take,
+      orderBy: { id: "asc" },
+    });
+
+    const results = events.map((event) => ({
+      ...event,
+      date: event.date.toLocaleDateString("ro", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+    }));
+
+    return {
+      pageCount,
+      results,
+    };
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input, ctx }) => {
     await prisma.event.create({ data: input });

@@ -2,17 +2,20 @@ import { useCallback, useMemo, useState } from "react";
 
 import Link from "next/link";
 
+import type { Event as PrismaEvent } from "@prisma/client";
+
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { getQueryKey } from "@trpc/react-query";
 
-import { PaginatedData } from "~/data/pagination";
-import { Event } from "~/data/events";
+import { PaginatedData } from "~/api/pagination";
 
 import { trpc } from "~/lib/trpc";
 
 import AdminTable from "../common/table";
+
+export type Event = Pick<PrismaEvent, "id" | "name"> & { date: string };
 
 const columnHelper = createColumnHelper<Event>();
 
