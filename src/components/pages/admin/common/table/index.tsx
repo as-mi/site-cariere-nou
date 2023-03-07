@@ -7,16 +7,11 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { PaginatedData } from "~/api/pagination";
+import { PaginatedData } from "~/data/pagination";
 
 import AdminTableHeader from "./header";
 import AdminTableBody from "./body";
 import AdminTablePaginationControls from "./pagination-controls";
-
-/**
- * Default number of elements to display on each page of results.
- */
-export const DEFAULT_PAGE_SIZE = 5;
 
 type QueryResult<TData> = {
   data?: PaginatedData<TData>;
