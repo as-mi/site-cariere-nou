@@ -14,9 +14,9 @@ import Layout from "~/components/pages/admin/layout";
 
 import Button from "~/components/pages/admin/common/button";
 import CreateFakeUserButton from "~/components/pages/admin/users/create-fake-user-button";
-import AdminUsersTable, { User } from "~/components/pages/admin/users/table";
 
-const INITIAL_PAGE_SIZE = 5;
+import { DEFAULT_PAGE_SIZE } from "~/components/pages/admin/common/table";
+import AdminUsersTable, { User } from "~/components/pages/admin/users/table";
 
 type PageProps = {
   usersCount: number;
@@ -44,10 +44,9 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
       </p>
     </header>
     <AdminUsersTable
-      initialPageSize={INITIAL_PAGE_SIZE}
       initialData={{
-        pageCount: Math.ceil(usersCount / INITIAL_PAGE_SIZE),
-        users,
+        pageCount: Math.ceil(usersCount / DEFAULT_PAGE_SIZE),
+        results: users,
       }}
     />
   </>
@@ -90,7 +89,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       name: true,
       role: true,
     },
-    take: INITIAL_PAGE_SIZE,
+    take: DEFAULT_PAGE_SIZE,
     orderBy: [{ id: "asc" }],
   });
 

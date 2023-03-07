@@ -4,16 +4,15 @@ import { Role } from "@prisma/client";
 
 import { hashPassword, validatePassword } from "~/lib/accounts";
 import prisma from "~/lib/prisma";
+
+import { PaginationParamsSchema } from "~/api/pagination";
 import { BadRequestError } from "~/api/errors";
 
 import { AllRoles, EntityId } from "../../schema";
 import { adminProcedure, router } from "../..";
 
 const ReadInput = z.object({ id: EntityId });
-const ReadManyInput = z.object({
-  pageIndex: z.number().int().gte(0),
-  pageSize: z.number().int().gte(5).lte(50),
-});
+const ReadManyInput = PaginationParamsSchema;
 const CreateInput = z.object({
   name: z.string(),
   email: z.string(),
@@ -57,7 +56,7 @@ export const userRouter = router({
 
     return {
       pageCount,
-      users,
+      results: users,
     };
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input }) => {
