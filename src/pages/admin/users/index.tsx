@@ -11,6 +11,9 @@ import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 
 import Layout from "~/components/pages/admin/layout";
+
+import Button from "~/components/pages/admin/common/button";
+import CreateFakeUserButton from "~/components/pages/admin/users/create-fake-user-button";
 import AdminUsersTable, { User } from "~/components/pages/admin/users/table";
 
 const INITIAL_PAGE_SIZE = 5;
@@ -33,13 +36,11 @@ const AdminUsersPage: NextPageWithLayout<PageProps> = ({
           : `Sunt ${usersCount} utilizatori înscriși`}{" "}
         în platformă.
       </p>
-      <p className="my-4">
-        <Link
-          href="/admin/users/new"
-          className="inline-block rounded-md bg-blue-600 py-2 px-3"
-        >
+      <p className="my-4 space-x-4">
+        <Button element={Link} href="/admin/users/new">
           Adaugă un utilizator nou
-        </Link>
+        </Button>
+        {process.env.NODE_ENV === "development" && <CreateFakeUserButton />}
       </p>
     </header>
     <AdminUsersTable

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { Role } from "@prisma/client";
+
 import { hashPassword, validatePassword } from "~/lib/accounts";
 import prisma from "~/lib/prisma";
 import { BadRequestError } from "~/api/errors";
@@ -84,6 +86,24 @@ export const userRouter = router({
         emailVerified: new Date(),
         passwordHash,
         role,
+      },
+    });
+  }),
+  createFakeUser: adminProcedure.mutation(async () => {
+    const { _max } = await prisma.user.aggregate({ _max: { id: true } });
+
+    const id = _max.id ?? 1;
+
+    const name = `Participant #${id}`;
+    const email = `participant${id}@example.com`;
+
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        emailVerified: new Date(),
+        passwordHash: "",
+        role: Role.PARTICIPANT,
       },
     });
   }),
