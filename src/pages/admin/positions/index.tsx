@@ -89,6 +89,7 @@ const AdminPositionsPage: NextPageWithLayout<PageProps> = ({
                 <td className="px-3">{position.company.name}</td>
                 <td className="px-3">{position.title}</td>
                 <td className="flex flex-col px-3">
+                  <Link href={`/admin/positions/${position.id}`}>Afișează</Link>
                   <Link href={`/admin/positions/${position.id}/edit`}>
                     Editează
                   </Link>
