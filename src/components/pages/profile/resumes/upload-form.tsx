@@ -29,6 +29,7 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
 
   const queryClient = useQueryClient();
 
+  const [isUploading, setIsUploading] = useState(false);
   const [fileUploadError, setFileUploadError] = useState("");
 
   const { handleSubmit, register, watch } =
@@ -36,7 +37,11 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
 
   const watchFile = watch("file");
 
+  const numberOfFilesSelected = watchFile?.length ?? 0;
+  const submitDisabled = numberOfFilesSelected === 0 || isUploading;
+
   const onSubmit: SubmitHandler<ResumeUploadFormFieldValues> = async (data) => {
+    setIsUploading(true);
     setFileUploadError("");
 
     const formData = new FormData();
@@ -50,11 +55,14 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
       };
       response = await fetch("/api/resumes/upload", options);
     } catch (e) {
+      setIsUploading(false);
       setFileUploadError(commonT("errors.networkError")!);
       return;
     }
 
     if (!response.ok) {
+      setIsUploading(false);
+
       if (
         response.status === 413 ||
         (response.status === 500 &&
@@ -102,6 +110,8 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
     );
     queryClient.invalidateQueries(queryKey);
 
+    console.log("success");
+
     onSuccess();
   };
 
@@ -132,7 +142,7 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
       <div className="my-3 space-x-3">
         <button
           type="submit"
-          disabled={(watchFile?.length ?? 0) === 0}
+          disabled={submitDisabled}
           className="rounded-md bg-blue-700 px-3 py-2 text-center text-white hover:bg-blue-800 active:bg-blue-900 disabled:bg-blue-300"
         >
           {t("resumeUploadForm.submit")}
