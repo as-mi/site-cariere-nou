@@ -76,7 +76,12 @@ const AdminEditImagePage: NextPageWithLayout<PageProps> = ({ imageId }) => {
   }
 
   if (!query.data) {
-    return <p>Eroare la încărcarea datelor: {query.error}</p>;
+    return (
+      <p>
+        Eroare la încărcarea datelor:
+        {query.error ? `: ${query.error.message}` : ""}
+      </p>
+    );
   }
 
   const image = query.data;
