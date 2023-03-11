@@ -33,9 +33,10 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({ t, initialData }) => {
         "query"
       );
 
-      if (initialData) {
+      const queryData = queryClient.getQueryData<typeof query.data>(queryKey);
+      if (queryData) {
         // Update the list of resumes
-        const resumes = initialData.filter(
+        const resumes = queryData.filter(
           (resume) => resume.id !== variables.id
         );
         queryClient.setQueryData(queryKey, resumes);
