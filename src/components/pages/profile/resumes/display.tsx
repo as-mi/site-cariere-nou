@@ -1,29 +1,36 @@
+import { useCallback } from "react";
+
 import { TFunction, useTranslation } from "next-i18next";
 
 import { useQueryClient } from "@tanstack/react-query";
 import { getQueryKey } from "@trpc/react-query";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrash } from "@fortawesome/free-solid-svg-icons";
-
 import { trpc } from "~/lib/trpc";
 
 import { Resume } from "./common";
+import ResumeCard from "./card";
 
 type ResumesDisplayProps = {
   t: TFunction;
   initialData?: Resume[];
+  replaceResumeId?: number;
+  onReplaceResume: (resumeId: number) => void;
 };
 
-const ResumesDisplay: React.FC<ResumesDisplayProps> = ({ t, initialData }) => {
+const ResumesDisplay: React.FC<ResumesDisplayProps> = ({
+  t,
+  initialData,
+  replaceResumeId,
+  onReplaceResume,
+}) => {
   const { t: commonT } = useTranslation("common");
-
-  const queryClient = useQueryClient();
 
   const query = trpc.participant.resumeGetAll.useQuery(undefined, {
     initialData,
     staleTime: 200,
   });
+
+  const queryClient = useQueryClient();
 
   const deleteResumeMutation = trpc.participant.resumeDelete.useMutation({
     onSuccess: (_, variables) => {
@@ -47,11 +54,14 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({ t, initialData }) => {
     },
   });
 
-  const deleteResume = (resumeId: number) => {
-    if (confirm("Ești sigur că vrei să ștergi acest CV?")) {
-      deleteResumeMutation.mutate({ id: resumeId });
-    }
-  };
+  const deleteResume = useCallback(
+    (resumeId: number) => {
+      if (confirm("Ești sigur că vrei să ștergi acest CV?")) {
+        deleteResumeMutation.mutate({ id: resumeId });
+      }
+    },
+    [deleteResumeMutation]
+  );
 
   if (query.isLoading) {
     return <p>{commonT("loading")}</p>;
@@ -71,27 +81,15 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({ t, initialData }) => {
     <>
       <ul className="space-y-1">
         {resumes.map((resume, index) => (
-          <li key={resume.id} className="flex flex-row flex-wrap border p-3">
-            <span className="mr-3">
-              {t("resumesDisplay.resumeTitle", { resumeIndex: index + 1 })}:
-            </span>
-            <span>
-              &quot;
-              {resume.fileName}
-              &quot;
-            </span>
-            <span className="ml-auto">
-              <button
-                type="button"
-                title="Șterge acest CV"
-                onClick={() => deleteResume(resume.id)}
-              >
-                <FontAwesomeIcon
-                  icon={faTrash}
-                  className="h-4 w-4 text-red-600 hover:text-red-700 active:text-red-800"
-                />
-              </button>
-            </span>
+          <li key={resume.id}>
+            <ResumeCard
+              t={t}
+              index={index}
+              resume={resume}
+              replacing={replaceResumeId === resume.id}
+              onReplace={() => onReplaceResume(resume.id)}
+              onDelete={() => deleteResume(resume.id)}
+            />
           </li>
         ))}
       </ul>

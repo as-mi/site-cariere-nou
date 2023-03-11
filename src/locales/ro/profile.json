@@ -19,6 +19,10 @@
   "resumesSectionTitle": "CV-uri",
   "uploadResume": "Adaugă un CV",
   "resumeUploadForm": {
+    "replace": {
+      "title": "Înlocuire CV",
+      "explanation": "Încarcă un fișier care va înlocui CV-ul selectat. Noua versiune va fi folosită pentru toate posturile la care ai aplicat cu acest CV."
+    },
     "file": "Fișier",
     "hints": {
       "fileMustBeInFormat": "Fișierul trebuie să fie în",

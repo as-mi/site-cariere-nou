@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { I18n, TFunction, useTranslation } from "next-i18next";
 
@@ -25,6 +25,12 @@ const ResumesSection: React.FC<ResumesSectionProps> = ({
   const { t: commonT } = useTranslation("common");
 
   const [showResumeUploadForm, setShowResumeUploadForm] = useState(false);
+  const [replaceResumeId, setReplaceResumeId] = useState<number | undefined>();
+
+  const resetResumeUploadForm = useCallback(() => {
+    setShowResumeUploadForm(false);
+    setReplaceResumeId(undefined);
+  }, []);
 
   const query = trpc.participant.resumeGetAll.useQuery(undefined, {
     initialData,
@@ -52,12 +58,17 @@ const ResumesSection: React.FC<ResumesSectionProps> = ({
           <ResumeUploadForm
             t={t}
             i18n={i18n}
-            onCancel={() => setShowResumeUploadForm(false)}
-            onSuccess={() => setShowResumeUploadForm(false)}
+            replace={replaceResumeId !== undefined}
+            resumeId={replaceResumeId!}
+            onCancel={resetResumeUploadForm}
+            onSuccess={resetResumeUploadForm}
           />
         ) : (
           <button
-            onClick={() => setShowResumeUploadForm(true)}
+            onClick={() => {
+              setReplaceResumeId(undefined);
+              setShowResumeUploadForm(true);
+            }}
             disabled={!canUploadResume}
             className="inline-flex flex-row items-center rounded-md bg-blue-600 px-3 py-2 text-white hover:bg-blue-700 active:bg-blue-800 disabled:bg-blue-400"
           >
@@ -66,7 +77,15 @@ const ResumesSection: React.FC<ResumesSectionProps> = ({
           </button>
         )}
       </div>
-      <ResumesDisplay t={t} initialData={initialData} />
+      <ResumesDisplay
+        t={t}
+        initialData={initialData}
+        replaceResumeId={replaceResumeId}
+        onReplaceResume={(resumeId: number) => {
+          setReplaceResumeId(resumeId);
+          setShowResumeUploadForm(true);
+        }}
+      />
     </section>
   );
 };

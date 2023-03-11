@@ -9,8 +9,10 @@ import { Role } from "@prisma/client";
 import { createHandler } from "~/api/handler";
 import {
   BadRequestError,
+  MethodNotAllowedError,
   NotAuthenticatedError,
   NotAuthorizedError,
+  NotFoundError,
 } from "~/api/errors";
 
 import { getServerSession } from "~/lib/auth";
@@ -25,11 +27,7 @@ interface NextApiRequestWithFile extends NextApiRequest {
   file?: Express.Multer.File;
 }
 
-const apiRoute = nextConnect<NextApiRequestWithFile, NextApiResponse>({
-  onNoMatch(_req, res) {
-    res.status(405).json({ error: "invalid-method" });
-  },
-});
+const apiRoute = nextConnect<NextApiRequestWithFile, NextApiResponse>();
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -43,6 +41,10 @@ const uploadResume = async (
   req: NextApiRequestWithFile,
   res: NextApiResponse
 ) => {
+  if (req.method !== "POST" && req.method !== "PUT") {
+    throw new MethodNotAllowedError();
+  }
+
   const session = await getServerSession(req, res);
 
   if (!session?.user) {
@@ -75,46 +77,87 @@ const uploadResume = async (
     );
   }
 
-  const resumeCount = await prisma.resume.count({
-    where: { userId },
-  });
+  const data = {
+    userId,
+    fileName: file.originalname,
+    contentType: file.mimetype,
+    data: file.buffer,
+  };
 
-  if (resumeCount >= MAXIMUM_NUMBER_OF_RESUMES_PER_PARTICIPANT) {
-    throw new BadRequestError(
-      "resumes-limit-reached",
-      "reached limit on number of resumes"
-    );
-  }
+  if (req.method === "POST") {
+    const resumeCount = await prisma.resume.count({
+      where: { userId },
+    });
 
-  const resume = await prisma.resume.create({
-    data: {
-      userId,
-      fileName: file.originalname,
-      contentType: file.mimetype,
-      data: file.buffer,
-    },
-    select: {
-      id: true,
-    },
-  });
+    if (resumeCount >= MAXIMUM_NUMBER_OF_RESUMES_PER_PARTICIPANT) {
+      throw new BadRequestError(
+        "resumes-limit-reached",
+        "reached limit on number of resumes"
+      );
+    }
 
-  // Prevent multiple uploads going over the limit due to request concurrency
-  const newResumeCount = await prisma.resume.count({
-    where: { userId },
-  });
-  if (newResumeCount !== resumeCount + 1) {
-    await prisma.resume.delete({ where: { id: resume.id } });
+    const resume = await prisma.resume.create({
+      data,
+      select: {
+        id: true,
+      },
+    });
 
-    throw new BadRequestError(
-      "resumes-limit-reached",
-      "reached limit on number of resumes"
-    );
+    // Prevent multiple uploads going over the limit due to request concurrency
+    const newResumeCount = await prisma.resume.count({
+      where: { userId },
+    });
+    if (newResumeCount !== resumeCount + 1) {
+      await prisma.resume.delete({ where: { id: resume.id } });
+
+      throw new BadRequestError(
+        "resumes-limit-reached",
+        "reached limit on number of resumes"
+      );
+    }
+  } else if (req.method === "PUT") {
+    const id = req.body.id;
+
+    if (!id) {
+      res.status(400).json({
+        error: "missing-id",
+        message: "request is missing ID of resume to replace",
+      });
+      return;
+    }
+
+    if (typeof id !== "string") {
+      res.status(400).json({ error: "invalid-id" });
+      return;
+    }
+
+    const resumeId = parseInt(id);
+    if (Number.isNaN(resumeId)) {
+      res.status(400).json({ error: "invalid-id" });
+      return;
+    }
+
+    const resume = await prisma.resume.findFirst({
+      where: {
+        userId,
+        id: resumeId,
+      },
+    });
+
+    if (!resume) {
+      throw new NotFoundError();
+    }
+
+    await prisma.resume.update({
+      where: { id: resumeId },
+      data,
+    });
   }
 };
 
 apiRoute.use(upload.single("file"));
 
-apiRoute.post(createHandler(uploadResume));
+apiRoute.all(createHandler(uploadResume));
 
 export default apiRoute;
 

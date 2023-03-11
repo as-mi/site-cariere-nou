@@ -13,6 +13,8 @@ type ResumeUploadFormProps = {
   i18n: I18n;
   onCancel: () => void;
   onSuccess: () => void;
+  replace: boolean;
+  resumeId?: number;
 };
 
 type ResumeUploadFormFieldValues = {
@@ -24,6 +26,8 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
   i18n,
   onCancel,
   onSuccess,
+  replace,
+  resumeId,
 }) => {
   const { t: commonT, i18n: commonI18n } = useTranslation("common");
 
@@ -45,12 +49,15 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
     setFileUploadError("");
 
     const formData = new FormData();
+    if (replace) {
+      formData.append("id", resumeId!.toString());
+    }
     formData.append("file", data.file[0]);
 
     let response;
     try {
       const options = {
-        method: "POST",
+        method: replace ? "PUT" : "POST",
         body: formData,
       };
       response = await fetch("/api/resumes/upload", options);
@@ -118,6 +125,14 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="mb-3">
+        {replace && (
+          <div className="mb-3">
+            <span className="font-semibold">
+              {t("resumeUploadForm.replace.title")}:
+            </span>{" "}
+            {t("resumeUploadForm.replace.explanation")}
+          </div>
+        )}
         <label htmlFor="file" className="mb-1 block font-semibold">
           {t("resumeUploadForm.file")}:
         </label>
@@ -165,3 +180,7 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
 };
 
 export default ResumeUploadForm;
+
+ResumeUploadForm.defaultProps = {
+  replace: false,
+};

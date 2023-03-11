@@ -88,13 +88,13 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
         <div className="mt-3 flex flex-row flex-wrap items-center gap-3">
           <Link
             href="/"
-            className="flex-1 rounded-md bg-green-700 px-3 py-2 text-center text-white hover:bg-green-800 active:bg-green-900 sm:flex-none"
+            className="flex-1 basis-[max-content] rounded-md bg-green-700 px-3 py-2 text-center text-white hover:bg-green-800 active:bg-green-900 sm:flex-none"
           >
             {t("backToHomePage")}
           </Link>
           <button
             onClick={handleSignOut}
-            className="flex-1 rounded-md bg-red-600 px-3 py-2 text-center text-white hover:bg-red-700 active:bg-red-800 sm:flex-none"
+            className="flex-1 basis-[max-content] rounded-md bg-red-600 px-3 py-2 text-center text-white hover:bg-red-700 active:bg-red-800 sm:flex-none"
           >
             {t("signOut")}
           </button>
