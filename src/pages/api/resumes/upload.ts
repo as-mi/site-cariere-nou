@@ -1,13 +1,19 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
-import { getServerSession } from "next-auth";
-
 import nextConnect from "next-connect";
 
 import multer from "multer";
 
 import { Role } from "@prisma/client";
-import { authOptions } from "~/lib/next-auth-options";
+
+import { createHandler } from "~/api/handler";
+import {
+  BadRequestError,
+  NotAuthenticatedError,
+  NotAuthorizedError,
+} from "~/api/errors";
+
+import { getServerSession } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 
 const MAXIMUM_RESUME_SIZE_IN_BYTES = 2 * 1024 * 1024;
@@ -33,50 +39,40 @@ const upload = multer({
   },
 });
 
-apiRoute.use(upload.single("file"));
-
-apiRoute.post(async (req: NextApiRequestWithFile, res) => {
-  const session = await getServerSession(req, res, authOptions);
+const uploadResume = async (
+  req: NextApiRequestWithFile,
+  res: NextApiResponse
+) => {
+  const session = await getServerSession(req, res);
 
   if (!session?.user) {
-    res.status(401).json({ error: "not-authenticated" });
-    return;
+    throw new NotAuthenticatedError();
   }
 
   const userId = session.user.id;
 
   if (session.user.role !== Role.PARTICIPANT) {
-    res.status(403).json({ error: "not-authorized" });
-    return;
+    throw new NotAuthorizedError();
   }
 
   const { file } = req;
 
   if (!file) {
-    res.status(400).json({
-      error: "missing-file",
-      message: "file object not found in request",
-    });
-
-    return;
+    throw new BadRequestError(
+      "missing-file",
+      "file object not found in request"
+    );
   }
 
   if (file.size > MAXIMUM_RESUME_SIZE_IN_BYTES) {
-    res.status(400).json({
-      error: "file-too-big",
-      message: "file size exceeds limit",
-    });
-
-    return;
+    throw new BadRequestError("file-too-big", "file size exceeds limit");
   }
 
   if (!ALLOWED_RESUME_MIME_TYPES.has(file.mimetype.trim())) {
-    res.status(400).json({
-      error: "invalid-mime-type",
-      message: "file does not have a valid content type",
-    });
-
-    return;
+    throw new BadRequestError(
+      "invalid-mime-type",
+      "file does not have a valid content type"
+    );
   }
 
   const resumeCount = await prisma.resume.count({
@@ -84,27 +80,43 @@ apiRoute.post(async (req: NextApiRequestWithFile, res) => {
   });
 
   if (resumeCount >= MAXIMUM_NUMBER_OF_RESUMES_PER_PARTICIPANT) {
-    res.status(400).json({
-      error: "resumes-limit-reached",
-      message: "reached limit on number of resumes",
-    });
-
-    return;
+    throw new BadRequestError(
+      "resumes-limit-reached",
+      "reached limit on number of resumes"
+    );
   }
 
-  await prisma.resume.create({
+  const resume = await prisma.resume.create({
     data: {
       userId,
       fileName: file.originalname,
       contentType: file.mimetype,
       data: file.buffer,
     },
+    select: {
+      id: true,
+    },
   });
 
-  res.status(200).end();
-});
+  // Prevent multiple uploads going over the limit due to request concurrency
+  const newResumeCount = await prisma.resume.count({
+    where: { userId },
+  });
+  if (newResumeCount !== resumeCount + 1) {
+    await prisma.resume.delete({ where: { id: resume.id } });
 
-export default apiRoute;
+    throw new BadRequestError(
+      "resumes-limit-reached",
+      "reached limit on number of resumes"
+    );
+  }
+};
+
+apiRoute.use(upload.single("file"));
+
+apiRoute.post(uploadResume);
+
+export default createHandler(apiRoute);
 
 export const config = {
   api: {
