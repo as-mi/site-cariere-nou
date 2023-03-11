@@ -5,13 +5,18 @@ import fs from "fs";
 import os from "os";
 import AdmZip from "adm-zip";
 
+import { Role } from "@prisma/client";
+
 import { createHandler } from "~/api/handler";
 import {
   BadRequestError,
   MethodNotAllowedError,
+  NotAuthenticatedError,
+  NotAuthorizedError,
   NotFoundError,
 } from "~/api/errors";
 
+import { getServerSession } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 
 const downloadSchema = z
@@ -26,6 +31,16 @@ const downloadSchema = z
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET") {
     throw new MethodNotAllowedError();
+  }
+
+  const session = await getServerSession(req, res);
+
+  if (!session?.user) {
+    throw new NotAuthenticatedError();
+  }
+
+  if (session.user.role !== Role.ADMIN) {
+    throw new NotAuthorizedError();
   }
 
   const parseResult = downloadSchema.safeParse(req.query);
