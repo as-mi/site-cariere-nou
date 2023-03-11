@@ -54,27 +54,25 @@ const AdminTable = <TData,>({
     // If all the data on the page we're currently on gets deleted,
     // move us back to the previous page (if possible)
     if (data?.results?.length === 0) {
-      onPaginationChange({
+      onPaginationChange((pagination) => ({
         ...pagination,
         pageIndex: Math.max(0, pagination.pageIndex - 1),
-      });
+      }));
     }
-  }, [data, onPaginationChange, pagination]);
+  }, [data, onPaginationChange]);
 
   if (!data) {
     if (query.isLoading) {
       return <p>Se încarcă...</p>;
     }
 
-    if (!query.data) {
-      return <p>Eroare la încărcarea datelor: {query.error?.message}</p>;
-    }
+    return <p>Eroare la încărcarea datelor: {query.error?.message}</p>;
   }
 
   return (
     <div>
       <div className="relative overflow-x-auto">
-        {query.isFetching && (
+        {query.isFetching && data.pageCount !== 0 && (
           <div className="absolute flex h-full w-full items-center justify-center bg-black bg-opacity-90">
             <span className="font-display text-3xl font-bold">
               Se încarcă următoarea pagină de rezultate...
