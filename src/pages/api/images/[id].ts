@@ -77,3 +77,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default createHandler(handler);
+
+export const config = {
+  api: {
+    externalResolver: true,
+  },
+};
