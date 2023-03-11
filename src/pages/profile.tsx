@@ -17,6 +17,7 @@ import { getSettingValue } from "~/lib/settings/get";
 
 import useRole from "~/hooks/use-role";
 
+import ApplicationsDeadlineNotice from "~/components/common/applications-deadline-notice";
 import ContactInfoSection from "~/components/pages/profile/contact-info/section";
 import OptionsSection from "~/components/pages/profile/options/section";
 import ResumesSection from "~/components/pages/profile/resumes/section";
@@ -71,45 +72,48 @@ const ProfilePage: NextPage<PageProps> = ({ user, applicationsEnabled }) => {
   const resumes = user.resumes;
 
   return (
-    <div className="min-h-screen bg-black px-4 py-8">
+    <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <main className="mx-auto max-w-md rounded-lg bg-white px-6 py-6 text-black">
-        <h1 className="font-display text-3xl font-bold">{t("pageTitle")}</h1>
-        <ContactInfoSection t={t} initialData={contactInfo} />
-        {role == Role.PARTICIPANT && (
-          <>
-            <OptionsSection
-              t={t}
-              initialData={{
-                applyToOtherPartners: user.consentApplyToOtherPartners,
-              }}
-            />
-            <ResumesSection
-              t={t}
-              i18n={i18n}
-              initialData={resumes}
-              resumeReplacementAllowed={applicationsEnabled}
-            />
-          </>
-        )}
-        <div className="mt-3 flex flex-row flex-wrap items-center gap-3">
-          <Link
-            href="/"
-            className="flex-1 basis-[max-content] rounded-md bg-green-700 px-3 py-2 text-center text-white hover:bg-green-800 active:bg-green-900 sm:flex-none"
-          >
-            {t("backToHomePage")}
-          </Link>
-          <button
-            onClick={handleSignOut}
-            className="flex-1 basis-[max-content] rounded-md bg-red-600 px-3 py-2 text-center text-white hover:bg-red-700 active:bg-red-800 sm:flex-none"
-          >
-            {t("signOut")}
-          </button>
-        </div>
-      </main>
-    </div>
+      <ApplicationsDeadlineNotice />
+      <div className="min-h-screen bg-black px-4 py-8">
+        <main className="mx-auto max-w-md rounded-lg bg-white px-6 py-6 text-black">
+          <h1 className="font-display text-3xl font-bold">{t("pageTitle")}</h1>
+          <ContactInfoSection t={t} initialData={contactInfo} />
+          {role == Role.PARTICIPANT && (
+            <>
+              <OptionsSection
+                t={t}
+                initialData={{
+                  applyToOtherPartners: user.consentApplyToOtherPartners,
+                }}
+              />
+              <ResumesSection
+                t={t}
+                i18n={i18n}
+                initialData={resumes}
+                resumeReplacementAllowed={applicationsEnabled}
+              />
+            </>
+          )}
+          <div className="mt-3 flex flex-row flex-wrap items-center gap-3">
+            <Link
+              href="/"
+              className="flex-1 basis-[max-content] rounded-md bg-green-700 px-3 py-2 text-center text-white hover:bg-green-800 active:bg-green-900 sm:flex-none"
+            >
+              {t("backToHomePage")}
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className="flex-1 basis-[max-content] rounded-md bg-red-600 px-3 py-2 text-center text-white hover:bg-red-700 active:bg-red-800 sm:flex-none"
+            >
+              {t("signOut")}
+            </button>
+          </div>
+        </main>
+      </div>
+    </>
   );
 };
 

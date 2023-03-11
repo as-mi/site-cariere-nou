@@ -5,12 +5,16 @@
     "findOutMore": "Află mai multe",
     "ok": "OK"
   },
+  "applicationsDeadlineNotice": {
+    "hurryUp": "Grăbește-te!",
+    "canApplyUntil": "Mai poți aplica doar până la sfârșitul zilei de",
+    "dismiss": "Închide"
+  },
   "navbar": {
     "show": "Deschide meniul de navigare",
     "close": "Închide meniul de navigare",
     "home": "Acasă",
     "about": "Despre",
-    "partners": "Parteneri",
     "contact": "Contact",
     "profile": "Contul meu",
     "adminDashboard": "Panou de administrare"

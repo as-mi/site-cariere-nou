@@ -16,8 +16,7 @@ import { getSettingValue } from "~/lib/settings/get";
 
 import { useIsAdmin } from "~/hooks/use-role";
 
-import Footer from "~/components/common/footer";
-
+import ApplicationsDeadlineNotice from "~/components/common/applications-deadline-notice";
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
 import LogosSection from "~/components/pages/home/logos";
@@ -32,6 +31,7 @@ import EventsSection, {
   SerializedEvent,
 } from "~/components/pages/home/events/section";
 import CookieConsent from "~/components/common/cookie-consent";
+import Footer from "~/components/common/footer";
 
 type PageProps = {
   baseUrl: string;
@@ -78,6 +78,8 @@ const HomePage: NextPage<PageProps> = ({
         <meta property="og:type" content="website" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
+      <ApplicationsDeadlineNotice />
 
       <NavBar t={t} hideProfileLink={hideProfileLink} />
 

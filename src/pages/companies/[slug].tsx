@@ -18,6 +18,7 @@ import prisma from "~/lib/prisma";
 
 import { useIsAdmin } from "~/hooks/use-role";
 
+import ApplicationsDeadlineNotice from "~/components/common/applications-deadline-notice";
 import Footer from "~/components/common/footer";
 import Header from "~/components/pages/companies/header";
 import ExternalLink from "~/components/common/external-link";
@@ -75,6 +76,7 @@ const CompanyPage: NextPage<PageProps> = ({
       <Head>
         <title>{pageTitle}</title>
       </Head>
+      <ApplicationsDeadlineNotice />
       <NavBar companyId={company.id} />
       <main className="min-h-screen bg-black pt-32 md:pt-40 lg:pt-48">
         <Header company={company} />
