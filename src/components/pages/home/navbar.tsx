@@ -10,10 +10,20 @@ import { useCallback } from "react";
 
 type NavBarProps = {
   t: TFunction;
+  hideEventsLink: boolean;
   hideProfileLink: boolean;
 };
 
-const NavBar: React.FC<NavBarProps> = ({ t, hideProfileLink }) => {
+type LinkData = {
+  targetId: string;
+  label: string;
+};
+
+const NavBar: React.FC<NavBarProps> = ({
+  t,
+  hideEventsLink,
+  hideProfileLink,
+}) => {
   const role = useRole();
 
   const renderLinks = useCallback(
@@ -39,10 +49,13 @@ const NavBar: React.FC<NavBarProps> = ({ t, hideProfileLink }) => {
         }
       };
 
-      const links = [
+      const links: (LinkData | undefined)[] = [
         { targetId: "hero", label: t("navbar.home") },
         { targetId: "about", label: t("navbar.about") },
         { targetId: "partners", label: t("navbar.partners") },
+        hideEventsLink
+          ? undefined
+          : { targetId: "events", label: t("navbar.events") },
         { targetId: "contact", label: t("navbar.contact") },
       ];
 
@@ -51,17 +64,22 @@ const NavBar: React.FC<NavBarProps> = ({ t, hideProfileLink }) => {
 
       return (
         <>
-          {links.map(({ targetId, label }, index) => (
-            <li key={index} className="md:inline-block">
-              <a
-                onClick={handleLinkClick}
-                href={`#${targetId}`}
-                className="block px-5 py-3"
-              >
-                {label}
-              </a>
-            </li>
-          ))}
+          {links
+            .filter((link) => link !== undefined)
+            .map((linkData, index) => {
+              const { targetId, label } = linkData!;
+              return (
+                <li key={index} className="md:inline-block">
+                  <a
+                    onClick={handleLinkClick}
+                    href={`#${targetId}`}
+                    className="block px-5 py-3"
+                  >
+                    {label}
+                  </a>
+                </li>
+              );
+            })}
           {showProfileLink && (
             <li className="md:inline-block">
               <Link href="/profile" className="block px-5 py-3">
@@ -79,7 +97,7 @@ const NavBar: React.FC<NavBarProps> = ({ t, hideProfileLink }) => {
         </>
       );
     },
-    [t, hideProfileLink, role]
+    [t, hideEventsLink, hideProfileLink, role]
   );
 
   return <CommonNavBar renderLinks={renderLinks} />;

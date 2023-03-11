@@ -81,7 +81,11 @@ const HomePage: NextPage<PageProps> = ({
 
       <ApplicationsDeadlineNotice />
 
-      <NavBar t={t} hideProfileLink={hideProfileLink} />
+      <NavBar
+        t={t}
+        hideEventsLink={!isEventsSectionVisible}
+        hideProfileLink={hideProfileLink}
+      />
 
       <main>
         <HeroSection
