@@ -1,13 +1,18 @@
 import { z } from "zod";
 
+import { Role } from "@prisma/client";
+
 import { hashPassword, validatePassword } from "~/lib/accounts";
 import prisma from "~/lib/prisma";
+
+import { PaginationParamsSchema } from "~/api/pagination";
 import { BadRequestError } from "~/api/errors";
 
 import { AllRoles, EntityId } from "../../schema";
 import { adminProcedure, router } from "../..";
 
 const ReadInput = z.object({ id: EntityId });
+const ReadManyInput = PaginationParamsSchema;
 const CreateInput = z.object({
   name: z.string(),
   email: z.string(),
@@ -28,6 +33,31 @@ export const userRouter = router({
     const { id } = input;
     const user = await prisma.user.findUnique({ where: { id } });
     return user;
+  }),
+  readMany: adminProcedure.input(ReadManyInput).query(async ({ input }) => {
+    const { pageIndex, pageSize } = input;
+    const skip = pageIndex * pageSize;
+    const take = pageSize;
+
+    const usersCount = await prisma.user.count();
+    const pageCount = Math.ceil(usersCount / pageSize);
+
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+      },
+      skip,
+      take,
+      orderBy: { id: "asc" },
+    });
+
+    return {
+      pageCount,
+      results: users,
+    };
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input }) => {
     const { name, email, password, role } = input;
@@ -55,6 +85,24 @@ export const userRouter = router({
         emailVerified: new Date(),
         passwordHash,
         role,
+      },
+    });
+  }),
+  createFake: adminProcedure.mutation(async () => {
+    const { _max } = await prisma.user.aggregate({ _max: { id: true } });
+
+    const id = _max.id ?? 1;
+
+    const name = `Participant #${id}`;
+    const email = `participant${id}@example.com`;
+
+    await prisma.user.create({
+      data: {
+        name,
+        email,
+        emailVerified: new Date(),
+        passwordHash: "",
+        role: Role.PARTICIPANT,
       },
     });
   }),

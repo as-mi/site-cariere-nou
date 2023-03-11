@@ -8,72 +8,15 @@ import { useSession } from "next-auth/react";
 import { Role } from "@prisma/client";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faAddressCard,
-  faBars,
-  faBuilding,
-  faCalendar,
-  faFile,
-  faGear,
-  faHouse,
-  faImage,
-  faListCheck,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+
+import { links } from "./links";
 
 type LayoutProps = {
   title: string;
   renderSidebar?: boolean;
   children: React.ReactNode;
 };
-
-const links = [
-  {
-    href: "/admin",
-    icon: faHouse,
-    label: "Acasă",
-  },
-  {
-    href: "/admin/events",
-    icon: faCalendar,
-    label: "Evenimente",
-  },
-  {
-    href: "/admin/users",
-    icon: faUser,
-    label: "Utilizatori",
-  },
-  {
-    href: "/admin/images",
-    icon: faImage,
-    label: "Imagini",
-  },
-  {
-    href: "/admin/companies",
-    icon: faBuilding,
-    label: "Companii",
-  },
-  {
-    href: "/admin/positions",
-    icon: faAddressCard,
-    label: "Posturi",
-  },
-  {
-    href: "/admin/technical-tests",
-    icon: faListCheck,
-    label: "Teste tehnice",
-  },
-  {
-    href: "/admin/resumes",
-    icon: faFile,
-    label: "CV-uri",
-  },
-  {
-    href: "/admin/settings",
-    icon: faGear,
-    label: "Setări",
-  },
-];
 
 const Sidebar: React.FC = () => {
   const [showSidebar, setShowSidebar] = useState(false);

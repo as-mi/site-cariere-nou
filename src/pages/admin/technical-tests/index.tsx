@@ -1,31 +1,21 @@
 import { ReactElement } from "react";
 
 import { GetServerSideProps } from "next";
-import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { Role } from "@prisma/client";
 
+import { DEFAULT_PAGE_SIZE } from "~/api/pagination";
+
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
-import { trpc } from "~/lib/trpc";
 
 import { NextPageWithLayout } from "~/pages/_app";
-import Layout from "~/components/pages/admin/layout";
 
-type TechnicalTest = {
-  id: number;
-  title: string;
-  position: {
-    title: string;
-    company: {
-      name: string;
-    };
-  };
-  activePosition: {
-    id: number;
-  } | null;
-};
+import Layout from "~/components/pages/admin/layout";
+import AdminTechnicalTestsPageHeader from "~/components/pages/admin/technical-tests/header";
+import AdminTechnicalTestsTable, {
+  TechnicalTest,
+} from "~/components/pages/admin/technical-tests/table";
 
 type PageProps = {
   technicalTestsCount: number;
@@ -35,86 +25,17 @@ type PageProps = {
 const AdminTechnicalTestsPage: NextPageWithLayout<PageProps> = ({
   technicalTestsCount,
   technicalTests,
-}) => {
-  const router = useRouter();
-
-  const technicalTestDeleteMutation =
-    trpc.admin.technicalTest.delete.useMutation({
-      onSuccess: () => router.push("/admin/technical-tests"),
-      onError: (error) =>
-        alert(`Eroare la ștergerea testului tehnic: ${error.message}`),
-    });
-
-  const handleTechnicalTestDelete = (technicalTestId: number) => {
-    if (window.confirm("Sigur vrei să ștergi acest test tehnic?")) {
-      technicalTestDeleteMutation.mutate({ id: technicalTestId });
-    }
-  };
-
-  return (
-    <>
-      <header>
-        <h1 className="my-2 font-display text-3xl">Teste tehnice</h1>
-        <p className="my-2">
-          {technicalTestsCount == 1
-            ? `Există 1 test tehnic`
-            : `Sunt ${technicalTestsCount} teste tehnice`}{" "}
-          în baza de date.
-        </p>
-        <p className="my-4 flex flex-row flex-wrap items-center justify-center gap-4 sm:justify-start">
-          <Link
-            href="/admin/technical-tests/new"
-            className="inline-block rounded-md bg-blue-600 py-2 px-3"
-          >
-            Adaugă un test tehnic nou
-          </Link>
-        </p>
-      </header>
-      <div className="overflow-x-auto">
-        <table className="w-full text-center">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Nume companie</th>
-              <th>Titlu post</th>
-              <th>Titlu test</th>
-              <th>Activ</th>
-              <th>Acțiuni</th>
-            </tr>
-          </thead>
-          <tbody>
-            {technicalTests.map((technicalTest) => (
-              <tr key={technicalTest.id}>
-                <th scope="row" className="px-3">
-                  {technicalTest.id}
-                </th>
-                <td className="px-3">{technicalTest.position.company.name}</td>
-                <td className="px-3">{technicalTest.position.title}</td>
-                <td className="px-3">{technicalTest.title}</td>
-                <td className="px-3">
-                  {!!technicalTest.activePosition ? "Da" : "Nu"}
-                </td>
-                <td className="flex flex-col px-3">
-                  <Link
-                    href={`/admin/technical-tests/${technicalTest.id}/edit`}
-                  >
-                    Editează
-                  </Link>
-                  <button
-                    onClick={() => handleTechnicalTestDelete(technicalTest.id)}
-                    className="block"
-                  >
-                    Șterge
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </>
-  );
-};
+}) => (
+  <>
+    <AdminTechnicalTestsPageHeader technicalTestsCount={technicalTestsCount} />
+    <AdminTechnicalTestsTable
+      initialData={{
+        pageCount: Math.ceil(technicalTestsCount / DEFAULT_PAGE_SIZE),
+        results: technicalTests,
+      }}
+    />
+  </>
+);
 
 export default AdminTechnicalTestsPage;
 
@@ -166,6 +87,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         },
       },
     },
+    take: DEFAULT_PAGE_SIZE,
     orderBy: [{ id: "asc" }],
   });
 

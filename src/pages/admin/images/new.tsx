@@ -62,10 +62,9 @@ const AdminNewImagePage: NextPageWithLayout = () => {
       } else {
         setFileUploadError("Failed to upload image");
       }
+      setIsUploadingImage(false);
       return;
     }
-
-    setIsUploadingImage(false);
 
     router.push("/admin/images");
   };

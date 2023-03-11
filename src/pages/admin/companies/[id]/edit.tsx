@@ -118,8 +118,17 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
     }
   }, [query.data, reset]);
 
+  if (query.isLoading) {
+    return <p>Se încarcă...</p>;
+  }
+
   if (!query.data) {
-    return <p>Loading...</p>;
+    return (
+      <p>
+        Eroare la încărcarea datelor
+        {query.error ? `: ${query.error.message}` : ""}
+      </p>
+    );
   }
 
   const watchUseExternalUrlForPositions = watch("useExternalUrlForPositions");
