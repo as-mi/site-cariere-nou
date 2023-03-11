@@ -123,7 +123,12 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
   }
 
   if (!query.data) {
-    return <p>Eroare la încărcarea datelor: {query.error}</p>;
+    return (
+      <p>
+        Eroare la încărcarea datelor
+        {query.error ? `: ${query.error.message}` : ""}
+      </p>
+    );
   }
 
   const watchUseExternalUrlForPositions = watch("useExternalUrlForPositions");
