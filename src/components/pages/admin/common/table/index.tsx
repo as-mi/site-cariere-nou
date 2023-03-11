@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 
 import {
   ColumnDef,
@@ -7,7 +7,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 
-import { PaginatedData } from "~/data/pagination";
+import { PaginatedData } from "~/api/pagination";
 
 import AdminTableHeader from "./header";
 import AdminTableBody from "./body";
@@ -49,6 +49,17 @@ const AdminTable = <TData,>({
       pagination,
     },
   });
+
+  useEffect(() => {
+    // If all the data on the page we're currently on gets deleted,
+    // move us back to the previous page (if possible)
+    if (data?.results?.length === 0) {
+      onPaginationChange({
+        ...pagination,
+        pageIndex: Math.max(0, pagination.pageIndex - 1),
+      });
+    }
+  }, [data, onPaginationChange, pagination]);
 
   if (!data) {
     if (query.isLoading) {
