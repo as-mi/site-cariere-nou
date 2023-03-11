@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import { PaginationParamsSchema } from "~/api/pagination";
 import { revalidateCompanyPage } from "~/api/revalidation";
 import prisma from "~/lib/prisma";
 
@@ -14,6 +15,7 @@ const GetAllInput = z.object({
 const ReadInput = z.object({
   id: EntityId,
 });
+const ReadManyInput = PaginationParamsSchema;
 const CreateInput = z.object({
   companyId: EntityId,
   title: z.string(),
@@ -62,6 +64,38 @@ export const positionRouter = router({
       where: { id },
     });
     return position;
+  }),
+  readMany: adminProcedure.input(ReadManyInput).query(async ({ input }) => {
+    const { pageIndex, pageSize } = input;
+    const skip = pageIndex * pageSize;
+    const take = pageSize;
+
+    const positionsCount = await prisma.position.count();
+    const pageCount = Math.ceil(positionsCount / pageSize);
+
+    const positions = await prisma.position.findMany({
+      select: {
+        id: true,
+        title: true,
+        company: {
+          select: {
+            name: true,
+          },
+        },
+      },
+      skip,
+      take,
+      orderBy: { id: "asc" },
+    });
+
+    return {
+      pageCount,
+      results: positions.map((position) => ({
+        id: position.id,
+        title: position.title,
+        companyName: position.company.name,
+      })),
+    };
   }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input, ctx }) => {
     const { companyId } = input;
