@@ -33,7 +33,7 @@ const EventCard: React.FC<EventCardProps> = ({ t, event, className }) => {
   return (
     <div
       className={classNames(
-        "min-w-[16rem] max-w-sm rounded-lg border-2 border-gray-200 bg-white p-6 text-start drop-shadow-md",
+        "flex min-w-[18rem] max-w-[330px] flex-col rounded-lg border-2 border-gray-200 bg-white p-6 text-start drop-shadow-md sm:p-8 md:p-10",
         className
       )}
     >
@@ -43,7 +43,7 @@ const EventCard: React.FC<EventCardProps> = ({ t, event, className }) => {
           {event.kind === EventKind.WORKSHOP ? "Workshop" : "Prezentare"}
         </h3>
       </header>
-      <div className="space-y-2 pl-1 pt-3">
+      <div className="mb-5 space-y-2 pl-1 pt-3 md:space-y-4">
         {event.location && (
           <p>
             <span title={t("eventsSection.card.location")!}>
@@ -87,7 +87,7 @@ const EventCard: React.FC<EventCardProps> = ({ t, event, className }) => {
         )}
       </div>
       {isAdmin && (
-        <div className="mx-auto mt-5 flex max-w-md flex-row justify-center">
+        <div className="mx-auto mt-auto flex max-w-md flex-row justify-center">
           <Link
             href={`/admin/events/${event.id}/edit`}
             className="inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
@@ -96,7 +96,7 @@ const EventCard: React.FC<EventCardProps> = ({ t, event, className }) => {
               icon={faEdit}
               className="mr-2 inline-block h-4 w-4"
             />
-            Editează detaliile evenimentului
+            Editează evenimentul
           </Link>
         </div>
       )}
