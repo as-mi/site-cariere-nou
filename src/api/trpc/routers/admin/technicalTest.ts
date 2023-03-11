@@ -1,17 +1,15 @@
-import { adminProcedure, router } from "../..";
-import { EntityId } from "../../schema";
-
 import { z } from "zod";
 
+import { PaginationParamsSchema } from "~/api/pagination";
 import { QuestionsSchema } from "~/lib/technical-tests-schema";
 import prisma from "~/lib/prisma";
 
-const GetAllInput = z.object({
-  positionId: EntityId,
-});
-const ReadInput = z.object({
-  id: EntityId,
-});
+import { adminProcedure, router } from "../..";
+import { EntityId } from "../../schema";
+
+const GetAllInput = z.object({ positionId: EntityId });
+const ReadInput = z.object({ id: EntityId });
+const ReadManyInput = PaginationParamsSchema;
 const ReadOutput = z
   .object({
     id: EntityId,
@@ -74,6 +72,44 @@ export const technicalTestRouter = router({
         questions: result.data,
       };
     }),
+  readMany: adminProcedure.input(ReadManyInput).query(async ({ input }) => {
+    const { pageIndex, pageSize } = input;
+    const skip = pageIndex * pageSize;
+    const take = pageSize;
+
+    const technicalTestsCount = await prisma.technicalTest.count();
+    const pageCount = Math.ceil(technicalTestsCount / pageSize);
+
+    const technicalTests = await prisma.technicalTest.findMany({
+      select: {
+        id: true,
+        title: true,
+        position: {
+          select: {
+            title: true,
+            company: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+        activePosition: {
+          select: {
+            id: true,
+          },
+        },
+      },
+      skip,
+      take,
+      orderBy: [{ id: "asc" }],
+    });
+
+    return {
+      pageCount,
+      results: technicalTests,
+    };
+  }),
   create: adminProcedure
     .input(CreateInput.strict())
     .mutation(async ({ input }) => {
