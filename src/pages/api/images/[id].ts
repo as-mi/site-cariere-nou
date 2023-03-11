@@ -30,6 +30,7 @@ const getImage = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 
   res.setHeader("Content-Type", image.contentType);
+  res.setHeader("Content-Length", image.data.byteLength);
 
   res.send(image.data);
 };
