@@ -38,7 +38,7 @@ const AdminEventsTable: React.FC<AdminEventsTableProps> = ({ initialData }) => {
     {
       initialData:
         pagination === initialPaginationState ? initialData : undefined,
-      staleTime: Infinity,
+      staleTime: 1000,
       keepPreviousData: true,
     }
   );

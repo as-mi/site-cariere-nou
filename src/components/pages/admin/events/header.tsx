@@ -21,7 +21,7 @@ const AdminEventsPageHeader: React.FC<AdminEventsPageHeaderProps> = ({
       în platformă.
     </p>
     <p className="my-4 flex flex-row flex-wrap justify-center gap-4 md:justify-start">
-      <Button element={Link} href="/admin/events/new">
+      <Button as={Link} href="/admin/events/new">
         Adaugă un eveniment nou
       </Button>
       {process.env.NODE_ENV === "development" && (

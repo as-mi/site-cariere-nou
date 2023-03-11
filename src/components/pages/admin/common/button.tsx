@@ -3,15 +3,15 @@ type ButtonProps<
   C extends keyof JSX.IntrinsicElements | React.ComponentType<P>
 > = {
   children: React.ReactNode;
-  element?: C;
-} & React.ComponentPropsWithoutRef<C>;
+  as?: C;
+} & Omit<React.ComponentPropsWithoutRef<C>, "as" | "children">;
 
 const Button = <C extends React.ElementType = "button">({
-  element,
+  as,
   children,
   ...otherProps
 }: ButtonProps<React.ComponentPropsWithoutRef<C>, C>) => {
-  const Element = (element ?? "button") as React.ElementType;
+  const Element = (as ?? "button") as React.ElementType;
   return (
     <Element
       {...otherProps}

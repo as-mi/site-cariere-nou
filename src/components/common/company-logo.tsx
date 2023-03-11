@@ -1,8 +1,8 @@
-import Image from "next/image";
-
 import { useTranslation } from "next-i18next";
 
 import { Prisma } from "@prisma/client";
+
+import UploadedImage from "./uploaded-image";
 
 const companyWithLogo = Prisma.validator<Prisma.CompanyArgs>()({
   select: {
@@ -32,10 +32,11 @@ const CompanyLogo: React.FC<CompanyLogoProps> = ({
 }) => {
   const { t } = useTranslation("common");
   return (
-    <Image
-      src={`/api/images/${logo.id}${queryString ? `?${queryString}` : ""}`}
+    <UploadedImage
+      imageId={logo.id}
       width={logo.width}
       height={logo.height}
+      queryString={queryString}
       alt={t("companyLogo", { companyName })}
       className={className}
     />

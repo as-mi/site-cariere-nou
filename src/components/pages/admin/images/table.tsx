@@ -4,7 +4,7 @@ import Link from "next/link";
 
 import { createColumnHelper, PaginationState } from "@tanstack/react-table";
 
-import { User as PrismaUser } from "@prisma/client";
+import { Image as PrismaImage } from "@prisma/client";
 import { getQueryKey } from "@trpc/react-query";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -14,15 +14,18 @@ import type { PaginatedData } from "~/api/pagination";
 
 import AdminTable from "../common/table";
 
-export type User = Pick<PrismaUser, "id" | "email" | "name" | "role">;
+export type Image = Pick<
+  PrismaImage,
+  "id" | "fileName" | "contentType" | "width" | "height"
+>;
 
-const columnHelper = createColumnHelper<User>();
+const columnHelper = createColumnHelper<Image>();
 
-type AdminUsersTableProps = {
-  initialData?: PaginatedData<User>;
+type AdminImagesTableProps = {
+  initialData?: PaginatedData<Image>;
 };
 
-const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
+const AdminImagesTable: React.FC<AdminImagesTableProps> = ({ initialData }) => {
   const initialPaginationState = {
     pageIndex: 0,
     pageSize: 5,
@@ -32,46 +35,41 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
     initialPaginationState
   );
 
-  const query = trpc.admin.user.readMany.useQuery(
+  const query = trpc.admin.image.readMany.useQuery(
     { ...pagination },
     {
       initialData:
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
+      refetchOnWindowFocus: true,
     }
   );
 
   const queryClient = useQueryClient();
 
-  const userDeleteMutation = trpc.admin.user.delete.useMutation({
+  const imageDeleteMutation = trpc.admin.image.delete.useMutation({
     onSuccess: () => {
       // We must invalidate this page of data and all the following pages
       let pageCount = query.data!.pageCount;
       for (let { pageIndex } = pagination; pageIndex < pageCount; ++pageIndex) {
-        const queryKey = getQueryKey(trpc.admin.user.readMany, {
+        const queryKey = getQueryKey(trpc.admin.image.readMany, {
           ...pagination,
           pageIndex,
         });
         queryClient.invalidateQueries(queryKey);
       }
     },
-    onError: (error) =>
-      alert(`Eroare la ștergerea utilizatorului: ${error.message}`),
+    onError: (error) => alert(`Eroare la ștergerea imaginii: ${error.message}`),
   });
 
-  const handleUserResetPassword = useCallback((userId: number) => {
-    console.log("Reset password for user %d", userId);
-    alert("Această funcționalitate nu este încă implementată.");
-  }, []);
-
-  const handleUserDelete = useCallback(
+  const handleImageDelete = useCallback(
     (userId: number) => {
-      if (window.confirm("Sigur vrei să ștergi acest utilizator?")) {
-        userDeleteMutation.mutate({ id: userId });
+      if (window.confirm("Sigur vrei să ștergi această imagine?")) {
+        imageDeleteMutation.mutate({ id: userId });
       }
     },
-    [userDeleteMutation]
+    [imageDeleteMutation]
   );
 
   const columns = useMemo(
@@ -82,32 +80,37 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
           isRowHeader: true,
         },
       }),
-      columnHelper.accessor("email", {
-        header: "E-mail",
+      columnHelper.accessor("fileName", {
+        header: "Nume fișier",
       }),
-      columnHelper.accessor("name", {
-        header: "Nume",
+      columnHelper.accessor("contentType", {
+        header: "Tip fișier",
       }),
-      columnHelper.accessor("role", {
-        header: "Rol",
-        cell: (ctx) => ctx.getValue().toLowerCase(),
+      columnHelper.display({
+        header: "Dimensiuni",
+        cell: (ctx) => `${ctx.row.original.width}x${ctx.row.original.height}`,
+      }),
+      columnHelper.display({
+        header: "URL",
+        cell: (ctx) => {
+          const url = `/api/images/${ctx.row.original.id}`;
+          return (
+            <Link href={url} target="_blank">
+              {url}
+            </Link>
+          );
+        },
       }),
       columnHelper.display({
         id: "actions",
         header: "Acțiuni",
         cell: (ctx) => (
           <div className="flex flex-col">
-            <Link href={`/admin/users/${ctx.row.getValue("id")}/edit`}>
+            <Link href={`/admin/images/${ctx.row.original.id}/edit`}>
               Editează
             </Link>
             <button
-              onClick={() => handleUserResetPassword(ctx.row.getValue("id"))}
-              className="block"
-            >
-              Resetează parola
-            </button>
-            <button
-              onClick={() => handleUserDelete(ctx.row.getValue("id"))}
+              onClick={() => handleImageDelete(ctx.row.original.id)}
               className="block"
             >
               Șterge
@@ -116,7 +119,7 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
         ),
       }),
     ],
-    [handleUserResetPassword, handleUserDelete]
+    [handleImageDelete]
   );
 
   return (
@@ -129,4 +132,4 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
   );
 };
 
-export default AdminUsersTable;
+export default AdminImagesTable;

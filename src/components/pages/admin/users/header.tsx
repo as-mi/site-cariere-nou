@@ -21,7 +21,7 @@ const AdminUsersPageHeader: React.FC<AdminUsersPageHeaderProps> = ({
       în platformă.
     </p>
     <p className="my-4 flex flex-row flex-wrap justify-center gap-4 md:justify-start">
-      <Button element={Link} href="/admin/users/new">
+      <Button as={Link} href="/admin/users/new">
         Adaugă un utilizator nou
       </Button>
       {process.env.NODE_ENV === "development" && (
