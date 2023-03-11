@@ -17,6 +17,7 @@ import {
 
 import { getServerSession } from "~/lib/auth";
 import prisma from "~/lib/prisma";
+import { getSettingValue } from "~/lib/settings/get";
 
 const MAXIMUM_RESUME_SIZE_IN_BYTES = 2 * 1024 * 1024;
 const MAXIMUM_NUMBER_OF_RESUMES_PER_PARTICIPANT = 5;
@@ -43,6 +44,14 @@ const uploadResume = async (
 ) => {
   if (req.method !== "POST" && req.method !== "PUT") {
     throw new MethodNotAllowedError();
+  }
+
+  const applicationsEnabled = await getSettingValue("showAvailablePositions");
+  if (req.method === "PUT" && !applicationsEnabled) {
+    throw new MethodNotAllowedError(
+      "method-not-allowed",
+      "replacing resume is not allowed when applications are closed"
+    );
   }
 
   const session = await getServerSession(req, res);

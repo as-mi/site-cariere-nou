@@ -13,6 +13,8 @@ import { Prisma, Role } from "@prisma/client";
 
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
+import { getSettingValue } from "~/lib/settings/get";
+
 import useRole from "~/hooks/use-role";
 
 import ContactInfoSection from "~/components/pages/profile/contact-info/section";
@@ -35,6 +37,7 @@ const userWithProfileAndResumes = Prisma.validator<Prisma.UserArgs>()({
         id: true,
         fileName: true,
       },
+      orderBy: [{ id: "asc" }],
     },
   },
 });
@@ -45,9 +48,10 @@ type UserWithProfilesAndResumes = Prisma.UserGetPayload<
 
 type PageProps = {
   user: UserWithProfilesAndResumes;
+  applicationsEnabled: boolean;
 };
 
-const ProfilePage: NextPage<PageProps> = ({ user }) => {
+const ProfilePage: NextPage<PageProps> = ({ user, applicationsEnabled }) => {
   const { t, i18n } = useTranslation("profile");
 
   const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
@@ -82,7 +86,12 @@ const ProfilePage: NextPage<PageProps> = ({ user }) => {
                 applyToOtherPartners: user.consentApplyToOtherPartners,
               }}
             />
-            <ResumesSection t={t} i18n={i18n} initialData={resumes} />
+            <ResumesSection
+              t={t}
+              i18n={i18n}
+              initialData={resumes}
+              resumeReplacementAllowed={applicationsEnabled}
+            />
           </>
         )}
         <div className="mt-3 flex flex-row flex-wrap items-center gap-3">
@@ -125,11 +134,20 @@ export const getServerSideProps: GetServerSideProps = async ({
     ...userWithProfileAndResumes,
   });
 
+  if (!user) {
+    return {
+      notFound: true,
+    };
+  }
+
+  const applicationsEnabled = await getSettingValue("showAvailablePositions");
+
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "ro", ["common", "profile"])),
       session,
       user,
+      applicationsEnabled,
     },
   };
 };

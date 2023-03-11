@@ -15,12 +15,14 @@ type ResumesSectionProps = {
   t: TFunction;
   i18n: I18n;
   initialData?: Resume[];
+  resumeReplacementAllowed: boolean;
 };
 
 const ResumesSection: React.FC<ResumesSectionProps> = ({
   t,
   i18n,
   initialData,
+  resumeReplacementAllowed,
 }) => {
   const { t: commonT } = useTranslation("common");
 
@@ -80,6 +82,7 @@ const ResumesSection: React.FC<ResumesSectionProps> = ({
       <ResumesDisplay
         t={t}
         initialData={initialData}
+        resumeReplacementAllowed={resumeReplacementAllowed}
         replaceResumeId={replaceResumeId}
         onReplaceResume={(resumeId: number) => {
           setReplaceResumeId(resumeId);
