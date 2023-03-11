@@ -15,7 +15,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
     type="submit"
     disabled={disabled}
     className={classNames(
-      "rounded-sm bg-zinc-800 p-2 hover:bg-zinc-900",
+      "rounded-sm bg-zinc-800 p-2 enabled:hover:bg-zinc-900 disabled:text-zinc-400",
       className
     )}
   >
