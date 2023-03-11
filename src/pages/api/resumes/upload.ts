@@ -114,9 +114,9 @@ const uploadResume = async (
 
 apiRoute.use(upload.single("file"));
 
-apiRoute.post(uploadResume);
+apiRoute.post(createHandler(uploadResume));
 
-export default createHandler(apiRoute);
+export default apiRoute;
 
 export const config = {
   api: {
