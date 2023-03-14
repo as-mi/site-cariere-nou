@@ -93,6 +93,9 @@ const AdminCompaniesTable: React.FC<AdminCompaniesTableProps> = ({
         header: "Acțiuni",
         cell: (ctx) => (
           <div className="flex flex-col">
+            <Link href={`/admin/companies/${ctx.row.original.id}`}>
+              Vizualizează
+            </Link>
             <Link href={`/admin/companies/${ctx.row.original.id}/edit`}>
               Editează
             </Link>
