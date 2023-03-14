@@ -71,7 +71,7 @@ const AdminTable = <TData,>({
 
   return (
     <div>
-      <div className="relative overflow-x-auto">
+      <div className="relative overflow-x-auto py-4">
         {query.isFetching && data.pageCount !== 0 && (
           <div className="absolute flex h-full w-full items-center justify-center bg-black bg-opacity-90">
             <span className="font-display text-3xl font-bold">

@@ -16,6 +16,9 @@ const ReadInput = z.object({
   id: EntityId,
 });
 const ReadManyInput = PaginationParamsSchema;
+const ReadApplicationsInput = z
+  .object({ id: EntityId })
+  .and(PaginationParamsSchema);
 const CreateInput = z.object({
   companyId: EntityId,
   title: z.string(),
@@ -97,6 +100,39 @@ export const positionRouter = router({
       })),
     };
   }),
+  readApplications: adminProcedure
+    .input(ReadApplicationsInput)
+    .query(async ({ input }) => {
+      const { id: positionId, pageIndex, pageSize } = input;
+      const skip = pageIndex * pageSize;
+      const take = pageSize;
+
+      const applicationsCount = await prisma.participantApplyToPosition.count({
+        where: { positionId },
+      });
+      const pageCount = Math.ceil(applicationsCount / pageSize);
+
+      const applications = await prisma.participantApplyToPosition.findMany({
+        where: { positionId },
+        select: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          resumeId: true,
+        },
+        skip,
+        take,
+        orderBy: [{ userId: "asc" }],
+      });
+
+      return {
+        pageCount,
+        results: applications,
+      };
+    }),
   create: adminProcedure.input(CreateInput).mutation(async ({ input, ctx }) => {
     const { companyId } = input;
 

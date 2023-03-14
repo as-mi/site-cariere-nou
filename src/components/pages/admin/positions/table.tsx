@@ -93,7 +93,10 @@ const AdminPositionsTable: React.FC<AdminPositionsTableProps> = ({
         cell: (ctx) => (
           <div className="flex flex-col">
             <Link href={`/admin/positions/${ctx.row.original.id}`}>
-              Afișează
+              Afișează detaliile
+            </Link>
+            <Link href={`/admin/positions/${ctx.row.original.id}/applications`}>
+              Vezi aplicanții
             </Link>
             <Link href={`/admin/positions/${ctx.row.original.id}/edit`}>
               Editează

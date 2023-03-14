@@ -5,12 +5,15 @@ import Link from "next/link";
 
 import Showdown from "showdown";
 
+import { Role } from "@prisma/client";
+
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
 
 import { NextPageWithLayout } from "~/pages/_app";
 
 import Layout from "~/components/pages/admin/layout";
+import Button from "~/components/pages/admin/common/button";
 
 type Position = {
   id: number;
@@ -44,12 +47,12 @@ const AdminViewPositionPage: NextPageWithLayout<PageProps> = ({ position }) => (
           {position.applicationsCount === 1 ? "participant" : "participanți"}.
         </p>
         <p className="mt-3">
-          <Link
+          <Button
+            as={Link}
             href={`/api/resumes/download?positionId=${position.id}`}
-            className="inline-block rounded-md bg-blue-600 py-2 px-3 hover:bg-blue-700"
           >
             Descarcă CV-urile
-          </Link>
+          </Button>
         </p>
       </section>
       <section>
@@ -80,6 +83,15 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
 
   if (!session || !session.user) {
     return redirectToLoginPage(returnUrl);
+  }
+
+  if (session.user.role !== Role.ADMIN) {
+    return {
+      props: {
+        session,
+        position: null as unknown as Position,
+      },
+    };
   }
 
   const id = params?.id;

@@ -97,17 +97,18 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
         header: "Acțiuni",
         cell: (ctx) => (
           <div className="flex flex-col">
-            <Link href={`/admin/users/${ctx.row.getValue("id")}/edit`}>
+            <Link href={`/admin/users/${ctx.row.original.id}/`}>Afișează</Link>
+            <Link href={`/admin/users/${ctx.row.original.id}/edit`}>
               Editează
             </Link>
             <button
-              onClick={() => handleUserResetPassword(ctx.row.getValue("id"))}
+              onClick={() => handleUserResetPassword(ctx.row.original.id)}
               className="block"
             >
               Resetează parola
             </button>
             <button
-              onClick={() => handleUserDelete(ctx.row.getValue("id"))}
+              onClick={() => handleUserDelete(ctx.row.original.id)}
               className="block"
             >
               Șterge
