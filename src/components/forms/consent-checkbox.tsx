@@ -15,6 +15,8 @@ type ConsentCheckboxProps<
   name: TFieldName;
   label: string | JSX.Element;
   register: UseFormRegister<TFieldValues>;
+  readOnly?: boolean;
+  disabled?: boolean;
   required?: boolean;
   fieldErrors?: FieldError;
 };
@@ -26,6 +28,8 @@ const ConsentCheckbox = <
   name,
   label,
   register,
+  readOnly,
+  disabled,
   required,
   fieldErrors,
 }: ConsentCheckboxProps<TFieldValues, TFieldName>): JSX.Element => {
@@ -39,7 +43,8 @@ const ConsentCheckbox = <
       <input
         id={inputId}
         type="checkbox"
-        {...register(name, { required })}
+        readOnly={readOnly}
+        {...register(name, { required, disabled })}
         className={`m-1 h-4 w-4 p-1 ${
           fieldErrors ? "ring-1 ring-inset ring-red-400" : ""
         }`}

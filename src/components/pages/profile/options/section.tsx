@@ -17,9 +17,14 @@ type Options = {
 type OptionsSectionProps = {
   t: TFunction;
   initialData?: Options;
+  readOnly: boolean;
 };
 
-const OptionsSection: React.FC<OptionsSectionProps> = ({ t, initialData }) => {
+const OptionsSection: React.FC<OptionsSectionProps> = ({
+  t,
+  initialData,
+  readOnly,
+}) => {
   const { t: commonT } = useTranslation("common");
 
   const queryClient = useQueryClient();
@@ -76,6 +81,7 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({ t, initialData }) => {
         <ConsentCheckbox
           name="applyToOtherPartners"
           label={t("options.applyToOtherPartners")!}
+          disabled={readOnly}
           register={register}
           fieldErrors={errors.applyToOtherPartners}
         />

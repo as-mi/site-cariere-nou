@@ -15,14 +15,14 @@ type ResumesSectionProps = {
   t: TFunction;
   i18n: I18n;
   initialData?: Resume[];
-  resumeReplacementAllowed: boolean;
+  readOnly: boolean;
 };
 
 const ResumesSection: React.FC<ResumesSectionProps> = ({
   t,
   i18n,
   initialData,
-  resumeReplacementAllowed,
+  readOnly,
 }) => {
   const { t: commonT } = useTranslation("common");
 
@@ -66,23 +66,25 @@ const ResumesSection: React.FC<ResumesSectionProps> = ({
             onSuccess={resetResumeUploadForm}
           />
         ) : (
-          <button
-            onClick={() => {
-              setReplaceResumeId(undefined);
-              setShowResumeUploadForm(true);
-            }}
-            disabled={!canUploadResume}
-            className="inline-flex flex-row items-center rounded-md bg-blue-600 px-3 py-2 text-white hover:bg-blue-700 active:bg-blue-800 disabled:bg-blue-400"
-          >
-            <FontAwesomeIcon icon={faUpload} className="mr-2 h-4 w-4" />
-            {t("uploadResume")}
-          </button>
+          !readOnly && (
+            <button
+              onClick={() => {
+                setReplaceResumeId(undefined);
+                setShowResumeUploadForm(true);
+              }}
+              disabled={!canUploadResume}
+              className="inline-flex flex-row items-center rounded-md bg-blue-600 px-3 py-2 text-white hover:bg-blue-700 active:bg-blue-800 disabled:bg-blue-400"
+            >
+              <FontAwesomeIcon icon={faUpload} className="mr-2 h-4 w-4" />
+              {t("uploadResume")}
+            </button>
+          )
         )}
       </div>
       <ResumesDisplay
         t={t}
         initialData={initialData}
-        resumeReplacementAllowed={resumeReplacementAllowed}
+        readOnly={readOnly}
         replaceResumeId={replaceResumeId}
         onReplaceResume={(resumeId: number) => {
           setReplaceResumeId(resumeId);

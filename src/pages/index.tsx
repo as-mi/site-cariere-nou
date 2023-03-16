@@ -17,6 +17,7 @@ import { getSettingValue } from "~/lib/settings/get";
 import { useIsAdmin } from "~/hooks/use-role";
 
 import ApplicationsDeadlineNotice from "~/components/common/applications-deadline-notice";
+import ApplicationsClosedNotice from "~/components/common/applications-closed-notice";
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
 import LogosSection from "~/components/pages/home/logos";
@@ -40,6 +41,7 @@ type PageProps = {
   hideProfileLink: boolean;
   showEvents: boolean;
   alwaysShowEventsForAdmin: boolean;
+  closeApplications: boolean;
   companiesByPackageType: CompaniesByPackageType;
   events: SerializedEvent[];
 };
@@ -51,6 +53,7 @@ const HomePage: NextPage<PageProps> = ({
   hideProfileLink,
   showEvents,
   alwaysShowEventsForAdmin,
+  closeApplications,
   companiesByPackageType,
   events,
 }) => {
@@ -80,6 +83,7 @@ const HomePage: NextPage<PageProps> = ({
       </Head>
 
       <ApplicationsDeadlineNotice />
+      {closeApplications && <ApplicationsClosedNotice />}
 
       <NavBar
         t={t}
@@ -137,6 +141,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
   const alwaysShowEventsForAdmin = await getSettingValue(
     "alwaysShowEventsForAdmin"
   );
+  const closeApplications = await getSettingValue("closeApplications");
 
   // When performing the initial static page build, we don't want to access the database
   if (process.env.NEXT_PHASE === PHASE_PRODUCTION_BUILD) {
@@ -149,6 +154,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
         hideProfileLink,
         showEvents,
         alwaysShowEventsForAdmin,
+        closeApplications,
         companiesByPackageType: {},
         events: [],
       },
@@ -204,6 +210,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
       hideProfileLink,
       showEvents,
       alwaysShowEventsForAdmin,
+      closeApplications,
       companiesByPackageType,
       events: events.map((event) => ({
         ...event,

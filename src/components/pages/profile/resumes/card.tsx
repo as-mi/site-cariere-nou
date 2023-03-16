@@ -12,6 +12,7 @@ type ResumeCardProps = {
   index: number;
   resume: Resume;
   replacementAllowed?: boolean;
+  deleteAllowed?: boolean;
   replacing?: boolean;
   onReplace: () => void;
   onDelete: () => void;
@@ -22,6 +23,7 @@ const ResumeCard: React.FC<ResumeCardProps> = ({
   index,
   resume,
   replacementAllowed,
+  deleteAllowed,
   replacing,
   onReplace,
   onDelete,
@@ -35,7 +37,7 @@ const ResumeCard: React.FC<ResumeCardProps> = ({
       {t("resumesDisplay.resumeTitle", { resumeIndex: index + 1 })}:
     </span>
     <span className="float-right ml-auto space-x-4">
-      {replacementAllowed && (
+      {replacementAllowed! && (
         <button type="button" title="Înlocuiește acest CV" onClick={onReplace}>
           <FontAwesomeIcon
             icon={faPen}
@@ -43,12 +45,14 @@ const ResumeCard: React.FC<ResumeCardProps> = ({
           />
         </button>
       )}
-      <button type="button" title="Șterge acest CV" onClick={onDelete}>
-        <FontAwesomeIcon
-          icon={faTrash}
-          className="h-5 w-5 text-red-600 hover:text-red-700 active:text-red-800 sm:h-4 sm:w-4"
-        />
-      </button>
+      {deleteAllowed! && (
+        <button type="button" title="Șterge acest CV" onClick={onDelete}>
+          <FontAwesomeIcon
+            icon={faTrash}
+            className="h-5 w-5 text-red-600 hover:text-red-700 active:text-red-800 sm:h-4 sm:w-4"
+          />
+        </button>
+      )}
     </span>
     <span className="mt-2 w-full">
       &quot;
@@ -62,5 +66,6 @@ export default ResumeCard;
 
 ResumeCard.defaultProps = {
   replacementAllowed: false,
+  deleteAllowed: false,
   replacing: false,
 };

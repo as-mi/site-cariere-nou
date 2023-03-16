@@ -85,6 +85,13 @@ export const participantRouter = router({
     .mutation(async ({ ctx, input }) => {
       const id = ctx.user!.id;
 
+      const applicationsClosed = await getSettingValue("closeApplications");
+      if (applicationsClosed) {
+        throw new Error(
+          "Application period has ended, options cannot be changed anymore"
+        );
+      }
+
       await prisma.user.update({
         where: { id },
         data: {

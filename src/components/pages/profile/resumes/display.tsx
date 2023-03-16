@@ -13,7 +13,7 @@ import ResumeCard from "./card";
 type ResumesDisplayProps = {
   t: TFunction;
   initialData?: Resume[];
-  resumeReplacementAllowed?: boolean;
+  readOnly?: boolean;
   replaceResumeId?: number;
   onReplaceResume: (resumeId: number) => void;
 };
@@ -21,7 +21,7 @@ type ResumesDisplayProps = {
 const ResumesDisplay: React.FC<ResumesDisplayProps> = ({
   t,
   initialData,
-  resumeReplacementAllowed,
+  readOnly,
   replaceResumeId,
   onReplaceResume,
 }) => {
@@ -88,7 +88,8 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({
               t={t}
               index={index}
               resume={resume}
-              replacementAllowed={resumeReplacementAllowed}
+              replacementAllowed={!readOnly!}
+              deleteAllowed={!readOnly!}
               replacing={replaceResumeId === resume.id}
               onReplace={() => onReplaceResume(resume.id)}
               onDelete={() => deleteResume(resume.id)}
@@ -106,5 +107,5 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({
 export default ResumesDisplay;
 
 ResumesDisplay.defaultProps = {
-  resumeReplacementAllowed: false,
+  readOnly: true,
 };

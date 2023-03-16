@@ -10,6 +10,10 @@
     "canApplyUntil": "Mai poți aplica doar până la sfârșitul zilei de",
     "dismiss": "Închide"
   },
+  "applicationsClosedNotice": {
+    "projectIsOver": "Cariere a luat sfârșit.",
+    "disclaimer": "Nu se mai primesc aplicări noi. Aplicările primite până acum au fost trimise către partenerii Cariere."
+  },
   "navbar": {
     "show": "Deschide meniul de navigare",
     "close": "Închide meniul de navigare",
