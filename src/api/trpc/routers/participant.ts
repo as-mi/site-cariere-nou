@@ -112,6 +112,13 @@ export const participantRouter = router({
       const { id } = input;
       const userId = ctx.user!.id;
 
+      const applicationsClosed = await getSettingValue("closeApplications");
+      if (applicationsClosed) {
+        throw new Error(
+          "Application period has ended, resumes cannot be deleted anymore"
+        );
+      }
+
       const resume = await prisma.resume.findFirst({
         where: {
           id,
@@ -140,6 +147,11 @@ export const participantRouter = router({
       );
       if (!allowParticipantsToApplyToPositions) {
         throw new Error("Applications are currently disabled");
+      }
+
+      const applicationsClosed = await getSettingValue("closeApplications");
+      if (applicationsClosed) {
+        throw new Error("Application period has ended");
       }
 
       // Check that the user completed the active technical test for this position, if there is any

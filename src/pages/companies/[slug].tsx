@@ -52,6 +52,7 @@ type PageProps = {
   showAvailablePositions: boolean;
   alwayShowAvailablePositionsForAdmin: boolean;
   allowParticipantsToApplyToPositions: boolean;
+  closeApplications: boolean;
   resolvedUrl: string;
   applyToPositionId: number | null;
 };
@@ -61,6 +62,7 @@ const CompanyPage: NextPage<PageProps> = ({
   showAvailablePositions,
   alwayShowAvailablePositionsForAdmin,
   allowParticipantsToApplyToPositions,
+  closeApplications,
   resolvedUrl,
   applyToPositionId,
 }) => {
@@ -119,6 +121,7 @@ const CompanyPage: NextPage<PageProps> = ({
                     key={position.id}
                     position={position}
                     enableApplicationForm={allowParticipantsToApplyToPositions}
+                    applicationsClosed={closeApplications}
                     returnUrl={resolvedUrl}
                     initiallyShowApplicationForm={
                       position.id === applyToPositionId
@@ -317,6 +320,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   const allowParticipantsToApplyToPositions = await getSettingValue(
     "allowParticipantsToApplyToPositions"
   );
+  const closeApplications = await getSettingValue("closeApplications");
 
   return {
     props: {
@@ -338,6 +342,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       showAvailablePositions,
       alwayShowAvailablePositionsForAdmin,
       allowParticipantsToApplyToPositions,
+      closeApplications,
       resolvedUrl,
       applyToPositionId,
     },

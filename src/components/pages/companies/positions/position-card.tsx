@@ -37,6 +37,7 @@ export type Position = {
 type PositionCardProps = {
   position: Position;
   enableApplicationForm: boolean;
+  applicationsClosed: boolean;
   returnUrl: string;
   initiallyShowApplicationForm?: boolean;
 };
@@ -44,6 +45,7 @@ type PositionCardProps = {
 const PositionCard: React.FC<PositionCardProps> = ({
   position,
   enableApplicationForm,
+  applicationsClosed,
   returnUrl,
   initiallyShowApplicationForm,
 }) => {
@@ -130,15 +132,17 @@ const PositionCard: React.FC<PositionCardProps> = ({
               {position.alreadyAppliedTo ? (
                 <>
                   <p>Ai aplicat deja pentru această poziție.</p>
-                  <div className="mt-2">
-                    <button
-                      type="button"
-                      onClick={withdrawApplication}
-                      className="rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600 active:bg-red-700"
-                    >
-                      Retrage aplicația
-                    </button>
-                  </div>
+                  {!applicationsClosed && (
+                    <div className="mt-2">
+                      <button
+                        type="button"
+                        onClick={withdrawApplication}
+                        className="rounded-lg bg-red-500 px-2 py-1 text-white hover:bg-red-600 active:bg-red-700"
+                      >
+                        Retrage aplicația
+                      </button>
+                    </div>
+                  )}
                 </>
               ) : showApplicationSuccessMessage ? (
                 <ApplicationSuccessMessage />
@@ -163,13 +167,17 @@ const PositionCard: React.FC<PositionCardProps> = ({
                     positionId={position.id}
                   />
                 )
-              ) : (
+              ) : !applicationsClosed ? (
                 <button
                   onClick={() => setShowApplicationForm(true)}
                   className="rounded-lg bg-blue-500 px-3 py-2 text-white hover:bg-blue-400 active:bg-blue-300"
                 >
                   Aplică acum
                 </button>
+              ) : (
+                <p className="mt-3">
+                  Perioada de aplicare pe posturi s-a terminat.
+                </p>
               )}
             </div>
           ) : (

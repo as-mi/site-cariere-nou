@@ -54,6 +54,14 @@ const uploadResume = async (
     );
   }
 
+  const applicationsClosed = await getSettingValue("closeApplications");
+  if (applicationsClosed) {
+    throw new MethodNotAllowedError(
+      "method-not-allowed",
+      "application period has ended, resumes cannot be created or edited anymore"
+    );
+  }
+
   const session = await getServerSession(req, res);
 
   if (!session?.user) {

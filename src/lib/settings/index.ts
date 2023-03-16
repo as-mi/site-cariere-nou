@@ -66,6 +66,11 @@ export const SETTINGS = {
     label: `Permite participanților să aplice pe posturile disponibile`,
     schema: z.boolean().default(false),
   },
+  closeApplications: {
+    key: "closeApplications",
+    label: `Închide aplicările pe posturile disponibile și dezactivează încărcarea/editarea de CV-uri`,
+    schema: z.boolean().default(false),
+  },
 } as const;
 
 export type Settings = typeof SETTINGS;
