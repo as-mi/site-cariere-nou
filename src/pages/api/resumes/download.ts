@@ -109,8 +109,13 @@ const downloadAllResumesForCompany = async (
       const resumes = await prisma.resume.findMany({
         ...resumeWhere,
         select: {
-          userId: true,
-          fileName: true,
+          id: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
           data: true,
         },
         skip,
@@ -121,7 +126,7 @@ const downloadAllResumesForCompany = async (
 
       resumes.forEach((resume) => {
         zip.addFile(
-          `${positionDirectoryName}/${resume.userId}-${resume.fileName}`,
+          `${positionDirectoryName}/U${resume.user.id}-CV${resume.id}-${resume.user.name}.pdf`,
           resume.data
         );
       });
@@ -133,7 +138,7 @@ const downloadAllResumesForCompany = async (
   }
 
   const { size } = fs.statSync(zipPath);
-  console.log(`Created zip file of size equal to ${size} bytes`);
+  console.log(`Created zip file of size ${size} bytes`);
 
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
@@ -198,8 +203,13 @@ const downloadAllResumesForPosition = async (
     const resumes = await prisma.resume.findMany({
       ...resumeWhere,
       select: {
-        userId: true,
-        fileName: true,
+        id: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         data: true,
       },
       skip,
@@ -209,7 +219,10 @@ const downloadAllResumesForPosition = async (
     console.log("Adding %d resumes to zip file", resumes.length);
 
     resumes.forEach((resume) => {
-      zip.addFile(`${resume.userId}-${resume.fileName}`, resume.data);
+      zip.addFile(
+        `U${resume.user.id}-CV${resume.id}-${resume.user.name}.pdf`,
+        resume.data
+      );
     });
 
     zip.writeZip();
@@ -218,7 +231,7 @@ const downloadAllResumesForPosition = async (
   }
 
   const { size } = fs.statSync(zipPath);
-  console.log(`Created zip file of size equal to ${size} bytes`);
+  console.log(`Created zip file of size ${size} bytes`);
 
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
@@ -276,8 +289,12 @@ const downloadAllResumes = async (
       ...resumeWhere,
       select: {
         id: true,
-        userId: true,
-        fileName: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+          },
+        },
         data: true,
       },
       skip,
@@ -288,7 +305,7 @@ const downloadAllResumes = async (
 
     resumes.forEach((resume) => {
       zip.addFile(
-        `${resume.userId}-${resume.id}-${resume.fileName}`,
+        `U${resume.user.id}-CV${resume.id}-${resume.user.name}.pdf`,
         resume.data
       );
     });
@@ -299,7 +316,7 @@ const downloadAllResumes = async (
   }
 
   const { size } = fs.statSync(zipPath);
-  console.log(`Created zip file of size equal to ${size} bytes`);
+  console.log(`Created zip file of size ${size} bytes`);
 
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
