@@ -1,9 +1,6 @@
-import _ from "lodash";
 import { z } from "zod";
 
 import type { NextApiRequest, NextApiResponse } from "next";
-
-import PDFDocument from "pdfkit";
 
 import { Role } from "@prisma/client";
 
@@ -18,11 +15,8 @@ import {
 
 import { getServerSession } from "~/lib/auth";
 import prisma from "~/lib/prisma";
-import {
-  AnswersSchema,
-  QuestionKind,
-  QuestionsSchema,
-} from "~/lib/technical-tests-schema";
+import { AnswersSchema, QuestionsSchema } from "~/lib/technical-tests-schema";
+import { generateTechnicalTestAnswerSheet } from "~/lib/technical-tests-export";
 
 const IdSchema = z.preprocess(
   (value) => parseInt(z.string().parse(value), 10),
@@ -107,112 +101,19 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const answers = AnswersSchema.parse(participantAnswers.answers);
-  const answersByQuestionId = _.mapValues(
-    _.keyBy(answers, (answer) => answer.questionId),
-    (answer) => answer.value
+
+  const answerSheetDocument = generateTechnicalTestAnswerSheet(
+    userId,
+    technicalTestId,
+    technicalTest.title,
+    questions,
+    answers
   );
 
-  const doc = new PDFDocument({
-    size: "A4",
-    lang: "ro",
-    info: {
-      Title: `Răspunsuri candidat #${userId} la testul tehnic #${technicalTestId}`,
-    },
-  });
-
-  const filterDiacritics = (text: string) =>
-    text.replace(/ă|â/g, "a").replace(/î/g, "i");
-
-  const originalTextMethod = doc.text;
-  doc.text = (text: string, x?: any, y?: any, options?: any) =>
-    (originalTextMethod as any).call(
-      doc,
-      filterDiacritics(text),
-      x,
-      y,
-      options
-    );
-
-  doc.pipe(res);
-
-  doc.fontSize(18);
-  doc.font("Helvetica-Bold");
-  doc.text(technicalTest.title);
-  doc.fontSize(12);
-  doc.font("Helvetica");
-
-  doc.moveDown();
-  doc.moveDown();
-
-  let correctMarkedQuestions = 0;
-  let totalMarkedQuestions = 0;
-  questions.forEach(({ id, correctChoiceId }) => {
-    if (!correctChoiceId) {
-      return;
-    }
-
-    totalMarkedQuestions += 1;
-
-    const answer = answersByQuestionId[id];
-    const choiceId = Number(answer);
-    if (choiceId === correctChoiceId) {
-      correctMarkedQuestions += 1;
-    }
-  });
-
-  if (totalMarkedQuestions > 0) {
-    doc.text(
-      `Participantul a răspuns corect la ${correctMarkedQuestions} din ${totalMarkedQuestions} întrebări de tip grilă (la care au fost configurate răspunsurile corecte).`
-    );
-    doc.moveDown();
-    doc.moveDown();
-  }
-
-  questions.forEach((question, index) => {
-    doc.text(`Răspunsul la întrebarea #${index + 1}:`);
-    doc.moveDown();
-
-    const answer = answersByQuestionId[question.id];
-
-    doc.fillColor("#444");
-    switch (question.kind) {
-      case QuestionKind.SHORT_TEXT:
-      case QuestionKind.LONG_TEXT:
-        doc.text(answer, { indent: 20 });
-        break;
-      case QuestionKind.SINGLE_CHOICE:
-        const choiceId = Number(answer);
-        const choice = question.choices!.find(
-          (choice) => choice.id === choiceId
-        );
-        doc.text(choice!.label, { indent: 20 });
-        break;
-
-      default:
-        throw new Error(`Unknown question kind: ${question.kind}`);
-    }
-    doc.fillColor("black");
-
-    if (question.correctChoiceId) {
-      doc.moveDown();
-
-      const choiceId = Number(answer);
-      if (question.correctChoiceId === choiceId) {
-        doc.fillColor("green").text("Raspunsul este cel corect");
-      } else {
-        doc.fillColor("red").text("Raspunsul nu este cel corect");
-      }
-      doc.fillColor("black");
-    }
-
-    doc.moveDown();
-    doc.moveDown();
-  });
-
-  doc.end();
+  answerSheetDocument.pipe(res);
 
   await new Promise(function (resolve) {
-    doc.on("end", resolve);
+    answerSheetDocument.on("end", resolve);
   });
 }
 

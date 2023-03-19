@@ -5,7 +5,7 @@ import fs from "fs";
 import os from "os";
 import AdmZip from "adm-zip";
 
-import { Role } from "@prisma/client";
+import { Prisma, Role } from "@prisma/client";
 
 import { createHandler } from "~/api/handler";
 import {
@@ -18,6 +18,12 @@ import {
 
 import { getServerSession } from "~/lib/auth";
 import prisma from "~/lib/prisma";
+import { generateTechnicalTestAnswerSheet } from "~/lib/technical-tests-export";
+import {
+  AnswersSchema,
+  Question,
+  QuestionsSchema,
+} from "~/lib/technical-tests-schema";
 
 const IdSchema = z.preprocess(
   (value) => parseInt(z.string().parse(value), 10),
@@ -44,12 +50,6 @@ const downloadAllResumesForPositionSchema = z
     positionId: IdSchema,
   })
   .strict();
-
-const downloadSchema = z.union([
-  downloadAllResumesSchema,
-  downloadAllResumesForCompanySchema,
-  downloadAllResumesForPositionSchema,
-]);
 
 const downloadAllResumesForCompany = async (
   res: NextApiResponse,
@@ -78,10 +78,35 @@ const downloadAllResumesForCompany = async (
     select: {
       id: true,
       title: true,
+      activeTechnicalTestId: true,
     },
   });
 
   for (const position of positions) {
+    let technicalTestId = position.activeTechnicalTestId;
+    let technicalTest: { title: string; questions: Prisma.JsonValue } | null =
+      null;
+    let technicalTestQuestions: Question[] = [];
+
+    if (technicalTestId) {
+      technicalTest = await prisma.technicalTest.findUnique({
+        where: { id: technicalTestId },
+        select: {
+          title: true,
+          questions: true,
+        },
+      });
+
+      if (!technicalTest) {
+        throw new NotFoundError(
+          "not-found",
+          "Technical test associated to this position not found"
+        );
+      }
+
+      technicalTestQuestions = QuestionsSchema.parse(technicalTest.questions);
+    }
+
     const positionDirectoryName = `${position.id}-${position.title}`;
 
     {
@@ -114,6 +139,11 @@ const downloadAllResumesForCompany = async (
             select: {
               id: true,
               name: true,
+              answers: technicalTestId
+                ? {
+                    where: { technicalTestId },
+                  }
+                : undefined,
             },
           },
           data: true,
@@ -126,10 +156,52 @@ const downloadAllResumesForCompany = async (
 
       resumes.forEach((resume) => {
         zip.addFile(
-          `${positionDirectoryName}/U${resume.user.id}-CV${resume.id}-${resume.user.name}.pdf`,
+          `${positionDirectoryName}/U${resume.user.id}-${
+            technicalTestId ? "CV-" : ""
+          }${resume.user.name}.pdf`,
           resume.data
         );
       });
+
+      if (technicalTestId) {
+        console.log("Generating answer sheets for zip file");
+
+        let answerSheetsCount = 0;
+        for (const resume of resumes) {
+          const participantAnswers = resume.user.answers;
+          if (participantAnswers.length > 0) {
+            const answers = AnswersSchema.parse(participantAnswers[0].answers);
+
+            const answerSheetDocument = generateTechnicalTestAnswerSheet(
+              resume.user.id,
+              technicalTestId!,
+              technicalTest!.title,
+              technicalTestQuestions,
+              answers
+            );
+
+            let buffers: Buffer[] = [];
+            answerSheetDocument.on("data", buffers.push.bind(buffers));
+
+            await new Promise((resolve) => {
+              answerSheetDocument.on("end", () => {
+                const pdfData = Buffer.concat(buffers);
+
+                zip.addFile(
+                  `${positionDirectoryName}/U${resume.user.id}-Răspunsuri test tehnic-${resume.user.name}.pdf`,
+                  pdfData
+                );
+
+                answerSheetsCount += 1;
+
+                resolve(undefined);
+              });
+            });
+          }
+        }
+
+        console.log("Added %d answer sheets to zip file", answerSheetsCount);
+      }
 
       zip.writeZip();
 
@@ -168,10 +240,37 @@ const downloadAllResumesForPosition = async (
 ) => {
   const position = await prisma.position.findUnique({
     where: { id: positionId },
+    select: {
+      activeTechnicalTestId: true,
+    },
   });
 
   if (!position) {
     throw new NotFoundError();
+  }
+
+  let technicalTestId = position.activeTechnicalTestId;
+  let technicalTest: { title: string; questions: Prisma.JsonValue } | null =
+    null;
+  let technicalTestQuestions: Question[] = [];
+
+  if (technicalTestId) {
+    technicalTest = await prisma.technicalTest.findUnique({
+      where: { id: technicalTestId },
+      select: {
+        title: true,
+        questions: true,
+      },
+    });
+
+    if (!technicalTest) {
+      throw new NotFoundError(
+        "not-found",
+        "Technical test associated to this position not found"
+      );
+    }
+
+    technicalTestQuestions = QuestionsSchema.parse(technicalTest.questions);
   }
 
   const tmpdir = os.tmpdir();
@@ -208,6 +307,11 @@ const downloadAllResumesForPosition = async (
           select: {
             id: true,
             name: true,
+            answers: technicalTestId
+              ? {
+                  where: { technicalTestId },
+                }
+              : undefined,
           },
         },
         data: true,
@@ -220,10 +324,52 @@ const downloadAllResumesForPosition = async (
 
     resumes.forEach((resume) => {
       zip.addFile(
-        `U${resume.user.id}-CV${resume.id}-${resume.user.name}.pdf`,
+        `U${resume.user.id}-${technicalTestId ? "CV-" : ""}${
+          resume.user.name
+        }.pdf`,
         resume.data
       );
     });
+
+    if (technicalTestId) {
+      console.log("Generating answer sheets for zip file");
+
+      let answerSheetsCount = 0;
+      for (const resume of resumes) {
+        const participantAnswers = resume.user.answers;
+        if (participantAnswers.length > 0) {
+          const answers = AnswersSchema.parse(participantAnswers[0].answers);
+
+          const answerSheetDocument = generateTechnicalTestAnswerSheet(
+            resume.user.id,
+            technicalTestId!,
+            technicalTest!.title,
+            technicalTestQuestions,
+            answers
+          );
+
+          let buffers: Buffer[] = [];
+          answerSheetDocument.on("data", buffers.push.bind(buffers));
+
+          await new Promise((resolve) => {
+            answerSheetDocument.on("end", () => {
+              const pdfData = Buffer.concat(buffers);
+
+              zip.addFile(
+                `U${resume.user.id}-Răspunsuri test tehnic-${resume.user.name}.pdf`,
+                pdfData
+              );
+
+              answerSheetsCount += 1;
+
+              resolve(undefined);
+            });
+          });
+        }
+      }
+
+      console.log("Added %d answer sheets to zip file", answerSheetsCount);
+    }
 
     zip.writeZip();
 
@@ -355,31 +501,40 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     throw new NotAuthorizedError();
   }
 
-  const parseResult = downloadSchema.safeParse(req.query);
+  const query = req.query;
+  if (query.hasOwnProperty("companyId")) {
+    const parseResult = downloadAllResumesForCompanySchema.safeParse(query);
+    if (!parseResult.success) {
+      throw new BadRequestError(
+        "invalid-params",
+        `Request query string is invalid: ${parseResult.error.toString()}`
+      );
+    }
 
-  if (!parseResult.success) {
-    throw new BadRequestError(
-      "invalid-params",
-      `Request query string is invalid: ${parseResult.error.toString()}`
+    await downloadAllResumesForCompany(res, parseResult.data.companyId);
+  } else if (req.query.hasOwnProperty("positionId")) {
+    const parseResult = downloadAllResumesForPositionSchema.safeParse(query);
+    if (!parseResult.success) {
+      throw new BadRequestError(
+        "invalid-params",
+        `Request query string is invalid: ${parseResult.error.toString()}`
+      );
+    }
+
+    await downloadAllResumesForPosition(res, parseResult.data.positionId);
+  } else if (req.query.hasOwnProperty("onlyConsentedToApplyToOtherPartners")) {
+    const parseResult = downloadAllResumesSchema.safeParse(query);
+    if (!parseResult.success) {
+      throw new BadRequestError(
+        "invalid-params",
+        `Request query string is invalid: ${parseResult.error.toString()}`
+      );
+    }
+
+    await downloadAllResumes(
+      res,
+      parseResult.data.onlyConsentedToApplyToOtherPartners
     );
-  }
-
-  const data = parseResult.data;
-  if (data.hasOwnProperty("companyId")) {
-    const { companyId } = data as z.infer<
-      typeof downloadAllResumesForCompanySchema
-    >;
-    await downloadAllResumesForCompany(res, companyId);
-  } else if (data.hasOwnProperty("positionId")) {
-    const { positionId } = data as z.infer<
-      typeof downloadAllResumesForPositionSchema
-    >;
-    await downloadAllResumesForPosition(res, positionId);
-  } else if (data.hasOwnProperty("onlyConsentedToApplyToOtherPartners")) {
-    const { onlyConsentedToApplyToOtherPartners } = data as z.infer<
-      typeof downloadAllResumesSchema
-    >;
-    await downloadAllResumes(res, onlyConsentedToApplyToOtherPartners);
   } else {
     throw new BadRequestError();
   }
