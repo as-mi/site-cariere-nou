@@ -19,8 +19,8 @@ export function generateTechnicalTestAnswerSheet(
     },
   });
 
-  const filterDiacritics = (text: string) =>
-    text.replace(/ă|â/g, "a").replace(/î/g, "i");
+  const filterDiacritics = (text?: string) =>
+    text?.replace(/ă|â/g, "a")?.replace(/î/g, "i");
 
   const originalTextMethod = doc.text;
   doc.text = (text: string, x?: any, y?: any, options?: any) =>

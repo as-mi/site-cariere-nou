@@ -218,7 +218,9 @@ const downloadAllResumesForCompany = async (
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
   res.setHeader("Content-Length", size);
-  const downloadedFileName = `Resumes export for ${company.name}.zip`;
+  const downloadedFileName = `Resumes export for ${encodeURIComponent(
+    company.name
+  )}.zip`;
   res.setHeader(
     "Content-Disposition",
     `attachment; filename=${downloadedFileName}`
