@@ -112,6 +112,14 @@ const AdminTechnicalTestsTable: React.FC<AdminTechnicalTestsTableProps> = ({
         header: "Acțiuni",
         cell: (ctx) => (
           <div className="flex flex-col">
+            <Link href={`/admin/technical-tests/${ctx.row.original.id}`}>
+              Afișează detaliile
+            </Link>
+            <Link
+              href={`/admin/technical-tests/${ctx.row.original.id}/responses`}
+            >
+              Vezi respondenții
+            </Link>
             <Link href={`/admin/technical-tests/${ctx.row.original.id}/edit`}>
               Editează
             </Link>

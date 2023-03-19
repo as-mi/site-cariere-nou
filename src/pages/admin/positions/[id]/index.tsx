@@ -18,15 +18,18 @@ import Button from "~/components/pages/admin/common/button";
 type Position = {
   id: number;
   title: string;
-  applicationsCount: number;
   descriptionHtml: string;
 };
 
 type PageProps = {
   position: Position;
+  applicationsCount: number;
 };
 
-const AdminViewPositionPage: NextPageWithLayout<PageProps> = ({ position }) => (
+const AdminViewPositionPage: NextPageWithLayout<PageProps> = ({
+  position,
+  applicationsCount,
+}) => (
   <>
     <header>
       <Link href="/admin/positions">Înapoi</Link>
@@ -42,9 +45,9 @@ const AdminViewPositionPage: NextPageWithLayout<PageProps> = ({ position }) => (
       <section>
         <h2 className="font-display text-xl font-semibold">Aplicări</h2>
         <p>
-          Pe această poziție au aplicat în total {position.applicationsCount}{" "}
-          {position.applicationsCount > 0 ? "de" : ""}{" "}
-          {position.applicationsCount === 1 ? "participant" : "participanți"}.
+          Pe această poziție au aplicat în total {applicationsCount}{" "}
+          {applicationsCount > 0 ? "de" : ""}{" "}
+          {applicationsCount === 1 ? "participant" : "participanți"}.
         </p>
         <p className="mt-3">
           <Button
@@ -90,6 +93,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       props: {
         session,
         position: null as unknown as Position,
+        applicationsCount: -1,
       },
     };
   }
@@ -141,9 +145,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       position: {
         id: positionId,
         title: position.title,
-        applicationsCount,
         descriptionHtml,
       },
+      applicationsCount,
     },
   };
 };

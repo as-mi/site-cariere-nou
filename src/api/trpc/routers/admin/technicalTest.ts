@@ -1,8 +1,10 @@
+import _ from "lodash";
 import { z } from "zod";
 
 import { PaginationParamsSchema } from "~/api/pagination";
-import { QuestionsSchema } from "~/lib/technical-tests-schema";
+
 import prisma from "~/lib/prisma";
+import { formatTimestamp, QuestionsSchema } from "~/lib/technical-tests-schema";
 
 import { adminProcedure, router } from "../..";
 import { EntityId } from "../../schema";
@@ -20,6 +22,9 @@ const ReadOutput = z
   })
   .strict()
   .or(z.null());
+const ReadResponsesInput = z
+  .object({ id: EntityId })
+  .and(PaginationParamsSchema);
 const CreateInput = z.object({
   positionId: EntityId,
   title: z.string(),
@@ -110,6 +115,64 @@ export const technicalTestRouter = router({
       results: technicalTests,
     };
   }),
+  readResponses: adminProcedure
+    .input(ReadResponsesInput)
+    .query(async ({ input }) => {
+      const { id: technicalTestId, pageIndex, pageSize } = input;
+      const skip = pageIndex * pageSize;
+      const take = pageSize;
+
+      const responsesCount =
+        await prisma.participantAnswersToTechnicalTest.count({
+          where: { technicalTestId },
+        });
+      const pageCount = Math.ceil(responsesCount / pageSize);
+
+      const answers = await prisma.participantAnswersToTechnicalTest.findMany({
+        where: { technicalTestId },
+        select: {
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+          createdAt: true,
+        },
+        skip,
+        take,
+        orderBy: [{ userId: "asc" }],
+      });
+
+      const userIds = answers.map((answer) => answer.user.id);
+
+      const startTimes = await prisma.participantStartTechnicalTest.findMany({
+        where: {
+          technicalTestId,
+          userId: { in: userIds },
+        },
+        select: {
+          userId: true,
+          startTime: true,
+        },
+      });
+
+      const startTimesByUserId = _.mapValues(
+        _.keyBy(startTimes, (startTime) => startTime.userId),
+        (obj) => obj.startTime
+      );
+
+      const responses = answers.map((answer) => ({
+        user: answer.user,
+        startTime: formatTimestamp(startTimesByUserId[answer.user.id]),
+        endTime: formatTimestamp(answer.createdAt),
+      }));
+
+      return {
+        pageCount,
+        results: responses,
+      };
+    }),
   create: adminProcedure
     .input(CreateInput.strict())
     .mutation(async ({ input }) => {
