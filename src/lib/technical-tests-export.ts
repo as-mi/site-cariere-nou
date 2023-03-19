@@ -4,6 +4,33 @@ import PDFDocument from "pdfkit";
 
 import { Answer, Question, QuestionKind } from "./technical-tests-schema";
 
+/**
+ * Encodes a file name so it can be properly included in the `Content-Disposition` header.
+ */
+// Based on https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent#encoding_for_content-disposition_and_link_headers
+const encodeRFC5987ValueChars = (fileName: string): string =>
+  encodeURIComponent(fileName)
+    // The following creates the sequences %27 %28 %29 %2A (Note that
+    // the valid encoding of "*" is %2A, which necessitates calling
+    // toUpperCase() to properly encode). Although RFC3986 reserves "!",
+    // RFC5987 does not, so we do not need to escape it.
+    .replace(/['()*]/g, (c) => `%${c.charCodeAt(0).toString(16).toUpperCase()}`)
+    // The following are not required for percent-encoding per RFC5987,
+    // so we can allow for a little better readability over the wire: |`^
+    .replace(/%(7C|60|5E)/g, (str, hex) =>
+      String.fromCharCode(parseInt(hex, 16))
+    );
+
+/**
+ * Generates the appropriate value for the `Content-Disposition` header
+ * for downloading a given file.
+ */
+export const generateAttachmentDispositionHeaderValue = (fileName: string) =>
+  `attachment; filename*=UTF-8''${encodeRFC5987ValueChars(fileName)}`;
+
+/**
+ * Generates a PDF document summarizing a participant's answers to a technical test.
+ */
 export function generateTechnicalTestAnswerSheet(
   userId: number,
   technicalTestId: number,

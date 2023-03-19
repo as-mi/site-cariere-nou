@@ -18,7 +18,10 @@ import {
 
 import { getServerSession } from "~/lib/auth";
 import prisma from "~/lib/prisma";
-import { generateTechnicalTestAnswerSheet } from "~/lib/technical-tests-export";
+import {
+  generateAttachmentDispositionHeaderValue,
+  generateTechnicalTestAnswerSheet,
+} from "~/lib/technical-tests-export";
 import {
   AnswersSchema,
   Question,
@@ -218,12 +221,10 @@ const downloadAllResumesForCompany = async (
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
   res.setHeader("Content-Length", size);
-  const downloadedFileName = `Resumes export for ${encodeURIComponent(
-    company.name
-  )}.zip`;
+  const downloadedFileName = `Resumes export for ${company.name}.zip`;
   res.setHeader(
     "Content-Disposition",
-    `attachment; filename=${downloadedFileName}`
+    generateAttachmentDispositionHeaderValue(downloadedFileName)
   );
 
   res.on("close", () => {
@@ -396,7 +397,7 @@ const downloadAllResumesForPosition = async (
   const downloadedFileName = `Resumes export for ${position.company.name} - ${position.title}.zip`;
   res.setHeader(
     "Content-Disposition",
-    `attachment; filename=${downloadedFileName}`
+    generateAttachmentDispositionHeaderValue(downloadedFileName)
   );
 
   res.on("close", () => {
@@ -481,7 +482,7 @@ const downloadAllResumes = async (
   const downloadedFileName = `All resumes export.zip`;
   res.setHeader(
     "Content-Disposition",
-    `attachment; filename=${downloadedFileName}`
+    generateAttachmentDispositionHeaderValue(downloadedFileName)
   );
 
   res.on("close", () => {
