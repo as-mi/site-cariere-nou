@@ -57,6 +57,9 @@ const downloadAllResumesForCompany = async (
 ) => {
   const company = await prisma.company.findUnique({
     where: { id: companyId },
+    select: {
+      name: true,
+    },
   });
 
   if (!company) {
@@ -107,7 +110,7 @@ const downloadAllResumesForCompany = async (
       technicalTestQuestions = QuestionsSchema.parse(technicalTest.questions);
     }
 
-    const positionDirectoryName = `${position.id}-${position.title}`;
+    const positionDirectoryName = `${position.title}`;
 
     {
       const zip = new AdmZip(zipPath, { readEntries: false });
@@ -156,8 +159,8 @@ const downloadAllResumesForCompany = async (
 
       resumes.forEach((resume) => {
         zip.addFile(
-          `${positionDirectoryName}/U${resume.user.id}-${
-            technicalTestId ? "CV-" : ""
+          `${positionDirectoryName}/U${resume.user.id} - ${
+            technicalTestId ? "CV - " : ""
           }${resume.user.name}.pdf`,
           resume.data
         );
@@ -188,7 +191,7 @@ const downloadAllResumesForCompany = async (
                 const pdfData = Buffer.concat(buffers);
 
                 zip.addFile(
-                  `${positionDirectoryName}/U${resume.user.id}-Răspunsuri test tehnic-${resume.user.name}.pdf`,
+                  `${positionDirectoryName}/U${resume.user.id} - Răspunsuri test tehnic - ${resume.user.name}.pdf`,
                   pdfData
                 );
 
@@ -215,7 +218,7 @@ const downloadAllResumesForCompany = async (
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
   res.setHeader("Content-Length", size);
-  const downloadedFileName = `resumes_for_company_${companyId}.zip`;
+  const downloadedFileName = `Resumes export for ${company.name}.zip`;
   res.setHeader(
     "Content-Disposition",
     `attachment; filename=${downloadedFileName}`
@@ -241,7 +244,13 @@ const downloadAllResumesForPosition = async (
   const position = await prisma.position.findUnique({
     where: { id: positionId },
     select: {
+      title: true,
       activeTechnicalTestId: true,
+      company: {
+        select: {
+          name: true,
+        },
+      },
     },
   });
 
@@ -324,7 +333,7 @@ const downloadAllResumesForPosition = async (
 
     resumes.forEach((resume) => {
       zip.addFile(
-        `U${resume.user.id}-${technicalTestId ? "CV-" : ""}${
+        `U${resume.user.id} - ${technicalTestId ? "CV - " : ""}${
           resume.user.name
         }.pdf`,
         resume.data
@@ -356,7 +365,7 @@ const downloadAllResumesForPosition = async (
               const pdfData = Buffer.concat(buffers);
 
               zip.addFile(
-                `U${resume.user.id}-Răspunsuri test tehnic-${resume.user.name}.pdf`,
+                `U${resume.user.id} - Răspunsuri test tehnic - ${resume.user.name}.pdf`,
                 pdfData
               );
 
@@ -382,7 +391,7 @@ const downloadAllResumesForPosition = async (
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
   res.setHeader("Content-Length", size);
-  const downloadedFileName = `resumes_for_position_${positionId}.zip`;
+  const downloadedFileName = `Resumes export for ${position.company.name} - ${position.title}.zip`;
   res.setHeader(
     "Content-Disposition",
     `attachment; filename=${downloadedFileName}`
@@ -451,7 +460,7 @@ const downloadAllResumes = async (
 
     resumes.forEach((resume) => {
       zip.addFile(
-        `U${resume.user.id}-CV${resume.id}-${resume.user.name}.pdf`,
+        `U${resume.user.id} - CV ${resume.id} - ${resume.user.name}.pdf`,
         resume.data
       );
     });
@@ -467,7 +476,7 @@ const downloadAllResumes = async (
   res.status(200);
   res.setHeader("Content-Type", "application/zip");
   res.setHeader("Content-Length", size);
-  const downloadedFileName = `resumes.zip`;
+  const downloadedFileName = `All resumes export.zip`;
   res.setHeader(
     "Content-Disposition",
     `attachment; filename=${downloadedFileName}`
