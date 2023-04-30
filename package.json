@@ -14,6 +14,7 @@
     "test:integration": "jest src/__tests__/integration",
     "test:e2e": "playwright test",
     "migrate:production": "dotenv -e .env.local -- prisma migrate deploy && dotenv -e .env.local -- prisma generate",
+    "seed:participant": "ts-node-esm --transpile-only prisma/seed-participant.ts",
     "seed:admin": "ts-node-esm --transpile-only prisma/seed-admin.ts"
   },
   "dependencies": {
@@ -77,6 +78,7 @@
     "@types/sharp": "^0.31.1",
     "@types/showdown": "^2.0.0",
     "autoprefixer": "^10.4.13",
+    "commander": "^10.0.1",
     "dotenv-cli": "^7.0.0",
     "eslint": "8.26.0",
     "eslint-config-next": "13.0.2",

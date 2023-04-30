@@ -30,7 +30,20 @@ interface NextApiRequestWithFile extends NextApiRequest {
 
 const apiRoute = nextConnect<NextApiRequestWithFile, NextApiResponse>();
 
+function fixFileName(
+  _req: unknown,
+  file: Express.Multer.File,
+  callback: multer.FileFilterCallback
+) {
+  // Fix files having UTF-8 encoded names
+  // Based on https://stackoverflow.com/a/72909626/5723188
+  file.originalname = Buffer.from(file.originalname, "latin1").toString("utf8");
+
+  callback(null, true);
+}
+
 const upload = multer({
+  fileFilter: fixFileName,
   storage: multer.memoryStorage(),
   limits: {
     files: 1,

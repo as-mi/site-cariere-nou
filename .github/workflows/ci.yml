@@ -135,5 +135,8 @@ jobs:
       - name: Run migrations to set up database
         run: npx prisma migrate deploy
 
+      - name: Create test user
+        run: npm run seed:participant 'Participant' 'participant@test' 'password'
+
       - name: Run end-to-end tests using Playwright
         run: npm run test:e2e
