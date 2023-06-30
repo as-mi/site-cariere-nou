@@ -83,15 +83,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     orderBy: [{ id: "asc" }],
   });
 
-  const ids = resumes.map((resume) => resume.id);
-  const resumeSizes = await prisma.$queryRawUnsafe<
-    { id: number; length: number }[]
-  >(`SELECT id, LENGTH(data)
+  const resumeSizesById = new Map<number, number>();
+  if (resumes.length > 0) {
+    const ids = resumes.map((resume) => resume.id);
+    const resumeSizes = await prisma.$queryRawUnsafe<
+      { id: number; length: number }[]
+    >(`SELECT id, LENGTH(data)
     FROM "Resume"
     WHERE id IN (${ids})
     LIMIT ${DEFAULT_PAGE_SIZE};`);
-  const resumeSizesById = new Map<number, number>();
-  resumeSizes.forEach(({ id, length }) => resumeSizesById.set(id, length));
+    resumeSizes.forEach(({ id, length }) => resumeSizesById.set(id, length));
+  }
 
   return {
     props: {
