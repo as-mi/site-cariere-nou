@@ -32,7 +32,7 @@ const AdminImagesTable: React.FC<AdminImagesTableProps> = ({ initialData }) => {
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.image.readMany.useQuery(
@@ -43,7 +43,7 @@ const AdminImagesTable: React.FC<AdminImagesTableProps> = ({ initialData }) => {
       staleTime: 1000,
       keepPreviousData: true,
       refetchOnWindowFocus: true,
-    }
+    },
   );
 
   const queryClient = useQueryClient();
@@ -69,7 +69,7 @@ const AdminImagesTable: React.FC<AdminImagesTableProps> = ({ initialData }) => {
         imageDeleteMutation.mutate({ id: userId });
       }
     },
-    [imageDeleteMutation]
+    [imageDeleteMutation],
   );
 
   const columns = useMemo(
@@ -119,7 +119,7 @@ const AdminImagesTable: React.FC<AdminImagesTableProps> = ({ initialData }) => {
         ),
       }),
     ],
-    [handleImageDelete]
+    [handleImageDelete],
   );
 
   return (

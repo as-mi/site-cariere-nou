@@ -30,14 +30,14 @@ import {
 
 const IdSchema = z.preprocess(
   (value) => parseInt(z.string().parse(value), 10),
-  z.number().int()
+  z.number().int(),
 );
 
 const downloadAllResumesSchema = z
   .object({
     onlyConsentedToApplyToOtherPartners: z.preprocess(
       (value) => z.string().parse(value) === "true",
-      z.boolean()
+      z.boolean(),
     ),
   })
   .strict();
@@ -56,7 +56,7 @@ const downloadAllResumesForPositionSchema = z
 
 const downloadAllResumesForCompany = async (
   res: NextApiResponse,
-  companyId: number
+  companyId: number,
 ) => {
   const company = await prisma.company.findUnique({
     where: { id: companyId },
@@ -106,7 +106,7 @@ const downloadAllResumesForCompany = async (
       if (!technicalTest) {
         throw new NotFoundError(
           "not-found",
-          "Technical test associated to this position not found"
+          "Technical test associated to this position not found",
         );
       }
 
@@ -165,7 +165,7 @@ const downloadAllResumesForCompany = async (
           `${positionDirectoryName}/U${resume.user.id} - ${
             technicalTestId ? "CV - " : ""
           }${resume.user.name}.pdf`,
-          resume.data
+          resume.data,
         );
       });
 
@@ -183,7 +183,7 @@ const downloadAllResumesForCompany = async (
               technicalTestId!,
               technicalTest!.title,
               technicalTestQuestions,
-              answers
+              answers,
             );
 
             let buffers: Buffer[] = [];
@@ -195,7 +195,7 @@ const downloadAllResumesForCompany = async (
 
                 zip.addFile(
                   `${positionDirectoryName}/U${resume.user.id} - Răspunsuri test tehnic - ${resume.user.name}.pdf`,
-                  pdfData
+                  pdfData,
                 );
 
                 answerSheetsCount += 1;
@@ -224,7 +224,7 @@ const downloadAllResumesForCompany = async (
   const downloadedFileName = `Resumes export for ${company.name}.zip`;
   res.setHeader(
     "Content-Disposition",
-    generateAttachmentDispositionHeaderValue(downloadedFileName)
+    generateAttachmentDispositionHeaderValue(downloadedFileName),
   );
 
   res.on("close", () => {
@@ -242,7 +242,7 @@ const downloadAllResumesForCompany = async (
 
 const downloadAllResumesForPosition = async (
   res: NextApiResponse,
-  positionId: number
+  positionId: number,
 ) => {
   const position = await prisma.position.findUnique({
     where: { id: positionId },
@@ -278,7 +278,7 @@ const downloadAllResumesForPosition = async (
     if (!technicalTest) {
       throw new NotFoundError(
         "not-found",
-        "Technical test associated to this position not found"
+        "Technical test associated to this position not found",
       );
     }
 
@@ -339,7 +339,7 @@ const downloadAllResumesForPosition = async (
         `U${resume.user.id} - ${technicalTestId ? "CV - " : ""}${
           resume.user.name
         }.pdf`,
-        resume.data
+        resume.data,
       );
     });
 
@@ -357,7 +357,7 @@ const downloadAllResumesForPosition = async (
             technicalTestId!,
             technicalTest!.title,
             technicalTestQuestions,
-            answers
+            answers,
           );
 
           let buffers: Buffer[] = [];
@@ -369,7 +369,7 @@ const downloadAllResumesForPosition = async (
 
               zip.addFile(
                 `U${resume.user.id} - Răspunsuri test tehnic - ${resume.user.name}.pdf`,
-                pdfData
+                pdfData,
               );
 
               answerSheetsCount += 1;
@@ -397,7 +397,7 @@ const downloadAllResumesForPosition = async (
   const downloadedFileName = `Resumes export for ${position.company.name} - ${position.title}.zip`;
   res.setHeader(
     "Content-Disposition",
-    generateAttachmentDispositionHeaderValue(downloadedFileName)
+    generateAttachmentDispositionHeaderValue(downloadedFileName),
   );
 
   res.on("close", () => {
@@ -415,7 +415,7 @@ const downloadAllResumesForPosition = async (
 
 const downloadAllResumes = async (
   res: NextApiResponse,
-  onlyConsentedToApplyToOtherPartners: boolean
+  onlyConsentedToApplyToOtherPartners: boolean,
 ) => {
   const tmpdir = os.tmpdir();
   const zipPath = `${tmpdir}/resumes_export.zip`;
@@ -464,7 +464,7 @@ const downloadAllResumes = async (
     resumes.forEach((resume) => {
       zip.addFile(
         `U${resume.user.id} - CV ${resume.id} - ${resume.user.name}.pdf`,
-        resume.data
+        resume.data,
       );
     });
 
@@ -482,7 +482,7 @@ const downloadAllResumes = async (
   const downloadedFileName = `All resumes export.zip`;
   res.setHeader(
     "Content-Disposition",
-    generateAttachmentDispositionHeaderValue(downloadedFileName)
+    generateAttachmentDispositionHeaderValue(downloadedFileName),
   );
 
   res.on("close", () => {
@@ -519,7 +519,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!parseResult.success) {
       throw new BadRequestError(
         "invalid-params",
-        `Request query string is invalid: ${parseResult.error.toString()}`
+        `Request query string is invalid: ${parseResult.error.toString()}`,
       );
     }
 
@@ -529,7 +529,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!parseResult.success) {
       throw new BadRequestError(
         "invalid-params",
-        `Request query string is invalid: ${parseResult.error.toString()}`
+        `Request query string is invalid: ${parseResult.error.toString()}`,
       );
     }
 
@@ -539,13 +539,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!parseResult.success) {
       throw new BadRequestError(
         "invalid-params",
-        `Request query string is invalid: ${parseResult.error.toString()}`
+        `Request query string is invalid: ${parseResult.error.toString()}`,
       );
     }
 
     await downloadAllResumes(
       res,
-      parseResult.data.onlyConsentedToApplyToOtherPartners
+      parseResult.data.onlyConsentedToApplyToOtherPartners,
     );
   } else {
     throw new BadRequestError();

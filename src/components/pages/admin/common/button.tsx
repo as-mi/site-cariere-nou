@@ -1,6 +1,6 @@
 type ButtonProps<
   P,
-  C extends keyof JSX.IntrinsicElements | React.ComponentType<P>
+  C extends keyof JSX.IntrinsicElements | React.ComponentType<P>,
 > = {
   children: React.ReactNode;
   as?: C;

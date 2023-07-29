@@ -55,7 +55,7 @@ const AdminEditImagePage: NextPageWithLayout<PageProps> = ({ imageId }) => {
       const response = await fetch("/api/images/upload", options);
       if (!response.ok) {
         throw new Error(
-          `Failed to upload image: status code ${response.status}`
+          `Failed to upload image: status code ${response.status}`,
         );
       }
     } catch (e) {
@@ -113,7 +113,7 @@ const AdminEditImagePage: NextPageWithLayout<PageProps> = ({ imageId }) => {
               queryString={`v=${imageVersion}`}
               className={classNames(
                 "max-h-32 rounded-md object-contain p-4 transition-colors duration-500",
-                imageBackgroundColor === "white" ? "bg-white" : "bg-black"
+                imageBackgroundColor === "white" ? "bg-white" : "bg-black",
               )}
             />
           </div>
@@ -123,7 +123,7 @@ const AdminEditImagePage: NextPageWithLayout<PageProps> = ({ imageId }) => {
               checked={imageBackgroundColor === "white"}
               onChange={() =>
                 setImageBackgroundColor(
-                  imageBackgroundColor === "white" ? "black" : "white"
+                  imageBackgroundColor === "white" ? "black" : "white",
                 )
               }
               className="mr-2 h-4 w-4"

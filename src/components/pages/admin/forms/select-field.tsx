@@ -8,7 +8,7 @@ type Option<T> = { value: T; label: string };
 
 export interface SelectFieldProps<
   T extends string,
-  IFormValues extends FieldValues
+  IFormValues extends FieldValues,
 > extends CommonFieldProps<IFormValues> {
   hint?: string;
   options: Option<T>[];
@@ -38,7 +38,7 @@ const SelectField = <T extends string, IFormValues extends FieldValues>({
         {...register(name, { required })}
         className={classNames(
           "block rounded-sm bg-zinc-800 px-2 py-1 text-white",
-          inputClassName
+          inputClassName,
         )}
       >
         {options.map(({ value, label }, index) => (

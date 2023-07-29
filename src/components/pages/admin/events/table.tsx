@@ -30,7 +30,7 @@ const AdminEventsTable: React.FC<AdminEventsTableProps> = ({ initialData }) => {
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.event.readMany.useQuery(
@@ -40,7 +40,7 @@ const AdminEventsTable: React.FC<AdminEventsTableProps> = ({ initialData }) => {
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const queryClient = useQueryClient();
@@ -67,7 +67,7 @@ const AdminEventsTable: React.FC<AdminEventsTableProps> = ({ initialData }) => {
         eventDeleteMutation.mutate({ id: eventId });
       }
     },
-    [eventDeleteMutation]
+    [eventDeleteMutation],
   );
 
   const columns = useMemo(
@@ -102,7 +102,7 @@ const AdminEventsTable: React.FC<AdminEventsTableProps> = ({ initialData }) => {
         ),
       }),
     ],
-    [handleEventDelete]
+    [handleEventDelete],
   );
 
   return (

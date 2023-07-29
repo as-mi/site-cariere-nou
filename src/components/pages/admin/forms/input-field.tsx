@@ -51,7 +51,7 @@ const InputField = <IFormValues extends FieldValues>({
         className={classNames(
           "block rounded-sm bg-zinc-800 px-2 py-1 text-white",
           { "w-full": !inputClassName },
-          inputClassName
+          inputClassName,
         )}
       />
       {hint && <div className="mt-1 text-sm">{hint}</div>}

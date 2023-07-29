@@ -31,7 +31,7 @@ async function createAccount(name: string, email: string, password: string) {
 program
   .name("seed-participant")
   .description(
-    "This script will create a new participant account based on the data you provide."
+    "This script will create a new participant account based on the data you provide.",
   )
   .argument("<name>")
   .argument("<email>")

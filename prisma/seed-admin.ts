@@ -9,7 +9,7 @@ async function main() {
   const rl = readlineCreateInterface({ input, output });
 
   console.log(
-    "This script will create a new admin user account based on the data you provide."
+    "This script will create a new admin user account based on the data you provide.",
   );
 
   rl.question("Name: ", (name: string) => {
@@ -33,7 +33,7 @@ async function main() {
 
           console.log("Successfully created new user with ID %d.", user.id);
           console.log(
-            "You may now log in using the e-mail and password you chose."
+            "You may now log in using the e-mail and password you chose.",
           );
         } catch (e) {
           console.error("Failed to create admin account: %o", e);

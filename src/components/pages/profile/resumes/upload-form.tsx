@@ -84,7 +84,7 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
         errorInfo = await response.json();
       } catch {
         setFileUploadError(
-          commonT("errors.errorCode", { code: response.status })!
+          commonT("errors.errorCode", { code: response.status })!,
         );
         return;
       }
@@ -104,7 +104,7 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
       }
 
       setFileUploadError(
-        commonT("errors.errorCode", { code: response.status })!
+        commonT("errors.errorCode", { code: response.status })!,
       );
       return;
     }
@@ -113,7 +113,7 @@ const ResumeUploadForm: React.FC<ResumeUploadFormProps> = ({
     const queryKey = getQueryKey(
       trpc.participant.resumeGetAll,
       undefined,
-      "query"
+      "query",
     );
     queryClient.invalidateQueries(queryKey);
 

@@ -29,7 +29,7 @@ const AdminEditTechnicalTestPage: NextPageWithLayout<PageProps> = ({
 
   const query = trpc.admin.technicalTest.read.useQuery(
     { id: technicalTestId },
-    { retry: false }
+    { retry: false },
   );
 
   const mutation = trpc.admin.technicalTest.update.useMutation({

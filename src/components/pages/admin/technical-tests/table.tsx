@@ -42,7 +42,7 @@ const AdminTechnicalTestsTable: React.FC<AdminTechnicalTestsTableProps> = ({
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.technicalTest.readMany.useQuery(
@@ -52,7 +52,7 @@ const AdminTechnicalTestsTable: React.FC<AdminTechnicalTestsTableProps> = ({
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const queryClient = useQueryClient();
@@ -84,7 +84,7 @@ const AdminTechnicalTestsTable: React.FC<AdminTechnicalTestsTableProps> = ({
         technicalTestDeleteMutation.mutate({ id: technicalTestId });
       }
     },
-    [technicalTestDeleteMutation]
+    [technicalTestDeleteMutation],
   );
 
   const columns = useMemo(
@@ -99,7 +99,7 @@ const AdminTechnicalTestsTable: React.FC<AdminTechnicalTestsTableProps> = ({
         (technicalTest) => technicalTest.position.company.name,
         {
           header: "Nume companie",
-        }
+        },
       ),
       columnHelper.accessor((technicalTest) => technicalTest.position.title, {
         header: "Titlu post",
@@ -133,7 +133,7 @@ const AdminTechnicalTestsTable: React.FC<AdminTechnicalTestsTableProps> = ({
         ),
       }),
     ],
-    [handleTechnicalTestDelete]
+    [handleTechnicalTestDelete],
   );
 
   return (

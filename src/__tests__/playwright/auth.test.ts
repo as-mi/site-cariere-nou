@@ -41,7 +41,7 @@ test("can create new account using e-mail and password", async ({ page }) => {
   await page.check(`[name="consent.applyToOtherPartners"]`);
 
   const registerButton = await page.waitForSelector(
-    `input[type=submit]:is(:text("Înregistrează-te"))`
+    `input[type=submit]:is(:text("Înregistrează-te"))`,
   );
   await registerButton.click();
 

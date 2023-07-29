@@ -37,7 +37,7 @@ const getImage = async (req: NextApiRequest, res: NextApiResponse) => {
 
 const deleteImageWithoutAuth = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
   if (typeof req.query.id !== "string") {
     throw new BadRequestError();

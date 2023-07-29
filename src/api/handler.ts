@@ -16,7 +16,7 @@ type ApiErrorResponse = {
  * and responds with the appropriate HTTP status code and JSON payload.
  */
 export function createHandler<T>(
-  handler: NextApiHandler<T>
+  handler: NextApiHandler<T>,
 ): NextApiHandler<T | ApiErrorResponse> {
   return async (req, res) => {
     try {

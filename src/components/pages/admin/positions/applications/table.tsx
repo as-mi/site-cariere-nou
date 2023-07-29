@@ -33,7 +33,7 @@ const AdminPositionApplicationsTable: React.FC<
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.position.readApplications.useQuery(
@@ -43,7 +43,7 @@ const AdminPositionApplicationsTable: React.FC<
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const columns = useMemo(
@@ -83,7 +83,7 @@ const AdminPositionApplicationsTable: React.FC<
         },
       }),
     ],
-    []
+    [],
   );
 
   return (

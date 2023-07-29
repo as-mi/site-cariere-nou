@@ -50,7 +50,7 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
     (fromChoiceIndex: number, toChoiceIndex: number) => {
       move(fromChoiceIndex, toChoiceIndex);
     },
-    [move]
+    [move],
   );
 
   const removeChoice = useCallback(
@@ -59,7 +59,7 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
         remove(choiceIndex);
       }
     },
-    [remove]
+    [remove],
   );
 
   const clearCorrectChoice = () => {
@@ -78,7 +78,7 @@ const QuestionChoicesEditor: React.FC<QuestionChoicesEditorProps> = ({
           removeChoice={removeChoice}
         />
       )),
-    [memoizedFields, questionIndex, reorderChoices, removeChoice]
+    [memoizedFields, questionIndex, reorderChoices, removeChoice],
   );
 
   return (

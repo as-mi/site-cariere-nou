@@ -27,12 +27,12 @@ const CreateFakeUserButton: React.FC<CreateFakeObjectButtonProps> = ({
 
   const invalidateQueryKey = useMemo(
     () => getQueryKey(invalidateQueryProcedure as any),
-    [invalidateQueryProcedure]
+    [invalidateQueryProcedure],
   );
 
   const onSuccess = useCallback(
     () => queryClient.invalidateQueries(invalidateQueryKey),
-    [queryClient, invalidateQueryKey]
+    [queryClient, invalidateQueryKey],
   );
 
   const mutation = createFakeObjectProcedure.useMutation({ onSuccess });

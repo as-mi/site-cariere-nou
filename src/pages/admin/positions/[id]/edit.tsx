@@ -97,7 +97,7 @@ const AdminEditPositionPage: NextPageWithLayout<PageProps> = ({
           value: activeTechnicalTestId,
           label:
             technicalTests.find(
-              (technicalTest) => technicalTest.id === activeTechnicalTestId
+              (technicalTest) => technicalTest.id === activeTechnicalTestId,
             )?.title || "Necunoscut",
         };
       }

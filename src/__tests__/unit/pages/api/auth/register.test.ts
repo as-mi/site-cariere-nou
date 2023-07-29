@@ -72,7 +72,7 @@ describe("/api/auth/register", () => {
 
     await handler(
       req as unknown as NextApiRequest,
-      res as unknown as NextApiResponse
+      res as unknown as NextApiResponse,
     );
 
     expect(res.statusCode).toBe(201);
@@ -84,7 +84,7 @@ describe("/api/auth/register", () => {
 
     await handler(
       req as unknown as NextApiRequest,
-      res as unknown as NextApiResponse
+      res as unknown as NextApiResponse,
     );
 
     expect(res.statusCode).toBe(405);
@@ -99,7 +99,7 @@ describe("/api/auth/register", () => {
 
     await handler(
       req as unknown as NextApiRequest,
-      res as unknown as NextApiResponse
+      res as unknown as NextApiResponse,
     );
 
     expect(res.statusCode).toBe(400);
@@ -121,7 +121,7 @@ describe("/api/auth/register", () => {
 
     await handler(
       req as unknown as NextApiRequest,
-      res as unknown as NextApiResponse
+      res as unknown as NextApiResponse,
     );
 
     expect(res.statusCode).toBe(400);
@@ -143,7 +143,7 @@ describe("/api/auth/register", () => {
 
     await handler(
       req as unknown as NextApiRequest,
-      res as unknown as NextApiResponse
+      res as unknown as NextApiResponse,
     );
 
     expect(res.statusCode).toBe(400);
@@ -174,7 +174,7 @@ describe("/api/auth/register", () => {
 
     const emailVerificationToken = "ABCD1234";
     mockGenerateEmailVerificationToken.mockReturnValueOnce(
-      emailVerificationToken
+      emailVerificationToken,
     );
 
     const passwordHash = "password-hash";
@@ -182,7 +182,7 @@ describe("/api/auth/register", () => {
 
     await handler(
       req as unknown as NextApiRequest,
-      res as unknown as NextApiResponse
+      res as unknown as NextApiResponse,
     );
 
     expect(res.statusCode).toBe(201);
@@ -201,7 +201,7 @@ describe("/api/auth/register", () => {
     expect(sendVerificationEmail).toHaveBeenCalledWith(
       user,
       language,
-      emailVerificationToken
+      emailVerificationToken,
     );
   });
 });

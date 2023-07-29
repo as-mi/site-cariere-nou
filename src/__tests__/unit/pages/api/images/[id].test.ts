@@ -18,7 +18,7 @@ describe("/api/images/[id]", () => {
 
     await handler(
       req as unknown as NextApiRequest,
-      res as unknown as NextApiResponse
+      res as unknown as NextApiResponse,
     );
 
     expect(res.statusCode).toBe(405);
@@ -44,7 +44,7 @@ describe("/api/images/[id]", () => {
 
       await handler(
         req as unknown as NextApiRequest,
-        res as unknown as NextApiResponse
+        res as unknown as NextApiResponse,
       );
 
       expect(res.statusCode).toBe(200);
@@ -63,7 +63,7 @@ describe("/api/images/[id]", () => {
 
       await handler(
         req as unknown as NextApiRequest,
-        res as unknown as NextApiResponse
+        res as unknown as NextApiResponse,
       );
 
       expect(res.statusCode).toBe(400);
@@ -82,7 +82,7 @@ describe("/api/images/[id]", () => {
 
       await handler(
         req as unknown as NextApiRequest,
-        res as unknown as NextApiResponse
+        res as unknown as NextApiResponse,
       );
 
       expect(res.statusCode).toBe(404);
@@ -109,7 +109,7 @@ describe("/api/images/[id]", () => {
 
       await handler(
         req as unknown as NextApiRequest,
-        res as unknown as NextApiResponse
+        res as unknown as NextApiResponse,
       );
 
       expect(res.statusCode).toBe(200);
@@ -122,7 +122,7 @@ describe("/api/images/[id]", () => {
 
       await handler(
         req as unknown as NextApiRequest,
-        res as unknown as NextApiResponse
+        res as unknown as NextApiResponse,
       );
 
       expect(res.statusCode).toBe(401);
@@ -138,7 +138,7 @@ describe("/api/images/[id]", () => {
 
       await handler(
         req as unknown as NextApiRequest,
-        res as unknown as NextApiResponse
+        res as unknown as NextApiResponse,
       );
 
       expect(res.statusCode).toBe(403);

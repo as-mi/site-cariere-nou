@@ -40,7 +40,7 @@ const SettingEditor = ({ setting, value }: SettingsEditorProps) => {
       const queryKey = getQueryKey(
         trpc.admin.setting.getAll,
         undefined,
-        "query"
+        "query",
       );
       queryClient.invalidateQueries(queryKey);
     },
@@ -208,7 +208,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   const settingValues = await prisma.settingValue.findMany();
   const settingValuesByKey = _.keyBy(
     settingValues,
-    (settingValue) => settingValue.key
+    (settingValue) => settingValue.key,
   );
 
   return {

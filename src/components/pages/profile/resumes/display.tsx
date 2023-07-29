@@ -39,14 +39,14 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({
       const queryKey = getQueryKey(
         trpc.participant.resumeGetAll,
         undefined,
-        "query"
+        "query",
       );
 
       const queryData = queryClient.getQueryData<typeof query.data>(queryKey);
       if (queryData) {
         // Update the list of resumes
         const resumes = queryData.filter(
-          (resume) => resume.id !== variables.id
+          (resume) => resume.id !== variables.id,
         );
         queryClient.setQueryData(queryKey, resumes);
       } else {
@@ -62,7 +62,7 @@ const ResumesDisplay: React.FC<ResumesDisplayProps> = ({
         deleteResumeMutation.mutate({ id: resumeId });
       }
     },
-    [deleteResumeMutation]
+    [deleteResumeMutation],
   );
 
   if (query.isLoading) {

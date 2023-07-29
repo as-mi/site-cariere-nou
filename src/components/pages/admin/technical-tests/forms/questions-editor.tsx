@@ -44,7 +44,7 @@ const QuestionsEditor: React.FC = () => {
     (fromIndex: number, toIndex: number) => {
       move(fromIndex, toIndex);
     },
-    [move]
+    [move],
   );
 
   useEffect(() => {
@@ -57,13 +57,13 @@ const QuestionsEditor: React.FC = () => {
     (questionIndex: number) => {
       if (
         window.confirm(
-          "Sigur vrei să ștergi această întrebare și toate datele asociate ei?"
+          "Sigur vrei să ștergi această întrebare și toate datele asociate ei?",
         )
       ) {
         remove(questionIndex);
       }
     },
-    [remove]
+    [remove],
   );
 
   const memoizedFields = useMemoCompare(fields, _.isEqual);
@@ -77,7 +77,7 @@ const QuestionsEditor: React.FC = () => {
           removeQuestion={removeQuestion}
         />
       )),
-    [memoizedFields, reorderQuestions, removeQuestion]
+    [memoizedFields, reorderQuestions, removeQuestion],
   );
 
   return (

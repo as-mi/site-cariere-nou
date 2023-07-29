@@ -34,7 +34,7 @@ const EventCard: React.FC<EventCardProps> = ({ t, event, className }) => {
     <div
       className={classNames(
         "flex min-w-[18rem] max-w-[330px] flex-col rounded-lg border-2 border-gray-200 bg-white p-6 text-start drop-shadow-md sm:p-8 md:p-10",
-        className
+        className,
       )}
     >
       <header className="h-24">

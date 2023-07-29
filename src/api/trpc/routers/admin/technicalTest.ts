@@ -159,7 +159,7 @@ export const technicalTestRouter = router({
 
       const startTimesByUserId = _.mapValues(
         _.keyBy(startTimes, (startTime) => startTime.userId),
-        (obj) => obj.startTime
+        (obj) => obj.startTime,
       );
 
       const responses = answers.map((answer) => ({

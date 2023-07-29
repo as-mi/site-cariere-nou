@@ -6,7 +6,7 @@ import { getServerSession } from "~/lib/auth";
 import { NotAuthenticatedError, NotAuthorizedError } from "./errors";
 
 export const requireAuthentication = <T>(
-  handler: NextApiHandler<T>
+  handler: NextApiHandler<T>,
 ): NextApiHandler<T> => {
   return async (req, res) => {
     const session = await getServerSession(req, res);
@@ -21,7 +21,7 @@ export const requireAuthentication = <T>(
 
 const requireRole = <T>(
   handler: NextApiHandler<T>,
-  role: Role
+  role: Role,
 ): NextApiHandler<T> => {
   return async (req, res) => {
     const session = await getServerSession(req, res);

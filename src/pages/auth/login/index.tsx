@@ -41,7 +41,7 @@ const LoginPage: NextPageWithLayout<PageProps> = ({
   const error = router.query["error"];
 
   const isAuthenticationBeingRequired = !!router.query.hasOwnProperty(
-    "authenticationRequired"
+    "authenticationRequired",
   );
   const callbackUrl =
     (Array.isArray(router.query.callbackUrl)
@@ -49,10 +49,10 @@ const LoginPage: NextPageWithLayout<PageProps> = ({
       : router.query.callbackUrl) || "/";
 
   const canSignInWithGoogle = !!availableProviders.find(
-    (providerId) => providerId === "google"
+    (providerId) => providerId === "google",
   );
   const canSignInWithFacebook = !!availableProviders.find(
-    (providerId) => providerId === "facebook"
+    (providerId) => providerId === "facebook",
   );
 
   const handleSignInWithGoogle = () => {

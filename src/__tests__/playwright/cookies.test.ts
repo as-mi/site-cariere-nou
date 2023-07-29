@@ -24,7 +24,7 @@ test("shows cookie consent banner on first visit", async ({
 
   // Make sure the cookie banner isn't shown
   const cookieBannerText = page.locator(
-    `text=Acest site utilizează cookie-uri`
+    `text=Acest site utilizează cookie-uri`,
   );
   expect(await cookieBannerText.count()).toBe(0);
 });

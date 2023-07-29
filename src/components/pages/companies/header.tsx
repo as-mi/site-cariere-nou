@@ -34,7 +34,7 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     rel="noreferrer"
     className={classNames(
       "mx-1 inline-flex h-8 w-8 items-center justify-center rounded-md bg-white p-1 text-center align-middle text-base text-black hover:bg-zinc-200 active:bg-zinc-300",
-      linkClassName
+      linkClassName,
     )}
   >
     <span title={title}>

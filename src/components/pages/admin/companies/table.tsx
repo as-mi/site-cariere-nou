@@ -31,7 +31,7 @@ const AdminCompaniesTable: React.FC<AdminCompaniesTableProps> = ({
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.company.readMany.useQuery(
@@ -41,7 +41,7 @@ const AdminCompaniesTable: React.FC<AdminCompaniesTableProps> = ({
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const queryClient = useQueryClient();
@@ -68,7 +68,7 @@ const AdminCompaniesTable: React.FC<AdminCompaniesTableProps> = ({
         companyDeleteMutation.mutate({ id: companyId });
       }
     },
-    [companyDeleteMutation]
+    [companyDeleteMutation],
   );
 
   const columns = useMemo(
@@ -109,7 +109,7 @@ const AdminCompaniesTable: React.FC<AdminCompaniesTableProps> = ({
         ),
       }),
     ],
-    [handleCompanyDelete]
+    [handleCompanyDelete],
   );
 
   return (

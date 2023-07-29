@@ -38,7 +38,7 @@ const OptionsSection: React.FC<OptionsSectionProps> = ({
       const queryKey = getQueryKey(
         trpc.participant.optionsGet,
         undefined,
-        "query"
+        "query",
       );
       queryClient.setQueryData(queryKey, variables);
     },

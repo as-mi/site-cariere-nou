@@ -97,7 +97,7 @@ const NavBar: React.FC<NavBarProps> = ({
         </>
       );
     },
-    [t, hideEventsLink, hideProfileLink, role]
+    [t, hideEventsLink, hideProfileLink, role],
   );
 
   return <CommonNavBar renderLinks={renderLinks} />;

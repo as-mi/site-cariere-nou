@@ -54,7 +54,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({ packageType, company }) => {
               icon={faMedal}
               className={classNames(
                 "mr-3 inline-block h-4 w-4",
-                MEDAL_COLORS[packageType]
+                MEDAL_COLORS[packageType],
               )}
             />
             Partener{" "}

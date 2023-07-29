@@ -21,7 +21,7 @@ const ExternalLink: React.FC<ExternalLinkProps> = ({
     rel="noopener"
     className={classNames(
       "cursor-pointer text-green-800 hover:text-green-600",
-      className
+      className,
     )}
     style={style}
   >

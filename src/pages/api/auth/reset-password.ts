@@ -29,7 +29,7 @@ const resetPasswordSchema = z
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ResponseData>,
 ) {
   if (req.method !== "POST") {
     res.status(400).json({

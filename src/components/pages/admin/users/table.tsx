@@ -29,7 +29,7 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.user.readMany.useQuery(
@@ -39,7 +39,7 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const queryClient = useQueryClient();
@@ -71,7 +71,7 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
         userDeleteMutation.mutate({ id: userId });
       }
     },
-    [userDeleteMutation]
+    [userDeleteMutation],
   );
 
   const columns = useMemo(
@@ -117,7 +117,7 @@ const AdminUsersTable: React.FC<AdminUsersTableProps> = ({ initialData }) => {
         ),
       }),
     ],
-    [handleUserResetPassword, handleUserDelete]
+    [handleUserResetPassword, handleUserDelete],
   );
 
   return (

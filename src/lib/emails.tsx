@@ -55,7 +55,7 @@ export const initI18n = async (language: Language): Promise<typeof i18n> => {
 export const renderEmail = async <TProps,>(
   EmailComponent: React.FC<TProps>,
   props: TProps & JSX.IntrinsicAttributes,
-  i18nObject: typeof i18n
+  i18nObject: typeof i18n,
 ): Promise<JSX.Element> => {
   return (
     <I18nextProvider i18n={i18nObject}>
@@ -67,7 +67,7 @@ export const renderEmail = async <TProps,>(
 export const renderEmailToHtml = async <TProps,>(
   emailComponent: React.FC<TProps>,
   props: TProps & JSX.IntrinsicAttributes,
-  i18nObject: typeof i18n
+  i18nObject: typeof i18n,
 ): Promise<string> => {
   const node = await renderEmail(emailComponent, props, i18nObject);
 
@@ -91,7 +91,7 @@ const getEmailTransporter = () => {
     const options = process.env.EMAIL_CONNECTION_STRING;
     if (!options) {
       throw new Error(
-        "`EMAIL_CONNECTION_STRING` environment variable is not configured"
+        "`EMAIL_CONNECTION_STRING` environment variable is not configured",
       );
     }
     global.transporter = nodemailer.createTransport(options);
@@ -117,13 +117,13 @@ type EmailMessage = {
  */
 const sendEmail = async (
   to: EmailAddress,
-  { subject, text, html }: EmailMessage
+  { subject, text, html }: EmailMessage,
 ) => {
   if (process.env.MAILER_DISABLE_EMAIL_SENDING) {
     console.log(
       "Faking sending an e-mail to '%s' with subject '%s'",
       to,
-      subject
+      subject,
     );
     return;
   }
@@ -158,7 +158,7 @@ const sendEmail = async (
 export const sendVerificationEmail = async (
   user: Pick<User, "id" | "name" | "email">,
   language: Language,
-  verificationToken: string
+  verificationToken: string,
 ) => {
   const { id, name, email } = user;
 

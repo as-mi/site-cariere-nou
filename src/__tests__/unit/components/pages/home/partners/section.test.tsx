@@ -25,12 +25,12 @@ describe("PartnersSection", () => {
         t={tFunction}
         showComingSoonMessage={false}
         companiesByPackageType={companiesByPackageType}
-      />
+      />,
     );
 
     const subsectionHeaders = screen.getAllByText(
       "partnersSection.subsectionHeader",
-      { exact: false }
+      { exact: false },
     );
 
     // Make sure we have all of the subsection headers rendered

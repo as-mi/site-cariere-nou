@@ -31,7 +31,7 @@ const AdminResumesTable: React.FC<AdminResumesTableProps> = ({
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.resume.readMany.useQuery(
@@ -41,7 +41,7 @@ const AdminResumesTable: React.FC<AdminResumesTableProps> = ({
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const columns = useMemo(
@@ -80,7 +80,7 @@ const AdminResumesTable: React.FC<AdminResumesTableProps> = ({
         ),
       }),
     ],
-    []
+    [],
   );
 
   return (

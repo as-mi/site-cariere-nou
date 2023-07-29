@@ -20,7 +20,7 @@ import { generateTechnicalTestAnswerSheet } from "~/lib/technical-tests-export";
 
 const IdSchema = z.preprocess(
   (value) => parseInt(z.string().parse(value), 10),
-  z.number().int()
+  z.number().int(),
 );
 
 const QueryStringSchema = z
@@ -46,7 +46,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!result.success) {
     throw new BadRequestError(
       "bad-request",
-      `Failed to parse request query parameters: ${result.error.message}`
+      `Failed to parse request query parameters: ${result.error.message}`,
     );
   }
 
@@ -73,7 +73,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!technicalTest) {
     throw new NotFoundError(
       "not-found",
-      "Technical test with provided ID was not found"
+      "Technical test with provided ID was not found",
     );
   }
 
@@ -96,7 +96,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!participantAnswers) {
     throw new NotFoundError(
       "not-found",
-      "Participant's answers to provided technical test were not found"
+      "Participant's answers to provided technical test were not found",
     );
   }
 
@@ -107,7 +107,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     technicalTestId,
     technicalTest.title,
     questions,
-    answers
+    answers,
   );
 
   answerSheetDocument.pipe(res);

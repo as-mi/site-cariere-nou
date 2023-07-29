@@ -50,7 +50,7 @@ const NavBar: React.FC<NavBarProps> = ({ renderLinks, autoHideLogo }) => {
 
   const links = useMemo(
     () => renderLinks!({ showNavMenu, closeNavMenu }),
-    [renderLinks, showNavMenu, closeNavMenu]
+    [renderLinks, showNavMenu, closeNavMenu],
   );
 
   const scrollPosition = useScrollPosition();

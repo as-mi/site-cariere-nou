@@ -7,7 +7,7 @@ import RegistrationForm from "~/components/pages/auth/register/form";
 
 const testPasswordValidation = async (
   password: string,
-  expectedErrorMessage: string
+  expectedErrorMessage: string,
 ) => {
   const user = userEvent.setup();
 
@@ -28,14 +28,14 @@ describe("RegistrationForm", () => {
     it("must contain at least one digit", async () => {
       await testPasswordValidation(
         "abcdefgh!",
-        "registrationForm.passwordMustHaveDigits"
+        "registrationForm.passwordMustHaveDigits",
       );
     });
 
     it("must contain at least one letter", async () => {
       await testPasswordValidation(
         "123456*",
-        "registrationForm.passwordMustHaveAlpha"
+        "registrationForm.passwordMustHaveAlpha",
       );
     });
   });

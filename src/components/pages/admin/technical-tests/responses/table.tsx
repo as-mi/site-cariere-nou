@@ -35,7 +35,7 @@ const AdminTechnicalTestResponsesTable: React.FC<
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.technicalTest.readResponses.useQuery(
@@ -45,7 +45,7 @@ const AdminTechnicalTestResponsesTable: React.FC<
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const columns = useMemo(
@@ -90,7 +90,7 @@ const AdminTechnicalTestResponsesTable: React.FC<
         },
       }),
     ],
-    [technicalTestId]
+    [technicalTestId],
   );
 
   return (

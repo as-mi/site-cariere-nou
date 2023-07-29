@@ -41,7 +41,7 @@ describe("QuestionEditor", () => {
     render(
       <FormWrapper onSubmit={onSubmit}>
         <QuestionEditor index={0} />
-      </FormWrapper>
+      </FormWrapper>,
     );
 
     // Fill in the required question fields
@@ -50,7 +50,7 @@ describe("QuestionEditor", () => {
     });
 
     const questionKindSelect = screen.getByLabelText(
-      "Tip de răspuns"
+      "Tip de răspuns",
     ) as HTMLSelectElement;
 
     // First, switch the question's kind to single choice answer

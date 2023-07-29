@@ -66,7 +66,7 @@ const QuestionChoice: React.FC<QuestionChoiceProps> = ({
       dragPreview(div);
       drop(div);
     },
-    [dragPreview, drop]
+    [dragPreview, drop],
   );
 
   return (
@@ -75,7 +75,7 @@ const QuestionChoice: React.FC<QuestionChoiceProps> = ({
       className={classNames(
         "flex flex-row",
         { "opacity-25": isDragging },
-        { "bg-zinc-800": isOver }
+        { "bg-zinc-800": isOver },
       )}
     >
       <div className="flex flex-col pr-2">

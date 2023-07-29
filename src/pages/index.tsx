@@ -133,13 +133,13 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
 
   const showComingSoonMessage = await getSettingValue("showComingSoonMessage");
   const alwaysShowCompaniesForAdmin = await getSettingValue(
-    "alwaysShowCompaniesForAdmin"
+    "alwaysShowCompaniesForAdmin",
   );
   const showProfileLink = await getSettingValue("showProfileLink");
   const hideProfileLink = !showProfileLink;
   const showEvents = await getSettingValue("showEvents");
   const alwaysShowEventsForAdmin = await getSettingValue(
-    "alwaysShowEventsForAdmin"
+    "alwaysShowEventsForAdmin",
   );
   const closeApplications = await getSettingValue("closeApplications");
 

@@ -56,7 +56,7 @@ const PositionCard: React.FC<PositionCardProps> = ({
   const [expanded, setExpanded] = useState(false);
 
   const [showApplicationForm, setShowApplicationForm] = useState(
-    initiallyShowApplicationForm
+    initiallyShowApplicationForm,
   );
   const [showApplicationSuccessMessage, setShowApplicationSuccessMessage] =
     useState(false);

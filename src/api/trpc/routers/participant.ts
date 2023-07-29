@@ -88,7 +88,7 @@ export const participantRouter = router({
       const applicationsClosed = await getSettingValue("closeApplications");
       if (applicationsClosed) {
         throw new Error(
-          "Application period has ended, options cannot be changed anymore"
+          "Application period has ended, options cannot be changed anymore",
         );
       }
 
@@ -122,7 +122,7 @@ export const participantRouter = router({
       const applicationsClosed = await getSettingValue("closeApplications");
       if (applicationsClosed) {
         throw new Error(
-          "Application period has ended, resumes cannot be deleted anymore"
+          "Application period has ended, resumes cannot be deleted anymore",
         );
       }
 
@@ -150,7 +150,7 @@ export const participantRouter = router({
       const { positionId, resumeId } = input;
 
       const allowParticipantsToApplyToPositions = await getSettingValue(
-        "allowParticipantsToApplyToPositions"
+        "allowParticipantsToApplyToPositions",
       );
       if (!allowParticipantsToApplyToPositions) {
         throw new Error("Applications are currently disabled");
@@ -194,7 +194,7 @@ export const participantRouter = router({
 
         if (!answers) {
           throw new Error(
-            "Cannot apply to this position until technical test is completed"
+            "Cannot apply to this position until technical test is completed",
           );
         }
       }
@@ -212,7 +212,7 @@ export const participantRouter = router({
 
       if (!resume) {
         throw new Error(
-          "Resume with provided ID not found for currently logged-in user"
+          "Resume with provided ID not found for currently logged-in user",
         );
       }
 
@@ -254,7 +254,7 @@ export const participantRouter = router({
       const result = QuestionsSchema.safeParse(technicalTest.questions);
       if (!result.success) {
         throw new Error(
-          "Failed to parse questions from technical test for validation"
+          "Failed to parse questions from technical test for validation",
         );
       }
 

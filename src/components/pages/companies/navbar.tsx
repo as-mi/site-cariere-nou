@@ -38,7 +38,7 @@ const NavBar: React.FC<NavBarProps> = ({ companyId }) => {
         router.push("/");
       }
     },
-    [previousPage, router]
+    [previousPage, router],
   );
 
   return (

@@ -23,10 +23,10 @@ describe("prisma", () => {
 
       // Check that the timestamps are relatively fresh
       expect(Math.abs(now - +user.createdAt)).toBeLessThan(
-        EPSILON_MILLISECONDS
+        EPSILON_MILLISECONDS,
       );
       expect(Math.abs(now - +user.updatedAt)).toBeLessThan(
-        EPSILON_MILLISECONDS
+        EPSILON_MILLISECONDS,
       );
     });
   });

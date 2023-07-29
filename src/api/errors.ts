@@ -9,7 +9,7 @@ export class ApiError extends Error {
   constructor(
     public readonly statusCode: number,
     public readonly errorCode: string,
-    message?: string
+    message?: string,
   ) {
     super(message);
 
@@ -25,7 +25,7 @@ export class ApiError extends Error {
 export class BadRequestError extends ApiError {
   constructor(
     errorCode: string = "bad-request",
-    message: string = "Bad Request"
+    message: string = "Bad Request",
   ) {
     super(httpStatusCodes.BAD_REQUEST, errorCode, message);
 
@@ -36,7 +36,7 @@ export class BadRequestError extends ApiError {
 export class MethodNotAllowedError extends ApiError {
   constructor(
     errorCode: string = "method-not-allowed",
-    message: string = "Method Not Allowed"
+    message: string = "Method Not Allowed",
   ) {
     super(httpStatusCodes.METHOD_NOT_ALLOWED, errorCode, message);
 
@@ -55,7 +55,7 @@ export class NotFoundError extends ApiError {
 export class NotAuthenticatedError extends ApiError {
   constructor(
     errorCode: string = "not-authenticated",
-    message: string = "Not Authenticated"
+    message: string = "Not Authenticated",
   ) {
     super(httpStatusCodes.UNAUTHORIZED, errorCode, message);
 
@@ -66,7 +66,7 @@ export class NotAuthenticatedError extends ApiError {
 export class NotAuthorizedError extends ApiError {
   constructor(
     errorCode: string = "not-authorized",
-    message: string = "Not Authorized"
+    message: string = "Not Authorized",
   ) {
     super(httpStatusCodes.FORBIDDEN, errorCode, message);
 
@@ -77,7 +77,7 @@ export class NotAuthorizedError extends ApiError {
 export class InternalServerError extends ApiError {
   constructor(
     errorCode: string = "internal-server-error",
-    message: string = "Internal ServerError"
+    message: string = "Internal ServerError",
   ) {
     super(httpStatusCodes.INTERNAL_SERVER_ERROR, errorCode, message);
 

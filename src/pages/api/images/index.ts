@@ -21,7 +21,7 @@ type ResponseData = SuccessResponse | ErrorResponse;
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse<ResponseData>
+  res: NextApiResponse<ResponseData>,
 ) {
   if (req.method !== "GET") {
     res.status(400).json({

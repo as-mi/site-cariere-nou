@@ -5,7 +5,7 @@ import prisma from "~/lib/prisma";
 import { SettingKey, SETTINGS, SettingValueType } from ".";
 
 export const getSettingValue = async <K extends SettingKey>(
-  key: K
+  key: K,
 ): Promise<SettingValueType<K>> => {
   const setting = SETTINGS[key];
 

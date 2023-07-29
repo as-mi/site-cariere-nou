@@ -67,7 +67,7 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
     },
     {
       enabled: !!companyId,
-    }
+    },
   );
 
   const companyOptions = useMemo(() => {

@@ -81,7 +81,7 @@ const AdminNewPositionPage: NextPageWithLayout = () => {
   useEffect(() => {
     if (companyOptions && companyId) {
       const companyOption = companyOptions.find(
-        (option) => option.value === companyId
+        (option) => option.value === companyId,
       );
 
       if (!companyOption) {

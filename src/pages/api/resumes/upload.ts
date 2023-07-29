@@ -33,7 +33,7 @@ const apiRoute = nextConnect<NextApiRequestWithFile, NextApiResponse>();
 function fixFileName(
   _req: unknown,
   file: Express.Multer.File,
-  callback: multer.FileFilterCallback
+  callback: multer.FileFilterCallback,
 ) {
   // Fix files having UTF-8 encoded names
   // Based on https://stackoverflow.com/a/72909626/5723188
@@ -53,7 +53,7 @@ const upload = multer({
 
 const uploadResume = async (
   req: NextApiRequestWithFile,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
   if (req.method !== "POST" && req.method !== "PUT") {
     throw new MethodNotAllowedError();
@@ -63,7 +63,7 @@ const uploadResume = async (
   if (req.method === "PUT" && !applicationsEnabled) {
     throw new MethodNotAllowedError(
       "method-not-allowed",
-      "replacing resume is not allowed when applications are closed"
+      "replacing resume is not allowed when applications are closed",
     );
   }
 
@@ -71,7 +71,7 @@ const uploadResume = async (
   if (applicationsClosed) {
     throw new MethodNotAllowedError(
       "method-not-allowed",
-      "application period has ended, resumes cannot be created or edited anymore"
+      "application period has ended, resumes cannot be created or edited anymore",
     );
   }
 
@@ -92,7 +92,7 @@ const uploadResume = async (
   if (!file) {
     throw new BadRequestError(
       "missing-file",
-      "file object not found in request"
+      "file object not found in request",
     );
   }
 
@@ -103,7 +103,7 @@ const uploadResume = async (
   if (!ALLOWED_RESUME_MIME_TYPES.has(file.mimetype.trim())) {
     throw new BadRequestError(
       "invalid-mime-type",
-      "file does not have a valid content type"
+      "file does not have a valid content type",
     );
   }
 
@@ -122,7 +122,7 @@ const uploadResume = async (
     if (resumeCount >= MAXIMUM_NUMBER_OF_RESUMES_PER_PARTICIPANT) {
       throw new BadRequestError(
         "resumes-limit-reached",
-        "reached limit on number of resumes"
+        "reached limit on number of resumes",
       );
     }
 
@@ -142,7 +142,7 @@ const uploadResume = async (
 
       throw new BadRequestError(
         "resumes-limit-reached",
-        "reached limit on number of resumes"
+        "reached limit on number of resumes",
       );
     }
   } else if (req.method === "PUT") {

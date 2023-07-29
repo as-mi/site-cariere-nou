@@ -79,7 +79,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
         const response = await fetch("/api/images/upload", options);
         if (!response.ok) {
           throw new Error(
-            `Failed to upload image: status code ${response.status}`
+            `Failed to upload image: status code ${response.status}`,
           );
         }
       } catch (e) {

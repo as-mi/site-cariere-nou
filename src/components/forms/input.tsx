@@ -10,7 +10,7 @@ import { useTranslation } from "next-i18next";
 
 type InputProps<
   TFieldValues extends FieldValues,
-  TFieldName extends Path<TFieldValues>
+  TFieldName extends Path<TFieldValues>,
 > = {
   id: string;
   label: string;
@@ -27,7 +27,7 @@ type InputProps<
 
 const Input = <
   TFieldValues extends FieldValues,
-  TFieldName extends Path<TFieldValues>
+  TFieldName extends Path<TFieldValues>,
 >({
   id,
   label,

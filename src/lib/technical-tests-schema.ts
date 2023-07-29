@@ -54,11 +54,11 @@ export const AnswersSchema = z.array(AnswerSchema);
 export function validateAnswers(answers: Answer[], questions: Question[]) {
   if (answers.length > questions.length) {
     throw new Error(
-      "Received more answers than there are questions in the technical test"
+      "Received more answers than there are questions in the technical test",
     );
   } else if (answers.length < questions.length) {
     throw new Error(
-      "Received less answers than there are questions in the technical test"
+      "Received less answers than there are questions in the technical test",
     );
   }
 
@@ -72,7 +72,7 @@ export function validateAnswers(answers: Answer[], questions: Question[]) {
     const question = questionsById[questionId];
     if (!question) {
       throw new Error(
-        `Question with ID ${questionId} not found in technical test`
+        `Question with ID ${questionId} not found in technical test`,
       );
     }
 
@@ -80,7 +80,7 @@ export function validateAnswers(answers: Answer[], questions: Question[]) {
       const valueInt = parseInt(value);
       if (Number.isNaN(valueInt)) {
         throw new Error(
-          `Answer to question with ID ${questionId} is not a valid integer: '${value}'`
+          `Answer to question with ID ${questionId} is not a valid integer: '${value}'`,
         );
       }
 
@@ -88,7 +88,7 @@ export function validateAnswers(answers: Answer[], questions: Question[]) {
 
       if (!choicesIds.has(valueInt)) {
         throw new Error(
-          `Answer to question with ID ${questionId} is not a valid choice from the list`
+          `Answer to question with ID ${questionId} is not a valid choice from the list`,
         );
       }
     }

@@ -18,7 +18,7 @@ const encodeRFC5987ValueChars = (fileName: string): string =>
     // The following are not required for percent-encoding per RFC5987,
     // so we can allow for a little better readability over the wire: |`^
     .replace(/%(7C|60|5E)/g, (str, hex) =>
-      String.fromCharCode(parseInt(hex, 16))
+      String.fromCharCode(parseInt(hex, 16)),
     );
 
 /**
@@ -36,7 +36,7 @@ export function generateTechnicalTestAnswerSheet(
   technicalTestId: number,
   technicalTestTitle: string,
   questions: Question[],
-  answers: Answer[]
+  answers: Answer[],
 ): typeof PDFDocument {
   const doc = new PDFDocument({
     size: "A4",
@@ -56,7 +56,7 @@ export function generateTechnicalTestAnswerSheet(
       filterDiacritics(text),
       x,
       y,
-      options
+      options,
     );
 
   doc.fontSize(18);
@@ -70,7 +70,7 @@ export function generateTechnicalTestAnswerSheet(
 
   const answersByQuestionId = _.mapValues(
     _.keyBy(answers, (answer) => answer.questionId),
-    (answer) => answer.value
+    (answer) => answer.value,
   );
 
   let correctMarkedQuestions = 0;
@@ -91,7 +91,7 @@ export function generateTechnicalTestAnswerSheet(
 
   if (totalMarkedQuestions > 0) {
     doc.text(
-      `Participantul a răspuns corect la ${correctMarkedQuestions} din ${totalMarkedQuestions} întrebări de tip grilă (la care au fost configurate răspunsurile corecte).`
+      `Participantul a răspuns corect la ${correctMarkedQuestions} din ${totalMarkedQuestions} întrebări de tip grilă (la care au fost configurate răspunsurile corecte).`,
     );
     doc.moveDown();
     doc.moveDown();
@@ -112,7 +112,7 @@ export function generateTechnicalTestAnswerSheet(
       case QuestionKind.SINGLE_CHOICE:
         const choiceId = Number(answer);
         const choice = question.choices!.find(
-          (choice) => choice.id === choiceId
+          (choice) => choice.id === choiceId,
         );
         doc.text(choice!.label, { indent: 20 });
         break;

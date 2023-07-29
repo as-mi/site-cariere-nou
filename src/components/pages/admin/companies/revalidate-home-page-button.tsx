@@ -13,7 +13,7 @@ const RevalidateHomePageButton: React.FC = () => {
 
   const handleRevalidation = useCallback(
     () => revalidateHomePageMutation.mutate(),
-    [revalidateHomePageMutation]
+    [revalidateHomePageMutation],
   );
 
   return <Button onClick={handleRevalidation}>Regenerează prima pagină</Button>;

@@ -231,7 +231,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   if (query.applyToPositionId) {
     if (typeof query.applyToPositionId !== "string") {
       throw new Error(
-        "Invalid value for `applyToPositionId` query string parameter"
+        "Invalid value for `applyToPositionId` query string parameter",
       );
     }
 
@@ -259,7 +259,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       },
     });
     positionsAlreadyAppliedToIds = new Set(
-      applications.map((application) => application.positionId)
+      applications.map((application) => application.positionId),
     );
 
     const answeredTechnicalTests =
@@ -277,7 +277,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         },
       });
     completedTechnicalTestsIds = new Set(
-      answeredTechnicalTests.map((answers) => answers.technicalTestId)
+      answeredTechnicalTests.map((answers) => answers.technicalTestId),
     );
   }
 
@@ -310,17 +310,17 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         ? completedTechnicalTestsIds.has(activeTechnicalTestId)
         : null,
       technicalTestIsMandatory,
-    })
+    }),
   );
 
   const showAvailablePositions = await getSettingValue(
-    "showAvailablePositions"
+    "showAvailablePositions",
   );
   const alwayShowAvailablePositionsForAdmin = await getSettingValue(
-    "alwaysShowAvailablePositionsForAdmin"
+    "alwaysShowAvailablePositionsForAdmin",
   );
   const allowParticipantsToApplyToPositions = await getSettingValue(
-    "allowParticipantsToApplyToPositions"
+    "allowParticipantsToApplyToPositions",
   );
   const closeApplications = await getSettingValue("closeApplications");
 

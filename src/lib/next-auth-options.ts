@@ -69,7 +69,7 @@ if (true) {
 
       console.log(
         "Tring to authenticate user with e-mail `%s`",
-        credentials.email
+        credentials.email,
       );
 
       let user;
@@ -80,12 +80,12 @@ if (true) {
           console.log(
             "Failed to authenticate user `%s`: %s",
             credentials.email,
-            error.message
+            error.message,
           );
         } else {
           console.error(
             "Unexpected error was thrown during authentication:",
-            error
+            error,
           );
         }
 

@@ -34,7 +34,7 @@ const AdminPositionsTable: React.FC<AdminPositionsTableProps> = ({
   };
 
   const [pagination, setPagination] = useState<PaginationState>(
-    initialPaginationState
+    initialPaginationState,
   );
 
   const query = trpc.admin.position.readMany.useQuery(
@@ -44,7 +44,7 @@ const AdminPositionsTable: React.FC<AdminPositionsTableProps> = ({
         pagination === initialPaginationState ? initialData : undefined,
       staleTime: 1000,
       keepPreviousData: true,
-    }
+    },
   );
 
   const queryClient = useQueryClient();
@@ -70,7 +70,7 @@ const AdminPositionsTable: React.FC<AdminPositionsTableProps> = ({
         positionDeleteMutation.mutate({ id: positionId });
       }
     },
-    [positionDeleteMutation]
+    [positionDeleteMutation],
   );
 
   const columns = useMemo(
@@ -111,7 +111,7 @@ const AdminPositionsTable: React.FC<AdminPositionsTableProps> = ({
         ),
       }),
     ],
-    [handlePositionDelete]
+    [handlePositionDelete],
   );
 
   return (

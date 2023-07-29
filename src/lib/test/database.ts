@@ -15,7 +15,7 @@ type TransactionClient = Parameters<$TransactionCallback>[0];
  * This allows the test code to not affect the local database.
  */
 export const wrapInTransaction = async (
-  perform: (tx: TransactionClient) => Promise<void>
+  perform: (tx: TransactionClient) => Promise<void>,
 ) => {
   try {
     // Begin a new transaction

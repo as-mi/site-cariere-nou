@@ -47,7 +47,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       dragPreview(div);
       drop(div);
     },
-    [dragPreview, drop]
+    [dragPreview, drop],
   );
 
   return (
@@ -56,7 +56,7 @@ const QuestionCard: React.FC<QuestionCardProps> = ({
       className={classNames(
         "flex flex-row",
         { "opacity-25": isDragging },
-        { "bg-zinc-800": isOver }
+        { "bg-zinc-800": isOver },
       )}
     >
       <div className="flex flex-col pr-3">

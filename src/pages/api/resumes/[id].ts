@@ -12,7 +12,7 @@ import prisma from "~/lib/prisma";
 
 const getResumeWithoutAdmin = async (
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) => {
   if (typeof req.query.id !== "string") {
     throw new BadRequestError("invalid-parameter");

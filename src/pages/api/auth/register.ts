@@ -42,7 +42,7 @@ const register = async (data: RegisterData) => {
   if (!registrationEnabled) {
     throw new BadRequestError(
       "registration-disabled",
-      "registration of new accounts is currently disabled"
+      "registration of new accounts is currently disabled",
     );
   }
 
@@ -56,13 +56,13 @@ const register = async (data: RegisterData) => {
     if (user) {
       throw new BadRequestError(
         "user-exists",
-        "another user with the same e-mail has already been registered"
+        "another user with the same e-mail has already been registered",
       );
     }
   } catch {
     throw new InternalServerError(
       "user-lookup-failed",
-      "failed to check if another user exists with same e-mail"
+      "failed to check if another user exists with same e-mail",
     );
   }
 
@@ -84,7 +84,7 @@ const register = async (data: RegisterData) => {
   } catch {
     throw new InternalServerError(
       "user-create-failed",
-      "failed to create new user"
+      "failed to create new user",
     );
   }
 
@@ -104,7 +104,7 @@ const register = async (data: RegisterData) => {
 
     throw new InternalServerError(
       "email-sending-failed",
-      "failed to send e-mail message"
+      "failed to send e-mail message",
     );
   }
 };
@@ -119,7 +119,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (!parseResult.success) {
     throw new BadRequestError(
       "invalid-params",
-      `Request body is invalid: ${parseResult.error.toString()}`
+      `Request body is invalid: ${parseResult.error.toString()}`,
     );
   }
 

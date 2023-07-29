@@ -41,7 +41,7 @@ const AdminNewImagePage: NextPageWithLayout = () => {
       const response = await fetch("/api/images/upload", options);
       if (!response.ok) {
         throw new Error(
-          `Failed to upload image: status code ${response.status}`
+          `Failed to upload image: status code ${response.status}`,
         );
       }
 
@@ -53,7 +53,7 @@ const AdminNewImagePage: NextPageWithLayout = () => {
 
       if (typeof id !== "number") {
         throw new Error(
-          "Back end did not return an image ID of the expected type"
+          "Back end did not return an image ID of the expected type",
         );
       }
     } catch (e) {

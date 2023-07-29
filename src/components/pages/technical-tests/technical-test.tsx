@@ -136,7 +136,7 @@ const TechnicalTest: React.FC<TechnicalTestProps> = ({
       setSuccessfullySaved(true);
       setTimeout(() => {
         router.push(
-          `/companies/${companySlug}?applyToPositionId=${positionId}`
+          `/companies/${companySlug}?applyToPositionId=${positionId}`,
         );
       }, 3000);
     },

@@ -10,7 +10,7 @@ import { useTranslation } from "next-i18next";
 
 type ConsentCheckboxProps<
   TFieldValues extends FieldValues,
-  TFieldName extends Path<TFieldValues>
+  TFieldName extends Path<TFieldValues>,
 > = {
   name: TFieldName;
   label: string | JSX.Element;
@@ -23,7 +23,7 @@ type ConsentCheckboxProps<
 
 const ConsentCheckbox = <
   TFieldValues extends FieldValues,
-  TFieldName extends Path<TFieldValues>
+  TFieldName extends Path<TFieldValues>,
 >({
   name,
   label,

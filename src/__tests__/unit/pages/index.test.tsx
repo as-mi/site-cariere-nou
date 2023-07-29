@@ -22,7 +22,7 @@ describe("Home", () => {
         alwaysShowEventsForAdmin={true}
         companiesByPackageType={{}}
         events={[]}
-      />
+      />,
     );
 
     const heroImage = screen.getByAltText("Cariere v12.0");
