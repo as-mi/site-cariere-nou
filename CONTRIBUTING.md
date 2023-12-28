@@ -97,6 +97,14 @@ npm run lint
 pentru a verifica cu [ESLint](https://eslint.org/) că nu există potențiale probleme
 sau încălcări ale bunelor practici.
 
+Cu ajutorul comenzii
+
+```sh
+npm run types:check
+```
+
+poți rula compilatorul de TypeScript pentru a verifica utilizarea corectă a tipurilor de date în proiect.
+
 ## Rulare teste
 
 ### Unit tests

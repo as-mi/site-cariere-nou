@@ -48,7 +48,7 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
 
   const onSubmit: SubmitHandler<CommonFieldValues> = (data) => {
     // const positionId = parseInt(data.position.value as unknown as string);
-    const positionId = data.position.value;
+    const positionId = data.position!.value;
     const payload = {
       positionId,
       title: data.title,
@@ -63,10 +63,10 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
   const companiesQuery = trpc.admin.company.getAll.useQuery();
   const positionsQuery = trpc.admin.position.getAll.useQuery(
     {
-      companyId,
+      companyId: companyId!,
     },
     {
-      enabled: !!companyId,
+      enabled: companyId !== undefined,
     },
   );
 
@@ -93,9 +93,7 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
   }, [positionsQuery.data]);
 
   useEffect(() => {
-    if (!companyId) {
-      resetField("position", { defaultValue: null });
-    }
+    resetField("position", { defaultValue: null });
   }, [resetField, companyId]);
 
   if (companiesQuery.isLoading) {

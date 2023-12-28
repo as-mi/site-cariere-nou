@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import type { TFunction } from "next-i18next";
 
 import PartnersSection from "~/components/pages/home/partners/section";
 
@@ -22,7 +23,7 @@ describe("PartnersSection", () => {
 
     render(
       <PartnersSection
-        t={tFunction}
+        t={tFunction as TFunction}
         showComingSoonMessage={false}
         companiesByPackageType={companiesByPackageType}
       />,

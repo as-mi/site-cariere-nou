@@ -48,8 +48,8 @@ const AdminViewCompanyPage: NextPageWithLayout<PageProps> = ({ company }) => (
           {company.positionsCount === 0
             ? "nu a publicat încă niciun post"
             : company.positionsCount === 1
-            ? "a publicat un singur post"
-            : `are ${company.positionsCount} posturi publicate`}{" "}
+              ? "a publicat un singur post"
+              : `are ${company.positionsCount} posturi publicate`}{" "}
           în platformă.
         </p>
       </section>
@@ -60,8 +60,8 @@ const AdminViewCompanyPage: NextPageWithLayout<PageProps> = ({ company }) => (
           {company.applicantsCount === 0
             ? "nu a aplicat încă niciun participant"
             : company.applicantsCount === 1
-            ? "a aplicat un singur participant"
-            : `au aplicat în total ${company.applicantsCount} de participanți`}
+              ? "a aplicat un singur participant"
+              : `au aplicat în total ${company.applicantsCount} de participanți`}
           .
         </p>
       </section>
@@ -72,8 +72,8 @@ const AdminViewCompanyPage: NextPageWithLayout<PageProps> = ({ company }) => (
           {company.applicationsCount === 0
             ? "nu există încă aplicări"
             : company.applicationsCount === 1
-            ? "există o singură aplicare"
-            : `există ${company.applicationsCount} de aplicări`}
+              ? "există o singură aplicare"
+              : `există ${company.applicationsCount} de aplicări`}
           .
         </p>
         <p className="mt-3">

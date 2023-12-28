@@ -22,6 +22,9 @@ jobs:
       - name: Check the formatting
         run: npm run format:check
 
+      - name: Check the types
+        run: npm run types:check
+
       - name: Run the linter
         run: npm run lint
 
@@ -46,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15.1
+        image: postgres:16.1
         env:
           POSTGRES_PASSWORD: ci
           POSTGRES_DB: cariere
@@ -86,13 +89,13 @@ jobs:
     container:
       # Use the official Playwright container image
       # in order to avoid the need to install dependencies
-      image: mcr.microsoft.com/playwright:v1.30.0-jammy
+      image: mcr.microsoft.com/playwright:v1.40.1-jammy
       # Run the job's steps as the default user of this image, to avoid permission issues
       # See https://github.com/cypress-io/github-action/issues/446#issuecomment-987015822
       options: --user 1001
     services:
       postgres:
-        image: postgres:15.1
+        image: postgres:16.1
         env:
           POSTGRES_PASSWORD: ci
           POSTGRES_DB: cariere

@@ -20,6 +20,7 @@ describe("Home", () => {
         hideProfileLink={true}
         showEvents={true}
         alwaysShowEventsForAdmin={true}
+        closeApplications={false}
         companiesByPackageType={{}}
         events={[]}
       />,

@@ -5,8 +5,8 @@ export type EntityId = number;
 export type Option = { value: EntityId; label: string };
 
 export interface CommonFieldValues {
-  company: Option;
-  position: Option;
+  company: Option | null;
+  position: Option | null;
   title: string;
   description: string;
   questions: Question[];

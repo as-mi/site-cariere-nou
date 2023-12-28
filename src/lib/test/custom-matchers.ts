@@ -34,3 +34,15 @@ export const toBeHidden: MatcherFunction = function (received) {
     };
   }
 };
+
+declare global {
+  namespace jest {
+    interface AsymmetricMatchers {
+      toBeHidden(): void;
+    }
+
+    interface Matchers<R> {
+      toBeHidden(): R;
+    }
+  }
+}
