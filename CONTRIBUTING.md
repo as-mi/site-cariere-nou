@@ -23,6 +23,8 @@ docker compose up
 
 Docker va descărca imaginea de PostgreSQL, va crea și va porni un container cu baza de date configurată pentru mediul de dezvoltare.
 
+După ce a fost pornită, trebuie rulate migrațiile pentru a inițializa schema bazei de date. Acest lucru se poate face folosind comanda `npm run migrate:dev`.
+
 ## Configurare environment variables
 
 Pentru a configura unele funcționalități, trebuie să creezi un fișier `.env.local` în acest director, în care să setezi variabilele de mediu descrise mai jos.

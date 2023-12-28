@@ -13,6 +13,7 @@
     "test:unit": "jest src/__tests__/unit",
     "test:integration": "jest src/__tests__/integration",
     "test:e2e": "playwright test",
+    "migrate:dev": "npx prisma migrate dev",
     "migrate:production": "dotenv -e .env.local -- prisma migrate deploy && dotenv -e .env.local -- prisma generate",
     "seed:participant": "ts-node-esm --transpile-only prisma/seed-participant.ts",
     "seed:admin": "ts-node-esm --transpile-only prisma/seed-admin.ts"
