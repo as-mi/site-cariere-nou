@@ -5,9 +5,9 @@ import { useTranslation } from "next-i18next";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-// Applications deadline is 15.03.2023, at 23:59:59
+// Applications deadline is 17.03.2024, at 23:59:59
 // (note that month is 0-indexed in JavaScript)
-const APPLICATIONS_DEADLINE = new Date(2023, 2, 15, 23, 59, 59);
+const APPLICATIONS_DEADLINE = new Date(2024, 2, 17, 23, 59, 59);
 
 /**
  * Local storage key used to retain whether

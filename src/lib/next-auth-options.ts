@@ -68,7 +68,7 @@ if (true) {
       }
 
       console.log(
-        "Tring to authenticate user with e-mail `%s`",
+        "Trying to authenticate user with e-mail `%s`",
         credentials.email,
       );
 
