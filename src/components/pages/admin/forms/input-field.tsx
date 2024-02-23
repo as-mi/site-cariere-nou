@@ -57,9 +57,9 @@ const InputField = <IFormValues extends FieldValues>({
       {hint && <div className="mt-1 text-sm">{hint}</div>}
       {error &&
         (error?.type === "required" ? (
-          <div>Câmp obligatoriu</div>
+          <div className="text-red-400">Câmp obligatoriu</div>
         ) : (
-          <div>{error?.message as string}</div>
+          <div className="text-red-400">{error?.message as string}</div>
         ))}
     </div>
   );
