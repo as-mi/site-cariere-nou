@@ -38,10 +38,13 @@ const EmailLoginPage: NextPageWithLayout<PageProps> = ({
   const router = useRouter();
   const query = queryString.stringify(router.query);
 
-  const callbackUrl =
+  const rawCallbackUrl =
     (Array.isArray(router.query.callbackUrl)
       ? router.query.callbackUrl[0]
       : router.query.callbackUrl) || "/";
+
+  // Get rid of '<', '>', "'" and '"' characters to prevent DOM-based cross-site scripting attacks.
+  const callbackUrl = rawCallbackUrl.replaceAll(/<|>|'|"/g, "");
 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string>("");
@@ -88,6 +91,11 @@ const EmailLoginPage: NextPageWithLayout<PageProps> = ({
       setSubmitting(false);
     }
   };
+
+  // Ensure callback URL is relative to avoid malicious redirects to phishing sites.
+  if (!rawCallbackUrl.startsWith("/")) {
+    return <p>Invalid callback URL</p>;
+  }
 
   return (
     <>
