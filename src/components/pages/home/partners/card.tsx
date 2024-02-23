@@ -20,6 +20,7 @@ type PartnerCardProps = {
 };
 
 const MEDAL_COLORS = {
+  [PackageType.PLATINUM]: "text-slate-500",
   [PackageType.GOLD]: "text-yellow-300",
   [PackageType.SILVER]: "text-zinc-400",
   [PackageType.BRONZE]: "text-amber-600",

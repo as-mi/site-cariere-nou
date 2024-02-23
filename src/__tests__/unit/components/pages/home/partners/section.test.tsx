@@ -19,7 +19,12 @@ describe("PartnersSection", () => {
       return key;
     };
     // Simulate getting data from the database in the incorrect order
-    const companiesByPackageType = { BRONZE: [], GOLD: [], SILVER: [] };
+    const companiesByPackageType = {
+      BRONZE: [],
+      GOLD: [],
+      SILVER: [],
+      PLATINUM: [],
+    };
 
     render(
       <PartnersSection
@@ -35,11 +40,12 @@ describe("PartnersSection", () => {
     );
 
     // Make sure we have all of the subsection headers rendered
-    expect(subsectionHeaders).toHaveLength(3);
+    expect(subsectionHeaders).toHaveLength(4);
 
     // Make sure they are in the right order
-    expect(subsectionHeaders[0]).toHaveTextContent(/GOLD/);
-    expect(subsectionHeaders[1]).toHaveTextContent(/SILVER/);
-    expect(subsectionHeaders[2]).toHaveTextContent(/BRONZE/);
+    expect(subsectionHeaders[0]).toHaveTextContent(/PLATINUM/);
+    expect(subsectionHeaders[1]).toHaveTextContent(/GOLD/);
+    expect(subsectionHeaders[2]).toHaveTextContent(/SILVER/);
+    expect(subsectionHeaders[3]).toHaveTextContent(/BRONZE/);
   });
 });

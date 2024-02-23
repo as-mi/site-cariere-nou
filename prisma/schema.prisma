@@ -82,6 +82,7 @@ model Profile {
 }
 
 enum PackageType {
+  PLATINUM
   GOLD
   SILVER
   BRONZE

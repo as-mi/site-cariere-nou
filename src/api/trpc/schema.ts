@@ -9,4 +9,5 @@ export const AllPackageTypes = z.enum([
   PackageType.BRONZE,
   PackageType.SILVER,
   PackageType.GOLD,
+  PackageType.PLATINUM,
 ]);

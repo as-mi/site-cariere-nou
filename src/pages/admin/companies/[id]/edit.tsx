@@ -174,6 +174,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
               { value: PackageType.BRONZE, label: "Bronze" },
               { value: PackageType.SILVER, label: "Silver" },
               { value: PackageType.GOLD, label: "Gold" },
+              { value: PackageType.PLATINUM, label: "Platinum" },
             ]}
             register={register}
             errors={errors}

@@ -23,6 +23,7 @@ type PartnersSectionProps = {
 };
 
 const PACKAGE_TYPES_IN_DESCENDING_ORDER = [
+  PackageType.PLATINUM,
   PackageType.GOLD,
   PackageType.SILVER,
   PackageType.BRONZE,
