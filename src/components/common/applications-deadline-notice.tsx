@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { subDays } from "date-fns";
+
 import { useTranslation } from "next-i18next";
 
 import { faClose } from "@fortawesome/free-solid-svg-icons";
@@ -38,7 +40,8 @@ const ApplicationsDeadlineNotice: React.FC = () => {
   }
 
   const now = new Date();
-  if (now > APPLICATIONS_DEADLINE) {
+  // Only display warning a few days before the deadline and not after.
+  if (now < subDays(APPLICATIONS_DEADLINE, 5) || now > APPLICATIONS_DEADLINE) {
     return null;
   }
 
