@@ -26,7 +26,7 @@ describe("Home", () => {
       />,
     );
 
-    const heroImage = screen.getByAltText("Cariere v12.0");
+    const heroImage = screen.getByAltText("Cariere v13.0");
 
     expect(heroImage).toBeInTheDocument();
   });

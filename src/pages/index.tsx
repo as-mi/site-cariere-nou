@@ -67,12 +67,12 @@ const HomePage: NextPage<PageProps> = ({
   return (
     <>
       <Head>
-        <title>Cariere v12.0</title>
+        <title>Cariere v13.0</title>
         <meta
           name="description"
           content="Cariere este un târg de job-uri și internship-uri dedicat studenților."
         />
-        <meta name="og:title" content="Cariere v12.0" />
+        <meta name="og:title" content="Cariere v13.0" />
         <meta name="og:url" content={`${baseUrl}/`} />
         <meta
           name="og:image"

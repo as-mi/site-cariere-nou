@@ -1,4 +1,4 @@
-# Site web Cariere v12
+# Site web Cariere
 
 ## Descriere
 

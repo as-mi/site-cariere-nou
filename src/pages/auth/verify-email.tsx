@@ -28,7 +28,7 @@ const VerifyEmailPage: NextPageWithLayout<VerifyEmailPageProps> = ({
 }) => {
   const { t } = useTranslation("verifyEmail");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
 
   const failureStatus =
     status === Status.INVALID_URL ||

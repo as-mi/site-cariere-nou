@@ -48,7 +48,7 @@ const TechnicalTestPage: NextPage<PageProps> = ({
   },
   alreadyAnsweredAt,
 }) => {
-  const pageTitle = `${title} - ${companyName} - Cariere v12.0`;
+  const pageTitle = `${title} - ${companyName} - Cariere v13.0`;
 
   return (
     <>

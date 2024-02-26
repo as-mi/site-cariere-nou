@@ -56,7 +56,7 @@ type PageProps = {
 const ProfilePage: NextPage<PageProps> = ({ user, closeApplications }) => {
   const { t, i18n } = useTranslation("profile");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/" });

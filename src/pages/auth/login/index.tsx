@@ -33,7 +33,7 @@ const LoginPage: NextPageWithLayout<PageProps> = ({
 }) => {
   const { t } = useTranslation("login");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
 
   const router = useRouter();
   const query = queryString.stringify(router.query);

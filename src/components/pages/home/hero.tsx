@@ -54,10 +54,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         unoptimized
       />
       <div className="relative z-10 text-center">
-        {/** TODO: replace with Cariere v12 logo */}
         <Image
           src={logoCariere}
-          alt="Cariere v12.0"
+          alt="Cariere v13.0"
           className="mx-auto w-full max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
           priority
         />

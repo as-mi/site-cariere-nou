@@ -67,7 +67,7 @@ const CompanyPage: NextPage<PageProps> = ({
   resolvedUrl,
   applyToPositionId,
 }) => {
-  const pageTitle = `${company.name} - Cariere v12.0`;
+  const pageTitle = `${company.name} - Cariere v13.0`;
 
   const isAdmin = useIsAdmin();
 
@@ -93,7 +93,7 @@ const CompanyPage: NextPage<PageProps> = ({
             ) : (
               <div className="sm:py-4">
                 {company.name} este Partener {company.packageType} în cadrul
-                Cariere v12. Nu a fost publicată încă o descriere a companiei.
+                Cariere v13. Nu a fost publicată încă o descriere a companiei.
               </div>
             )}
           </div>

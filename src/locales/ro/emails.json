@@ -2,7 +2,7 @@
   "common": {
     "hello": "Salut {{name}},",
     "goodLuck": "Mult succes,",
-    "teamCariere": "Echipa Cariere v12"
+    "teamCariere": "Echipa Cariere v13"
   },
   "verifyEmail": {
     "subject": "Verificare adresă de e-mail",

@@ -33,7 +33,7 @@ const EmailLoginPage: NextPageWithLayout<PageProps> = ({
   const { t } = useTranslation("emailLogin");
   const { t: commonT, i18n: commonI18n } = useTranslation("common");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v12.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
 
   const router = useRouter();
   const query = queryString.stringify(router.query);
