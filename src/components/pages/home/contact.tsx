@@ -45,7 +45,7 @@ const ContactSection: React.FC = () => {
 
           <p>
             <span className="font-bold">{t("contactSection.telephone")}:</span>{" "}
-            <ExternalLink href="tel:+40740458976">0740 458 976</ExternalLink>
+            <ExternalLink href="tel:+40752300470">0752 300 470</ExternalLink>
           </p>
           <p>
             <span className="font-bold">{t("contactSection.e-mail")}:</span>{" "}
