@@ -44,7 +44,7 @@
     "lodash": "^4.17.21",
     "multer": "^1.4.5-lts.1",
     "next": "^14.0.4",
-    "next-auth": "^4.24.5",
+    "next-auth": "^4.24.7",
     "next-connect": "^0.13.0",
     "next-i18next": "^15.1.1",
     "nodemailer": "^6.9.10",
