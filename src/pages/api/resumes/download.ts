@@ -77,7 +77,7 @@ const downloadAllResumesForCompany = async (
     await zip.writeZipPromise(zipPath, { overwrite: true });
   }
 
-  const BATCH_SIZE = 5;
+  const BATCH_SIZE = 50;
 
   const positions = await prisma.position.findMany({
     where: { companyId },
@@ -293,7 +293,7 @@ const downloadAllResumesForPosition = async (
     await zip.writeZipPromise(zipPath, { overwrite: true });
   }
 
-  const BATCH_SIZE = 5;
+  const BATCH_SIZE = 50;
 
   const resumeWhere = {
     where: {
@@ -425,7 +425,7 @@ const downloadAllResumes = async (
     await zip.writeZipPromise(zipPath, { overwrite: true });
   }
 
-  const BATCH_SIZE = 5;
+  const BATCH_SIZE = 50;
 
   const resumeWhere = {
     where: {
