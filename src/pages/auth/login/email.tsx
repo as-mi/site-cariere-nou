@@ -24,10 +24,14 @@ type Credentials = {
 };
 
 type PageProps = {
+  protocol: string;
+  host: string;
   showRegistrationLink: boolean;
 };
 
 const EmailLoginPage: NextPageWithLayout<PageProps> = ({
+  protocol,
+  host,
   showRegistrationLink,
 }) => {
   const { t } = useTranslation("emailLogin");
@@ -93,7 +97,10 @@ const EmailLoginPage: NextPageWithLayout<PageProps> = ({
   };
 
   // Ensure callback URL is relative to avoid malicious redirects to phishing sites.
-  if (!rawCallbackUrl.startsWith("/")) {
+  const CALLBACK_DOMAINS_ALLOWLIST = ["/", host, `${protocol}:${host}`];
+  if (
+    !CALLBACK_DOMAINS_ALLOWLIST.some((domain) => callbackUrl.startsWith(domain))
+  ) {
     return <p>Invalid callback URL</p>;
   }
 
@@ -169,8 +176,11 @@ export default EmailLoginPage;
 EmailLoginPage.getLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
   locale,
 }) => {
+  const protocol = req.headers["x-forwarded-proto"] ? "https" : "http";
+  const host = req.headers.host ?? "example.com";
   const registrationEnabled = await getSettingValue("registrationEnabled");
   return {
     props: {
@@ -178,6 +188,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         "common",
         "emailLogin",
       ])),
+      protocol,
+      host,
       showRegistrationLink: registrationEnabled,
     },
   };
