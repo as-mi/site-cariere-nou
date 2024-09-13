@@ -57,3 +57,40 @@ Dacă compilarea s-a finalizat cu succes, poți porni aplicația în modul de pr
 ```sh
 npm run start
 ```
+
+## Serviciu de `systemd` pentru rularea în producție
+
+Pe server-ul ASMI, unde este configurată versiunea de producție a site-ului Cariere, este definit și activat și un serviciu de [`systemd`](https://systemd.io/), numit `site-cariere-nou`, care gestionează și rulează build-ul de producție al aplicației.
+
+Pentru a vedea starea curentă a serviciului, putem rula comanda:
+
+```
+systemctl status site-cariere-nou
+```
+
+Pentru a controla ciclul de viață al aplicației, putem folosi:
+
+```
+systemctl start site-cariere-nou
+systemctl stop site-cariere-nou
+systemctl restart site-cariere-nou
+```
+
+În principiu, pentru a face o actualizare, ar trebui să oprim aplicația cu `systemctl stop site-cariere-nou`, să compilăm o nouă versiune a ei folosind niște comenzi asemănătoare cu:
+
+```
+# Comutăm la utilizatorul care deține directorul cu fișiere
+su cariere
+# Mergem în directorul cu aplicația
+cd /var/www/cariere
+# Descărcăm noile modificări
+git pull
+# Instalăm noile package-uri de care avem nevoie
+npm install
+# Compilăm noua versiune a aplicației
+npm run build
+# Ieșim din utilizatorul `cariere`
+exit
+```
+
+iar apoi să o pornim din nou rulând `systemctl start site-cariere-nou`.
