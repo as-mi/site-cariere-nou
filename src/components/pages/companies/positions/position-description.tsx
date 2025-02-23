@@ -11,7 +11,9 @@ const PositionDescription: React.FC<PositionDescriptionProps> = ({
   onExpand,
 }) => {
   const [expanded, setExpanded] = useState(false);
-  const [showModal, setShowModal] = useState(false); // Modal state
+  const [showModal, setShowModal] = useState(false); 
+
+  const isShortContent = descriptionHtml.length < 130; // Aici ca sa se vada si cand este scurt continutul
 
   useEffect(() => {
     onExpand?.(expanded);
@@ -22,7 +24,7 @@ const PositionDescription: React.FC<PositionDescriptionProps> = ({
       {/* Main Content */}
       <div
         className={classNames("relative my-1", {
-          "max-h-64 overflow-hidden": !expanded,
+          "max-h-64 overflow-hidden": !expanded && !isShortContent, 
         })}
       >
         <div
@@ -31,7 +33,7 @@ const PositionDescription: React.FC<PositionDescriptionProps> = ({
             __html: descriptionHtml,
           }}
         />
-        {!expanded && (
+        {!expanded && !isShortContent && (
           <div className="absolute bottom-0 z-10 w-full">
             <div className="h-8 w-full bg-gradient-to-b from-transparent to-white" />
             <div className="h-16 w-full bg-white" />
