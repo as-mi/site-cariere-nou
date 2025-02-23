@@ -180,6 +180,8 @@ model ParticipantStartTechnicalTest {
 
   startTime DateTime @default(now())
 
+  hasAswered Boolean @default(false)
+
   @@id([userId, technicalTestId])
 }
 
