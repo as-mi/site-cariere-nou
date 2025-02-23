@@ -4,6 +4,8 @@ import Head from "next/head";
 import showdown from "showdown";
 
 import { Role } from "@prisma/client";
+import tally_form from "~/components/pages/technical-tests/tally-embed";
+import { getBaseUrl } from "~/lib/base-url";
 
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
@@ -14,6 +16,7 @@ import {
 } from "~/lib/technical-tests-schema";
 
 import TechnicalTest from "~/components/pages/technical-tests/technical-test";
+import Tally_From from "~/components/pages/technical-tests/tally-embed";
 
 type PageProps = {
   technicalTest: {
@@ -55,17 +58,20 @@ const TechnicalTestPage: NextPage<PageProps> = ({
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <div className="min-h-screen bg-black px-4 py-6 text-white xs:py-10 sm:py-20 md:py-32 lg:py-40">
+      <div className={`min-h-screen  px-4 py-6 text-white xs:py-10 sm:py-20 md:py-32 lg:py-40 bg-[url(/images/bg-gradient.svg)] bg-no-repeat bg-cover`}>
         <main className="mx-auto max-w-prose text-center">
           <h1 className="font-display text-3xl font-bold">{title}</h1>
           {description && <p className="my-3">{description}</p>}
           {alreadyAnsweredAt === null ? (
-            <TechnicalTest
+            <>
+            {/* <TechnicalTest
               companySlug={companySlug}
               positionId={positionId}
               technicalTestId={id}
               questions={questions}
-            />
+            /> */}
+            <Tally_From />
+            </>
           ) : (
             <p className="my-4 mx-auto max-w-sm">
               Deja ai trimis răspunsurile la acest test tehnic la data de{" "}
