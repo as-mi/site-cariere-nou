@@ -100,7 +100,7 @@ const NavBar: React.FC<NavBarProps> = ({ renderLinks, autoHideLogo, home }) => {
               : ""
           }`}
         />
-      </a>
+      </Link>
 
       <button
         onClick={showNavMenu}

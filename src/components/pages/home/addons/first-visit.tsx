@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import logoCariere from "~/images/logos/asmi.png";
 
-const firstVisit: React.FC = () => {
+const FirstVisit: React.FC = () => {
   const [isBoxVisible, setIsBoxVisible] = useState<boolean>(false);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ const firstVisit: React.FC = () => {
         document.body.style.overflow = "auto";
       }, 4000);
     }
-  }, []);
+  });
 
   return (
     <div>
@@ -26,7 +26,7 @@ const firstVisit: React.FC = () => {
         <div className="overlay">
           <Image
             src={logoCariere}
-            alt="Cariere v14.0"
+            alt="Logo Cariere"
             className="mx-auto w-full max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
             priority
             unoptimized
@@ -37,4 +37,4 @@ const firstVisit: React.FC = () => {
   );
 };
 
-export default firstVisit;
+export default FirstVisit;
