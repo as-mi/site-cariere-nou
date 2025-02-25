@@ -9,8 +9,10 @@
     "adminDashboard": "Panou de administrare"
   },
   "heroSection": {
+    "end": "Ediția 14 a ajuns la final. Aplicările pentru posturi sunt deschise în continuare!",
     "comingSoon": "În curând",
-    "date": "27 – 29 februarie 2024",
+    "date": "4 - 6 MARTIE 2025",
+    "faculty": "Facultatea de Matematică și Informatică, Universitatea din București",
     "teaser": "Cariere revine și anul acesta cu o mulțime de oportunități pentru studenți",
     "welcome": "Bine ai venit pe site-ul oficial al proiectului Cariere!",
     "about": "Despre Cariere",
@@ -18,15 +20,27 @@
     "events": "Evenimente"
   },
   "aboutSection": {
-    "title": "Despre Cariere",
-    "objectives": "Obiective",
-    "description": "Cariere este un târg de joburi și internship-uri care oferă un sprijin în dezvoltarea pe plan profesional a studenților, realizând o legătură între aceștia (participanți) și o parte din cele mai cunoscute companii din piața IT din Romania."
+    "about": "Despre Cariere",
+    "eventTitle": "Cariere",
+    "eventDescription1": "este un târg de joburi și internship-uri care oferă un sprijin în dezvoltarea pe plan profesional a studenților, realizând o legătură între participanți și o parte din cele mai cunoscute companii de pe piața IT din România. ",
+    "eventDescription2": "Din 2010, an de an, Cariere reunește, cu ajutorul voluntarilor din Asociația Studenților la Matematică și Informatică, angajatori de top din domeniul IT și studenți curioși, cu o pasiune pentru domeniul tehnic.",
+    "partners": "Descoperă ofertele partenerilor",
+    "partnersDescription": "Firmele partenere pun la dispoziția studenților o serie de informații relevante în procesul de angajare, dar și prezentări și  workshop-uri interactive la care puteți lua parte pentru a afla mai multe despre profilul de lucru al acestora.",
+    "projectManagers": "Managerii proiectului",
+    "contact": "Contactează"
   },
   "partnersSection": {
     "title": "Partenerii noștri",
     "comingSoon": "Vom anunța firmele participante la ediția de anul acesta în curând.",
     "followOurSocialMediaPages": "Urmărește paginile noastre de social media pentru a fi la curent cu toate actualizările.",
-    "subsectionHeader": "Parteneri {{packageType}}"
+    "subsectionHeader": "{{packageType}}",
+    "addPartner": "Adaugă o companie"
+  },
+  "partnersColors": {
+    "PLATINUM": "#b0bfde66",
+    "GOLD": "#e7cf9166",
+    "SILVER": "#c2c2c266",
+    "BRONZE": "#bd806566"
   },
   "eventsSection": {
     "title": "Evenimente",
@@ -36,5 +50,19 @@
       "time": "Timp",
       "facebookEvent": "Eveniment pe Facebook"
     }
+  },
+  "counter": {
+    "main": "Evenimentul începe peste",
+    "separator": "și",
+    "singleDay": "o zi",
+    "days": "zile",
+    "singleHour": "o oră",
+    "hours": "ore",
+    "singleMinute": "un minut",
+    "minutes": "minute",
+    "singleSecond": "o secundă",
+    "seconds": "secunde",
+    "rosep": "de",
+    "started": "Evenimentul este în desfășurare!"
   }
 }

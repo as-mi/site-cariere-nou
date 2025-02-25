@@ -1,5 +1,11 @@
 {
   "scrollToTop": "Derulează în sus",
+  "translate": {
+    "flag": "GB",
+    "placeholder": "English Version",
+    "current": "ro",
+    "behavior": "en"
+  },
   "cookieConsent": {
     "disclaimer": "Acest site utilizează cookie-uri pentru a livra funcționalitățile.",
     "findOutMore": "Află mai multe",

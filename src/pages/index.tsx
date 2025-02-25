@@ -3,7 +3,7 @@ import Head from "next/head";
 
 import { PHASE_PRODUCTION_BUILD } from "next/dist/shared/lib/constants";
 
-import { useTranslation } from "next-i18next";
+import { Trans, useTranslation } from "next-i18next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 import _ from "lodash";
@@ -18,12 +18,16 @@ import { useIsAdmin } from "~/hooks/use-role";
 
 import ApplicationsDeadlineNotice from "~/components/common/applications-deadline-notice";
 import ApplicationsClosedNotice from "~/components/common/applications-closed-notice";
+import VisitBox from "~/components/pages/home/addons/first-visit";
 import NavBar from "~/components/pages/home/navbar";
 import HeroSection from "~/components/pages/home/hero";
 import LogosSection from "~/components/pages/home/logos";
 import AboutSection from "~/components/pages/home/about";
 import ContactSection from "~/components/pages/home/contact";
-import ScrollToTopButton from "~/components/pages/home/scroll-to-top";
+// import LastYearSection from "~/components/pages/home/last-year-partners";
+// import Testimonials from "~/components/pages/home/testimonials";
+import Translate from "~/components/common/translate";
+import ScrollToTopButton from "~/components/pages/home/addons/scroll-to-top";
 import PartnersSection, {
   CompaniesByPackageType,
   Company,
@@ -67,12 +71,12 @@ const HomePage: NextPage<PageProps> = ({
   return (
     <>
       <Head>
-        <title>Cariere v13.0</title>
+        <title>Cariere v14.0</title>
         <meta
           name="description"
           content="Cariere este un târg de job-uri și internship-uri dedicat studenților."
         />
-        <meta name="og:title" content="Cariere v13.0" />
+        <meta name="og:title" content="Cariere v14.0" />
         <meta name="og:url" content={`${baseUrl}/`} />
         <meta
           name="og:image"
@@ -82,23 +86,34 @@ const HomePage: NextPage<PageProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
+      {/* Removed notification (traditionally)
       <ApplicationsDeadlineNotice />
-      {closeApplications && <ApplicationsClosedNotice />}
+      {closeApplications && <ApplicationsClosedNotice />} */}
+
+      {/*Added a black box which appears when visits for the first time*/}
+      <VisitBox></VisitBox>
 
       <NavBar
         t={t}
-        hideEventsLink={!isEventsSectionVisible}
-        hideProfileLink={hideProfileLink}
+        hideEventsLink={!isEventsSectionVisible} // Button 'events' is hidden until an event post is made
+        hideProfileLink={!hideProfileLink} // DeMorgan this if accounts don't work well
+        home={true} // True if you create from index
       />
 
       <main>
         <HeroSection
           t={t}
+          // Change this to false after the events ends (from Prisma)
+          // Find where showComingSoonMessage is coming from, I am pretty sure that's from Prisma
           showComingSoonMessage={showComingSoonMessage}
           showEventsSectionLink={isEventsSectionVisible}
         />
+
+        {/* Added media queries for logos and redesign */}
         <LogosSection />
+
         <AboutSection t={t} />
+
         <PartnersSection
           t={t}
           showComingSoonMessage={
@@ -114,6 +129,7 @@ const HomePage: NextPage<PageProps> = ({
 
       <Footer />
 
+      <Translate />
       <ScrollToTopButton />
 
       <CookieConsent />

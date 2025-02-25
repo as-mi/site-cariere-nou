@@ -2,8 +2,12 @@ import { TFunction } from "next-i18next";
 
 import Image from "next/image";
 
-import background from "~/images/hero-background.jpg";
-import logoCariere from "~/images/logos/cariere-white.png";
+import logoCariere from "~/images/logos/cariere-small-white.png";
+// Replaced the background from "~/images/hero-background.jpg";
+// Switched to a gradient background
+import GradientBackground from "./addons/background";
+import GalleryBackground from "./addons/gallery";
+import Counter from "./addons/counter";
 
 type HeroSectionProps = {
   t: TFunction;
@@ -39,74 +43,63 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       id="hero"
       className="relative min-h-screen bg-black pt-32 text-white md:pt-40 lg:pt-48"
     >
-      <Image
-        alt=""
-        aria-hidden
-        src={background}
-        placeholder="blur"
-        quality={100}
-        fill
-        sizes="100vw"
-        className="z-0 object-cover"
-        // TODO: this image is pretty high-resolution,
-        // but Next.js's implicit compression makes it pretty blurry.
-        // We should try finding a compromise between performance and quality.
-        unoptimized
-      />
-      <div className="relative z-10 text-center">
+      {/* <GradientBackground></GradientBackground> */}
+      <GalleryBackground src="./background.mp4"></GalleryBackground>
+      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white to-transparent opacity-80"></div>
+
+      <div className="relative z-10 text-center -mt-10">
         <Image
           src={logoCariere}
-          alt="Cariere v13.0"
+          // Updated version (2025)
+          alt="Cariere v14.0"
           className="mx-auto w-full max-w-[260px] sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl"
           priority
+          unoptimized
         />
 
+        {/* This information is displayed everytime, no matter if event has started or not*/}
+        <>
+          <p className="mx-2 mt-8 font-display text-3xl font-medium">
+            {t("heroSection.date")}
+          </p>
+
+          <p className="mx-2 mt-4 font-display text-2xl font-medium">
+            {t("heroSection.faculty")}
+          </p>
+        </>
+
+        {/*If the event has not started, the counter is displayed.*/}
         {showComingSoonMessage ? (
-          <>
-            <p className="mt-12 font-display text-xl text-gray-400">
-              {t("heroSection.comingSoon")}
-            </p>
-
-            <p className="mx-2 mt-8 font-display text-3xl">
-              {t("heroSection.date")}
-            </p>
-
-            <p className="mx-auto mt-16 max-w-sm px-3 text-lg">
-              {t("heroSection.teaser")}
-            </p>
-          </>
+          <Counter t={t}></Counter>
         ) : (
-          <p className="mx-auto mt-16 max-w-sm px-3 text-xl">
-            {t("heroSection.welcome")}
+          <p className="mt-12 font-display text-2xl text-white">
+            {t("heroSection.end")}
           </p>
         )}
 
-        <div className="mx-auto mt-16 mb-8 inline-flex flex-row flex-wrap items-center justify-center gap-4 px-4">
-          <a
-            className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
-            href="#about"
-            onClick={handleClick}
-          >
-            {t("heroSection.about")}
-          </a>
-
-          <a
-            className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
-            href="#partners"
-            onClick={handleClick}
-          >
-            {t("heroSection.partners")}
-          </a>
-
+        {/*custom cursor*/}
+        <div className="mx-auto mt-16 mb-8 inline-flex flex-col items-center justify-center gap-4 px-4 md:inline-flex md:flex-row">
           {showEventsSectionLink && (
             <a
-              className="inline-block rounded-full bg-white px-5 py-2 font-medium text-black hover:bg-zinc-100 active:bg-zinc-200"
+              className="admin-button shadow-md"
               href="#events"
               onClick={handleClick}
             >
               {t("heroSection.events")}
             </a>
           )}
+
+          <a className="button shadow-md" href="#about" onClick={handleClick}>
+            {t("heroSection.about")}
+          </a>
+
+          <a
+            className="button shadow-md"
+            href="#partners"
+            onClick={handleClick}
+          >
+            {t("heroSection.partners")}
+          </a>
         </div>
       </div>
     </section>
