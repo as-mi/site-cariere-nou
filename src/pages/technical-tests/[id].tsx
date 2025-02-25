@@ -32,10 +32,9 @@ type PageProps = {
     };
     questions: RenderedQuestion[];
   };
-  alreadyAnsweredAt: {
-    date: string;
-    time: string;
-  } | null;
+  alreadyAnsweredAt: { date: string; time: string } 
+  | null;
+  user_id: number;
 };
 
 const TechnicalTestPage: NextPage<PageProps> = ({
@@ -50,6 +49,8 @@ const TechnicalTestPage: NextPage<PageProps> = ({
     questions,
   },
   alreadyAnsweredAt,
+  user_id,
+  
 }) => {
   const pageTitle = `${title} - ${companyName} - Cariere v13.0`;
 
@@ -62,7 +63,7 @@ const TechnicalTestPage: NextPage<PageProps> = ({
         <main className="mx-auto max-w-prose text-center">
           <h1 className="font-display text-3xl font-bold">{title}</h1>
           {description && <p className="my-3">{description}</p>}
-          {alreadyAnsweredAt === null ? (
+          {!alreadyAnsweredAt ? (
             <>
             {/* <TechnicalTest
               companySlug={companySlug}
@@ -70,12 +71,14 @@ const TechnicalTestPage: NextPage<PageProps> = ({
               technicalTestId={id}
               questions={questions}
             /> */}
-            <Tally_From />
+            <Tally_From
+            userId={user_id}
+            technicalTestId = {id} 
+            />
             </>
           ) : (
             <p className="my-4 mx-auto max-w-sm">
-              Deja ai trimis răspunsurile la acest test tehnic la data de{" "}
-              {alreadyAnsweredAt.date}, ora {alreadyAnsweredAt.time}.
+              Deja ai trimis răspunsurile la acest test tehnic.
             </p>
           )}
         </main>
@@ -159,6 +162,18 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     };
   }
 
+  // const alreadyAnsweredAt = await prisma.participantStartTechnicalTest.findUnique({
+  //   where: {
+  //     userId_technicalTestId: {
+  //       userId: userId,
+  //       technicalTestId: technicalTestId,
+  //     },
+  //   },
+  //   select: {
+  //     hasAnswered: true,
+  //   },
+  // });
+
   let alreadyAnsweredAt = null;
   if (technicalTest.participantAnswers.length > 0) {
     const answerTime = technicalTest.participantAnswers[0].createdAt;
@@ -208,6 +223,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     });
   }
 
+  const user_id = userId;
+
   return {
     props: {
       technicalTest: {
@@ -216,6 +233,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         participantAnswers: null,
       },
       alreadyAnsweredAt,
+      user_id,
     },
   };
 };
