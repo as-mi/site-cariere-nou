@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import Script from 'next/script'
-import prisma from '~/lib/prisma';
+import { trpc } from '~/lib/trpc';
+import { useRouter } from "next/router";
+import answers from '~/pages/api/technical-tests/[id]/answers';
 
 interface SubmissionPayload {
 	id: string; // submission ID
 	respondentId: string;
 	formId: string;
 	formName: string;
-	createdAt: Date; // submission date
+	createdAt: string; // submission date
 	fields: Array<{
 		id: string;
 		title: string;
@@ -21,7 +23,22 @@ type Tally_From_Props = {
     technicalTestId: number,
 };
 
+type AddTechnicalTestAnswer = {
+  userId: number,
+    technicalTestId: number,
+    answers: string,
+    createdAt: string,
+};
+
 export default function Tally_From({userId, technicalTestId} : Tally_From_Props) {
+
+    const router = useRouter();
+
+    const mutation = trpc.technicalTestAnswers.technicalTestAnswers.create.useMutation({
+        onSuccess: () => {
+            // router.push("/technicalTestAnswers/technicalTestAnswers");
+          },
+    });
 
     useEffect(() =>{
         const handleSumbitForm = async (e : MessageEvent) =>{
@@ -32,26 +49,26 @@ export default function Tally_From({userId, technicalTestId} : Tally_From_Props)
                 console.log('Submited!');
 
                 // TODO SA SE UPDATEZE BAZA DE DATE DUPA CE COMPLETEAZA FORMU.
-                const response = await fetch('/api/answer_test', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": "application/json",
-                      },
-                    body: JSON.stringify({userId, technicalTestId})
-                });
 
-                if (response.ok) {
-                    console.log('Database updated successfully');
-                  } else {
-                    console.error('Failed to update database');
-                  }
+                const userAnswer : AddTechnicalTestAnswer = {
+                    userId: userId,
+                    technicalTestId: technicalTestId,
+                    answers: JSON.stringify(payload.fields.map(field => ({
+                        questionId: field.id,
+                        answer: field.answer.value
+                    }))),
+                    createdAt: payload.createdAt,
+                };
+
+
+                mutation.mutate(userAnswer);
                 
             }
             
         }
 
         window.addEventListener('message', handleSumbitForm);
-    }, [userId, technicalTestId])
+    })
 
     return (
         <div>
