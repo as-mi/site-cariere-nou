@@ -19,7 +19,7 @@ const Postcard: React.FC<PostcardProps> = ({
   return (
     <div className="bg-pm bg-no-repeat bg-cover bg-center p-1 rounded-lg max-w-xs w-full aboutPostcard">
       <div className="p-2 border-2 mt-6 mb-2 avatarFramePostcard">
-        <img src={imageUrl} alt="Postcard" className="avatarPostcard" />
+        <Image src={imageUrl} alt="Postcard" className="avatarPostcard" unoptimized/>
       </div>
       <div className="flex flex-col justify-center items-center space-y-2 pt-2 pb-12">
         <p className="font-bold uppercase font-display relative text-2xl text-white">

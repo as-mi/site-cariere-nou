@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 import homepage from "~/pages/index";
 
@@ -73,7 +74,7 @@ const NavBar: React.FC<NavBarProps> = ({ renderLinks, autoHideLogo, home }) => {
         `}
       ></span>
 
-      <a
+      <Link
         href="/"
         className={` z-30 ml-2 sm:ml-5 ${
           home
