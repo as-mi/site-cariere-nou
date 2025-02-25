@@ -18,7 +18,7 @@ const FirstVisit: React.FC = () => {
         document.body.style.overflow = "auto";
       }, 4000);
     }
-  });
+  }, []);
 
   return (
     <div>
