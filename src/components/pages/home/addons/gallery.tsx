@@ -6,7 +6,7 @@ interface GalleryBackgroundProps {
 
 const GalleryBackground: React.FC<GalleryBackgroundProps> = ({ src }) => {
   return (
-    <div className="absolute z-0 w-full h-full top-0 left-0 opacity-30">
+    <div className="absolute z-0 w-full h-full top-0 left-0 opacity-40">
       <video
         src={src}
         controls={false}

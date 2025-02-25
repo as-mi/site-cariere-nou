@@ -95,8 +95,8 @@ const HomePage: NextPage<PageProps> = ({
 
       <NavBar
         t={t}
-        hideEventsLink={!isEventsSectionVisible} // Button 'events' is hidden until an event post is made
-        hideProfileLink={!hideProfileLink} // DeMorgan this if accounts don't work well
+        hideEventsLink={isEventsSectionVisible} // Button 'events' is hidden until an event post is made
+        hideProfileLink={hideProfileLink} // DeMorgan this if accounts don't work well
         home={true} // True if you create from index
       />
 
