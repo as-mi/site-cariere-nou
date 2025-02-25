@@ -32,8 +32,7 @@ type PageProps = {
     };
     questions: RenderedQuestion[];
   };
-  alreadyAnsweredAt: { date: string; time: string } 
-  | null;
+  alreadyAnsweredAt: { date: string; time: string } | null;
   user_id: number;
 };
 
@@ -50,7 +49,6 @@ const TechnicalTestPage: NextPage<PageProps> = ({
   },
   alreadyAnsweredAt,
   user_id,
-  
 }) => {
   const pageTitle = `${title} - ${companyName} - Cariere v13.0`;
 
@@ -59,22 +57,21 @@ const TechnicalTestPage: NextPage<PageProps> = ({
       <Head>
         <title>{pageTitle}</title>
       </Head>
-      <div className={`min-h-screen  px-4 py-6 text-white xs:py-10 sm:py-20 md:py-32 lg:py-40 bg-[url(/images/bg-gradient.svg)] bg-no-repeat bg-cover`}>
+      <div
+        className={`min-h-screen  px-4 py-6 text-white xs:py-10 sm:py-20 md:py-32 lg:py-40 bg-[url(/images/bg-gradient.svg)] bg-no-repeat bg-cover`}
+      >
         <main className="mx-auto max-w-prose text-center">
           <h1 className="font-display text-3xl font-bold">{title}</h1>
           {description && <p className="my-3">{description}</p>}
           {!alreadyAnsweredAt ? (
             <>
-            {/* <TechnicalTest
+              {/* <TechnicalTest
               companySlug={companySlug}
               positionId={positionId}
               technicalTestId={id}
               questions={questions}
             /> */}
-            <Tally_From
-            userId={user_id}
-            technicalTestId = {id} 
-            />
+              <Tally_From userId={user_id} technicalTestId={id} />
             </>
           ) : (
             <p className="my-4 mx-auto max-w-sm">
