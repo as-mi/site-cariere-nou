@@ -53,6 +53,7 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
       positionId,
       title: data.title,
       description: data.description,
+      tallyLink: data.tallyLink,
       questions: data.questions,
     };
     mutation.mutate(payload);
@@ -162,6 +163,14 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
             <TextField
               name="title"
               label="Titlu"
+              required
+              register={register}
+              errors={errors}
+            />
+
+            <TextField
+              name="tallyLink"
+              label="Tally Link"
               required
               register={register}
               errors={errors}

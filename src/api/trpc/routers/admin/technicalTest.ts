@@ -29,6 +29,7 @@ const CreateInput = z.object({
   positionId: EntityId,
   title: z.string(),
   description: z.string().default(""),
+  tallyLink: z.string(),
   questions: QuestionsSchema,
 });
 const UpdateInput = z.object({

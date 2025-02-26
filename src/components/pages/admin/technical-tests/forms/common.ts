@@ -10,4 +10,5 @@ export interface CommonFieldValues {
   title: string;
   description: string;
   questions: Question[];
+  tallyLink: string;
 }

@@ -40,6 +40,7 @@ interface SubmissionPayload {
 }
 
 type Tally_From_Props = {
+  tallyLink: string;
   userId: number;
   technicalTestId: number;
 };
@@ -52,6 +53,7 @@ type AddTechnicalTestAnswer = {
 };
 
 export default function Tally_From({
+  tallyLink,
   userId,
   technicalTestId,
 }: Tally_From_Props) {
@@ -71,8 +73,6 @@ export default function Tally_From({
         const payload = JSON.parse(e.data).payload as SubmissionPayload;
 
         console.log("Submited!");
-
-        // TODO SA SE UPDATEZE BAZA DE DATE DUPA CE COMPLETEAZA FORMU.
 
         const userAnswer: AddTechnicalTestAnswer = {
           userId: userId,
@@ -96,7 +96,7 @@ export default function Tally_From({
   return (
     <div>
       <iframe
-        data-tally-src="https://tally.so/embed/w4pzOA?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
+        data-tally-src={tallyLink}
         loading="lazy"
         width="100%"
         height="200"

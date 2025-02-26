@@ -18,6 +18,9 @@ import {
 import TechnicalTest from "~/components/pages/technical-tests/technical-test";
 import Tally_From from "~/components/pages/technical-tests/tally-embed";
 
+const tallyLink =
+  "https://tally.so/embed/w4pzOA?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1";
+
 type PageProps = {
   technicalTest: {
     id: number;
@@ -71,7 +74,11 @@ const TechnicalTestPage: NextPage<PageProps> = ({
               technicalTestId={id}
               questions={questions}
             /> */}
-              <Tally_From userId={user_id} technicalTestId={id} />
+              <Tally_From
+                tallyLink={tallyLink}
+                userId={user_id}
+                technicalTestId={id}
+              />
             </>
           ) : (
             <p className="my-4 mx-auto max-w-sm">

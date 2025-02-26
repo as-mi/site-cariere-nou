@@ -169,6 +169,8 @@ model TechnicalTest {
   participantAnswers ParticipantAnswersToTechnicalTest[]
   participantStarts  ParticipantStartTechnicalTest[]
   activePosition     Position?                           @relation("ActiveTechnicalTest")
+
+  tallyLink String
 }
 
 model ParticipantStartTechnicalTest {
