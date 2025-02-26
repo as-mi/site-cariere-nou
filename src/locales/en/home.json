@@ -1,15 +1,64 @@
 {
   "teaser": "Cariere is back this year with plenty of opportunities for students",
-  "about": "About Cariere",
-  "aboutSection": {
-    "title": "About Cariere",
-    "objectives": "Objectives"
-  },
-  "partnersSection": {
-    "title": "Our partners"
-  },
   "footer": {
     "allRightsReserved": "All rights reserved.",
     "madeWithLove": "Site made with 💙 by the ASMI volunteers"
+  },
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "partners": "Partners",
+    "events": "Events",
+    "contact": "Contact",
+    "profile": "My account",
+    "adminDashboard": "Admin panel"
+  },
+  "heroSection": {
+    "end": "The 14th edition has come to an end. Thank you for participating!",
+    "comingSoon": "Coming soon",
+    "date": "March 4 - 6, 2025",
+    "faculty": "Faculty of Mathematics and Informatics, University of Bucharest",
+    "teaser": "Cariere returns this year with a lot of opportunities for students",
+    "welcome": "Welcome to the official website of the Cariere project!",
+    "about": "About Cariere",
+    "partners": "Our partners",
+    "events": "Events"
+  },
+  "counter": {
+    "main": "The event starts in",
+    "separator": "and",
+    "singleDay": "a day",
+    "days": "days",
+    "singleHour": "a hour",
+    "hours": "hours",
+    "singleMinute": "a minute",
+    "minutes": "minutes",
+    "singleSecond": "a second",
+    "seconds": "seconds",
+    "rosep": "",
+    "started": "The event is ongoing!"
+  },
+  "aboutSection": {
+    "about": "About Cariere",
+    "eventTitle": "Cariere",
+    "eventDescription1": "is a job and internship fair that fosters students' professional development by connecting participants with some of the most well-known IT companies in Romania.",
+    "eventDescription2": "Since 2010, Cariere has brought together top IT employers and curious students with a passion for the tech field with the help of volunteers from the Mathematics and Computer Science Student Association.",
+    "partners": "Discover the offers of our partners",
+    "partnersDescription": "Partner companies provide students with relevant information regarding their recruitment and hiring process through interactive presentations and workshops, where participants can learn more about their work profiles.",
+    "projectManagers": "Project Managers",
+    "contact": "Contact"
+  },
+  "partnersSection": {
+    "title": "Our partners",
+    "comingSoon": "Vom anunța firmele participante la ediția de anul acesta în curând.",
+    "followOurSocialMediaPages": "Urmărește paginile noastre de social media pentru a fi la curent cu toate actualizările.",
+    "subsectionHeader": "{{packageType}}",
+    "addPartner": "Add a compnay"
+  },
+  "partnersColors": {
+    "PLATINUM": "#b0bfde66",
+    "GOLD": "#e7cf9166",
+    "SILVER": "#c2c2c266",
+    "BRONZE": "#bd806566"
   }
 }

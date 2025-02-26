@@ -17,7 +17,7 @@ describe("Home", () => {
         baseUrl="http://localhost:3000/"
         showComingSoonMessage={true}
         alwaysShowCompaniesForAdmin={true}
-        hideProfileLink={true}
+        hideProfileLink={false}
         showEvents={true}
         alwaysShowEventsForAdmin={true}
         closeApplications={false}
@@ -26,7 +26,7 @@ describe("Home", () => {
       />,
     );
 
-    const heroImage = screen.getByAltText("Cariere v13.0");
+    const heroImage = screen.getByAltText("Cariere v14.0");
 
     expect(heroImage).toBeInTheDocument();
   });

@@ -5,7 +5,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-black py-5 text-sm text-white">
       <p className="mb-2 text-center">
-        © 2024 <b>Asociația Studenților la Matematică și Informatică</b>.{" "}
+        © 2025 <b>Asociația Studenților la Matematică și Informatică</b>.{" "}
         {t("footer.allRightsReserved")}
       </p>
       <p className="text-center">{t("footer.madeWithLove")}</p>

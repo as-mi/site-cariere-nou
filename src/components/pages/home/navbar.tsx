@@ -12,6 +12,7 @@ type NavBarProps = {
   t: TFunction;
   hideEventsLink: boolean;
   hideProfileLink: boolean;
+  home: boolean;
 };
 
 type LinkData = {
@@ -23,6 +24,7 @@ const NavBar: React.FC<NavBarProps> = ({
   t,
   hideEventsLink,
   hideProfileLink,
+  home,
 }) => {
   const role = useRole();
 
@@ -69,7 +71,7 @@ const NavBar: React.FC<NavBarProps> = ({
             .map((linkData, index) => {
               const { targetId, label } = linkData!;
               return (
-                <li key={index} className="md:inline-block">
+                <li key={index} className="sc:inline-block">
                   <a
                     onClick={handleLinkClick}
                     href={`#${targetId}`}
@@ -81,14 +83,14 @@ const NavBar: React.FC<NavBarProps> = ({
               );
             })}
           {showProfileLink && (
-            <li className="md:inline-block">
+            <li className="sc:inline-block">
               <Link href="/profile" className="block px-5 py-3">
                 {t("navbar.profile")}
               </Link>
             </li>
           )}
           {role === Role.ADMIN && (
-            <li className="md:inline-block">
+            <li className="sc:inline-block">
               <Link href="/admin" className="block px-5 py-3">
                 {t("navbar.adminDashboard")}
               </Link>
@@ -100,7 +102,7 @@ const NavBar: React.FC<NavBarProps> = ({
     [t, hideEventsLink, hideProfileLink, role],
   );
 
-  return <CommonNavBar renderLinks={renderLinks} />;
+  return <CommonNavBar renderLinks={renderLinks} home={home} />;
 };
 
 export default NavBar;

@@ -41,8 +41,9 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
   return (
     <section
       id="partners"
-      className="bg-black px-3 py-16 text-white sm:py-20 md:py-28"
+      className="bg-partners bg-no-repeat bg-center bg-cover text-white"
     >
+      <div className="bg-gradient-to-b from-black to-transparent h-48" />
       <header className="mb-10">
         <h2 className="text-center font-display text-2xl font-bold uppercase xs:text-3xl sm:text-4xl md:text-5xl">
           {t("partnersSection.title")}
@@ -72,18 +73,16 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
       )}
       {isAdmin && (
         <div className="mx-auto mt-10 flex max-w-md flex-row justify-center">
-          <Link
-            href="/admin/companies/new"
-            className="inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
-          >
+          <Link href="/admin/companies/new" className="admin-button">
             <FontAwesomeIcon
               icon={faPlus}
               className="mr-2 inline-block h-4 w-4"
             />
-            Adaugă o companie nouă
+            {t("partnersSection.addPartner")}
           </Link>
         </div>
       )}
+      <div className="bg-gradient-to-b from-transparent to-white mt-12 h-36" />
     </section>
   );
 };
