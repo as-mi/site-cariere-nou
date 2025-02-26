@@ -217,7 +217,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({ onSuccess }) => {
             name="consent.applyToOtherPartners"
             label={t("registrationForm.consent.applyToOtherPartners")!}
             register={register}
-            required={false}
+            required={true}
             fieldErrors={errors.consent?.applyToOtherPartners}
           />
         </div>
