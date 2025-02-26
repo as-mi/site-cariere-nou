@@ -31,7 +31,7 @@ const LogosSection: React.FC = () => (
   <section className="bg-zinc-100" style={{ paddingTop: "6vh" }}>
     <div className="mx-auto flex max-w-screen-lg flex-col items-center justify-between px-3 py-5 space-y-10 sm:flex-row sm:space-y-0 sm:space-x-24">
       <Logo
-        href="https:/fmi.unibuc.ro"
+        href="https://fmi.unibuc.ro"
         src={logoFmi}
         alt="Facultatea de Matematică și Informatică"
         custom={"logo"}
