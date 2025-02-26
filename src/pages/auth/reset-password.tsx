@@ -139,7 +139,7 @@ const ResetPasswordSuccessMessage: React.FC = () => {
 const ResetPasswordPage: NextPageWithLayout = () => {
   const { t } = useTranslation("resetPassword");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v14.0`, [t]);
 
   const router = useRouter();
   const query = queryString.stringify(router.query);

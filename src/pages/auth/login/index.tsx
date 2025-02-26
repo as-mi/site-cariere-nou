@@ -22,6 +22,8 @@ import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/auth/layout";
 import { getSettingValue } from "~/lib/settings/get";
 
+import NavBar from "~/components/pages/auth/navbar";
+
 type PageProps = {
   showSocialLoginButtons: boolean;
   availableProviders: string[];
@@ -33,7 +35,7 @@ const LoginPage: NextPageWithLayout<PageProps> = ({
 }) => {
   const { t } = useTranslation("login");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v14.0`, [t]);
 
   const router = useRouter();
   const query = queryString.stringify(router.query);
@@ -68,6 +70,7 @@ const LoginPage: NextPageWithLayout<PageProps> = ({
       <Head>
         <title>{pageTitle}</title>
       </Head>
+      <NavBar home={false}></NavBar>
       <div className="text-center">
         <header className="mb-3">
           <h1 className="font-display text-3xl font-bold">

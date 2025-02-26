@@ -42,7 +42,7 @@ const PositionDescription: React.FC<PositionDescriptionProps> = ({
       >
         <button
           onClick={() => setExpanded(!expanded)}
-          className="rounded-lg bg-blue-600 px-2 py-1 text-white drop-shadow-lg hover:bg-blue-700 active:bg-blue-800"
+          className="rounded-lgpx-2 py-1 text-white drop-shadow-lg button"
         >
           {expanded ? "Arată mai puțin" : "Arată mai mult"}
         </button>

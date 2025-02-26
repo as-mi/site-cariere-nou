@@ -53,10 +53,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({ t, events }) => {
         )}
         {isAdmin && (
           <div className="mx-auto mt-10 flex max-w-md flex-row justify-center">
-            <Link
-              href="/admin/events/new"
-              className="inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
-            >
+            <Link href="/admin/events/new" className="admin-button">
               <FontAwesomeIcon
                 icon={faPlus}
                 className="mr-2 inline-block h-4 w-4"

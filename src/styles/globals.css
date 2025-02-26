@@ -11,4 +11,195 @@
   .prose :where(iframe):not(:where([class~="not-prose"] *)) {
     @apply aspect-video h-auto w-full;
   }
+
+  .button {
+    background-image: url("/images/user-button.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    border-radius: 9999px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    color: white;
+    font-weight: 500;
+    min-width: 180px;
+    opacity: 0.9;
+    transform: scale(1);
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+  .aboutpc {
+    display: inline-block;
+    color: white;
+    font-weight: 500;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-radius: 0.5rem;
+    background-image: url("/images/user-button.png");
+    background-blend-mode: darken;
+    opacity: 0.9;
+    transform: scale(1);
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+  .button:hover,
+  .aboutpc:hover {
+    background-blend-mode: darken;
+    opacity: 1;
+    transform: scale(1.05);
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+
+  .admin-button {
+    background-image: url("/images/admin-button.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    transition: background-color 0.4s ease;
+    border-radius: 9999px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    color: white;
+    font-weight: 500;
+    min-width: 180px;
+    opacity: 0.9;
+    transform: scale(1);
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+  .admin-button:hover {
+    opacity: 1;
+    transform: scale(1.05);
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(255, 255, 255);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+
+    animation: fadeOut 4s ease-in-out forwards;
+  }
+
+  @keyframes fadeOut {
+    0% {
+      opacity: 100;
+    }
+    40% {
+      opacity: 100;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+
+  /* @keyframes slideUp {
+    0% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(0);
+    }
+    100% {
+      transform: translateY(-120%);
+    }
+  } */
+
+  /* styles.css */
+
+  .logo {
+    width: 300px;
+  }
+  .asmi {
+    width: 600px;
+  }
+
+  .logo,
+  .asmi {
+    transition:
+      width 0.3s ease,
+      transform 0.3s ease;
+  }
+
+  .logo:hover {
+    transform: scale(1.1);
+  }
+  .asmi:hover {
+    transform: scale(1.1);
+  }
+
+  .logo::selection {
+    background-color: transparent;
+    color: transparent;
+  }
+  .asmi::selection {
+    background-color: transparent;
+    color: transparent;
+  }
+
+  @media (max-width: 640px) {
+    .logo {
+      width: 200px;
+    }
+    .asmi {
+      height: 300px;
+      width: 500px !important;
+    }
+  }
+
+  .aboutPostcards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  @media (max-width: 1100px) {
+    .aboutPostcards {
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+    }
+  }
+
+  .aboutPostcard {
+    justify-items: center;
+    align-items: center;
+  }
+
+  .avatarFramePostcard {
+    width: 200px;
+    border-radius: 50%;
+  }
+
+  .avatarPostcard {
+    padding: 1px;
+    border-radius: 50%;
+  }
 }

@@ -17,6 +17,7 @@ import RegistrationSuccessMessage from "~/components/pages/auth/register/success
 
 import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/auth/layout";
+import NavBar from "~/components/pages/auth/navbar";
 
 type PageProps = {
   registrationDisabled: boolean;
@@ -27,7 +28,7 @@ const RegistrationPage: NextPageWithLayout<PageProps> = ({
 }) => {
   const { t } = useTranslation("register");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v14.0`, [t]);
 
   const router = useRouter();
   const query = queryString.stringify(router.query);
@@ -39,6 +40,7 @@ const RegistrationPage: NextPageWithLayout<PageProps> = ({
       <Head>
         <title>{pageTitle}</title>
       </Head>
+      <NavBar home={false}></NavBar>
       <div className="flex flex-col">
         <Link
           href={`/auth/login/email${query ? `?${query}` : ""}`}

@@ -1,3 +1,9 @@
 {
-  "scrollToTop": "Scroll to top"
+  "scrollToTop": "Scroll to top",
+  "translate": {
+    "flag": "RO",
+    "placeholder": "Romanian Version",
+    "current": "en",
+    "behavior": "ro"
+  }
 }

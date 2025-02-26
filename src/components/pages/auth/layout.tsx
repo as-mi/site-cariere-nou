@@ -6,7 +6,7 @@ type LayoutProps = {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => (
   <div className="min-h-screen bg-black px-4 py-10">
-    <main className="mx-auto max-w-sm rounded-lg bg-white px-3 py-5 text-black">
+    <main className="mx-auto max-w-sm rounded-lg mt-20 bg-white px-3 py-5 text-black">
       {children}
     </main>
 
