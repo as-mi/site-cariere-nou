@@ -28,6 +28,8 @@ import PositionCard, {
   Position,
 } from "~/components/pages/companies/positions/position-card";
 
+import Translate from "~/components/common/translate";
+
 type Logo = {
   id: number;
   width: number;
@@ -67,7 +69,7 @@ const CompanyPage: NextPage<PageProps> = ({
   resolvedUrl,
   applyToPositionId,
 }) => {
-  const pageTitle = `${company.name} - Cariere v13.0`;
+  const pageTitle = `${company.name} - Cariere v14.0`;
 
   const isAdmin = useIsAdmin();
 
@@ -93,7 +95,7 @@ const CompanyPage: NextPage<PageProps> = ({
             ) : (
               <div className="sm:py-4">
                 {company.name} este Partener {company.packageType} în cadrul
-                Cariere v13. Nu a fost publicată încă o descriere a companiei.
+                Cariere v14. Nu a fost publicată încă o descriere a companiei.
               </div>
             )}
           </div>
@@ -148,6 +150,7 @@ const CompanyPage: NextPage<PageProps> = ({
         )}
       </main>
 
+      <Translate />
       <Footer />
     </>
   );

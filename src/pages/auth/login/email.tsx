@@ -18,6 +18,8 @@ import { NextPageWithLayout } from "~/pages/_app";
 import Layout from "~/components/pages/auth/layout";
 import Input from "~/components/forms/input";
 
+import NavBar from "~/components/pages/auth/navbar";
+
 type Credentials = {
   email: string;
   password: string;
@@ -37,7 +39,7 @@ const EmailLoginPage: NextPageWithLayout<PageProps> = ({
   const { t } = useTranslation("emailLogin");
   const { t: commonT, i18n: commonI18n } = useTranslation("common");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
+  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v14.0`, [t]);
 
   const router = useRouter();
   const query = queryString.stringify(router.query);
@@ -109,6 +111,7 @@ const EmailLoginPage: NextPageWithLayout<PageProps> = ({
       <Head>
         <title>{pageTitle}</title>
       </Head>
+      <NavBar home={false}></NavBar>
       <div className="flex flex-col">
         <Link
           href={`/auth/login${query ? `?${query}` : ""}`}

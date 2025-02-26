@@ -22,6 +22,7 @@ import ApplicationsClosedNotice from "~/components/common/applications-closed-no
 import ContactInfoSection from "~/components/pages/profile/contact-info/section";
 import OptionsSection from "~/components/pages/profile/options/section";
 import ResumesSection from "~/components/pages/profile/resumes/section";
+import NavBar from "~/components/pages/profile/navbar";
 
 const userWithProfileAndResumes = Prisma.validator<Prisma.UserArgs>()({
   select: {
@@ -54,9 +55,13 @@ type PageProps = {
 };
 
 const ProfilePage: NextPage<PageProps> = ({ user, closeApplications }) => {
-  const { t, i18n } = useTranslation("profile");
+  const { t: tProfile } = useTranslation("profile");
+  const { t: tHome, i18n } = useTranslation("home");
 
-  const pageTitle = useMemo(() => `${t("pageTitle")} - Cariere v13.0`, [t]);
+  const pageTitle = useMemo(
+    () => `${tProfile("pageTitle")} - Cariere v14.0`,
+    [tProfile],
+  );
 
   const handleSignOut = () => {
     signOut({ callbackUrl: "/" });
@@ -74,26 +79,31 @@ const ProfilePage: NextPage<PageProps> = ({ user, closeApplications }) => {
 
   return (
     <>
+      <NavBar home={false} />
+
       <Head>
         <title>{pageTitle}</title>
       </Head>
+
       <ApplicationsDeadlineNotice />
       {closeApplications && <ApplicationsClosedNotice />}
       <div className="min-h-screen bg-black px-4 py-8">
-        <main className="mx-auto max-w-md rounded-lg bg-white px-6 py-6 text-black">
-          <h1 className="font-display text-3xl font-bold">{t("pageTitle")}</h1>
-          <ContactInfoSection t={t} initialData={contactInfo} />
+        <main className="mt-20 mx-auto max-w-md rounded-lg bg-white px-6 py-6 text-black">
+          <h1 className="font-display text-3xl font-bold">
+            {tProfile("pageTitle")}
+          </h1>
+          <ContactInfoSection t={tProfile} initialData={contactInfo} />
           {role == Role.PARTICIPANT && (
             <>
               <OptionsSection
-                t={t}
+                t={tProfile}
                 initialData={{
                   applyToOtherPartners: user.consentApplyToOtherPartners,
                 }}
                 readOnly={closeApplications}
               />
               <ResumesSection
-                t={t}
+                t={tProfile}
                 i18n={i18n}
                 initialData={resumes}
                 readOnly={closeApplications}
@@ -105,13 +115,13 @@ const ProfilePage: NextPage<PageProps> = ({ user, closeApplications }) => {
               href="/"
               className="flex-1 basis-[max-content] rounded-md bg-green-700 px-3 py-2 text-center text-white hover:bg-green-800 active:bg-green-900 sm:flex-none"
             >
-              {t("backToHomePage")}
+              {tProfile("backToHomePage")}
             </Link>
             <button
               onClick={handleSignOut}
               className="flex-1 basis-[max-content] rounded-md bg-red-600 px-3 py-2 text-center text-white hover:bg-red-700 active:bg-red-800 sm:flex-none"
             >
-              {t("signOut")}
+              {tProfile("signOut")}
             </button>
           </div>
         </main>
@@ -151,7 +161,11 @@ export const getServerSideProps: GetServerSideProps = async ({
 
   return {
     props: {
-      ...(await serverSideTranslations(locale ?? "ro", ["common", "profile"])),
+      ...(await serverSideTranslations(locale ?? "ro", [
+        "common",
+        "profile",
+        "home",
+      ])),
       session,
       user,
       closeApplications,

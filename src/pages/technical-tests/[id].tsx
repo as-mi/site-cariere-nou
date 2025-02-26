@@ -14,6 +14,7 @@ import {
 } from "~/lib/technical-tests-schema";
 
 import TechnicalTest from "~/components/pages/technical-tests/technical-test";
+import Navbar from "~/components/pages/home/navbar";
 
 type PageProps = {
   technicalTest: {
@@ -48,13 +49,14 @@ const TechnicalTestPage: NextPage<PageProps> = ({
   },
   alreadyAnsweredAt,
 }) => {
-  const pageTitle = `${title} - ${companyName} - Cariere v13.0`;
+  const pageTitle = `${title} - ${companyName} - Cariere v14.0`;
 
   return (
     <>
       <Head>
         <title>{pageTitle}</title>
       </Head>
+
       <div className="min-h-screen bg-black px-4 py-6 text-white xs:py-10 sm:py-20 md:py-32 lg:py-40">
         <main className="mx-auto max-w-prose text-center">
           <h1 className="font-display text-3xl font-bold">{title}</h1>

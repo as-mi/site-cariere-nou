@@ -5,13 +5,13 @@ import type { AppProps } from "next/app";
 import { SessionProvider } from "next-auth/react";
 import { appWithTranslation } from "next-i18next";
 
-import { Open_Sans, Jost } from "next/font/google";
+import { Montserrat, Jost } from "next/font/google";
 
 import { trpc } from "~/lib/trpc";
 
 import "../styles/globals.css";
 
-const openSans = Open_Sans({
+const montserrat = Montserrat({
   subsets: ["latin", "latin-ext"],
   variable: "--font-open-sans",
 });
@@ -44,7 +44,7 @@ const App: React.FC<AppPropsWithLayout> = ({
 
   return (
     <SessionProvider session={session}>
-      <div className={`${openSans.variable} ${jost.variable} font-body`}>
+      <div className={`${montserrat.variable} ${jost.variable} font-body`}>
         {getLayout(pageElement)}
       </div>
     </SessionProvider>
