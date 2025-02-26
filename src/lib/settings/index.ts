@@ -22,7 +22,7 @@ export const SETTINGS = {
       .default(
         process.env.CARIERE_SHOW_PROFILE_LINK
           ? !!process.env.CARIERE_SHOW_PROFILE_LINK
-          : true,
+          : false,
       ),
   },
   enableSocialLogin: {
@@ -38,7 +38,7 @@ export const SETTINGS = {
       .default(
         process.env.CARIERE_REGISTRATION_ENABLED
           ? !!process.env.CARIERE_REGISTRATION_ENABLED
-          : true,
+          : false,
       ),
   },
   showEvents: {
