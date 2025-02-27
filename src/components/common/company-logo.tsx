@@ -34,8 +34,8 @@ const CompanyLogo: React.FC<CompanyLogoProps> = ({
   return (
     <UploadedImage
       imageId={logo.id}
-      width={logo.width}
-      height={logo.height}
+      width={200}
+      height={200}
       queryString={queryString}
       alt={t("companyLogo", { companyName })}
       className={className}
