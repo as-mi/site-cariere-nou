@@ -6,7 +6,11 @@ export const SETTINGS = {
     key: "showComingSoonMessage",
     label: `Afișează mesajul de „În curând” pe prima pagină`,
     hint: `Pe prima pagină se va afișa un mesaj că proiectul va avea loc „În curând” și va fi ascunsă lista cu companiile.`,
-    schema: z.boolean().default(true),
+    // schema: z.boolean().default(true),
+    schema: z
+      .boolean()
+      .transform(() => true)
+      .default(true),
   },
   alwaysShowCompaniesForAdmin: {
     key: "alwaysShowCompaniesForAdmin",
@@ -28,7 +32,11 @@ export const SETTINGS = {
   enableSocialLogin: {
     key: "enableSocialLogin",
     label: `Permite autentificarea prin conturile de rețele sociale`,
-    schema: z.boolean().default(false),
+    //schema: z.boolean().default(false),
+    schema: z
+      .boolean()
+      .transform(() => true)
+      .default(true),
   },
   registrationEnabled: {
     key: "registrationEnabled",
@@ -44,7 +52,11 @@ export const SETTINGS = {
   showEvents: {
     key: "showEvents",
     label: `Afișează secțiunea cu evenimentele pe prima pagină`,
-    schema: z.boolean().default(false),
+    //schema: z.boolean().default(false),
+    schema: z
+      .boolean()
+      .transform(() => true)
+      .default(true),
   },
   alwaysShowEventsForAdmin: {
     key: "alwaysShowEventsForAdmin",
@@ -69,7 +81,11 @@ export const SETTINGS = {
   closeApplications: {
     key: "closeApplications",
     label: `Închide aplicările pe posturile disponibile și dezactivează încărcarea/editarea de CV-uri`,
-    schema: z.boolean().default(false),
+    //schema: z.boolean().default(false),
+    schema: z
+      .boolean()
+      .transform(() => false)
+      .default(false),
   },
 } as const;
 
