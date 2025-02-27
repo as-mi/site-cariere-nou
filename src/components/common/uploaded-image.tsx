@@ -24,6 +24,7 @@ const UploadedImage: React.FC<UploadedImageProps> = ({
     height={height}
     alt={alt}
     {...otherProps}
+    unoptimized
   />
 );
 
