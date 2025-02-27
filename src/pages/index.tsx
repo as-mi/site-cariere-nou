@@ -35,6 +35,8 @@ import PartnersSection, {
 import EventsSection, {
   SerializedEvent,
 } from "~/components/pages/home/events/section";
+import LastYearPartners from "~/components/pages/home/last-year-partners"
+import TestimonialSection from "~/components/pages/home/testimonials";
 import CookieConsent from "~/components/common/cookie-consent";
 import Footer from "~/components/common/footer";
 
@@ -95,7 +97,7 @@ const HomePage: NextPage<PageProps> = ({
 
       <NavBar
         t={t}
-        hideEventsLink={isEventsSectionVisible} // Button 'events' is hidden until an event post is made
+        hideEventsLink={!isEventsSectionVisible} // Button 'events' is hidden until an event post is made
         hideProfileLink={hideProfileLink} // DeMorgan this if accounts don't work well
         home={true} // True if you create from index
       />
@@ -124,6 +126,10 @@ const HomePage: NextPage<PageProps> = ({
           companiesByPackageType={companiesByPackageType}
         />
         {isEventsSectionVisible && <EventsSection t={t} events={events} />}
+
+        <LastYearPartners></LastYearPartners>
+        <TestimonialSection></TestimonialSection>
+
         <ContactSection />
       </main>
 
