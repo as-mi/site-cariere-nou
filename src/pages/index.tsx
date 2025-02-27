@@ -35,7 +35,7 @@ import PartnersSection, {
 import EventsSection, {
   SerializedEvent,
 } from "~/components/pages/home/events/section";
-import LastYearPartners from "~/components/pages/home/last-year-partners"
+import LastYearPartners from "~/components/pages/home/last-year-partners";
 import TestimonialSection from "~/components/pages/home/testimonials";
 import CookieConsent from "~/components/common/cookie-consent";
 import Footer from "~/components/common/footer";
