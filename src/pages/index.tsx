@@ -185,6 +185,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
       name: true,
       slug: true,
       packageType: true,
+      thisYearPartner: true,
       logo: {
         select: {
           id: true,
