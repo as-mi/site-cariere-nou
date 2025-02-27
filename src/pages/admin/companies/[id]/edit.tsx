@@ -37,6 +37,7 @@ type EditCompanyFieldValues = {
   instagramUrl: string;
   linkedinUrl: string;
   facebookUrl: string;
+  thisYearPartner: boolean;
 };
 
 const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
@@ -235,6 +236,13 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
               </div>
             </fieldset>
           </div>
+
+          <CheckboxField
+            name="thisYearPartner"
+            label="Companie parteneră anul acesta"
+            register={register}
+            errors={errors}
+          />
 
           <CheckboxField
             name="useExternalUrlForPositions"

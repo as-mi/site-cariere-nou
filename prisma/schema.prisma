@@ -102,6 +102,7 @@ model Company {
   facebookUrl          String      @default("")
   instagramUrl         String      @default("")
   linkedinUrl          String      @default("")
+  thisYearPartner      Boolean     @default(true)
 }
 
 model Image {

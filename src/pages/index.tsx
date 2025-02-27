@@ -35,6 +35,8 @@ import PartnersSection, {
 import EventsSection, {
   SerializedEvent,
 } from "~/components/pages/home/events/section";
+import LastYearPartners from "~/components/pages/home/last-year-partners";
+import TestimonialSection from "~/components/pages/home/testimonials";
 import CookieConsent from "~/components/common/cookie-consent";
 import Footer from "~/components/common/footer";
 
@@ -105,8 +107,8 @@ const HomePage: NextPage<PageProps> = ({
           t={t}
           // Change this to false after the events ends (from Prisma)
           // Find where showComingSoonMessage is coming from, I am pretty sure that's from Prisma
-          showComingSoonMessage={!showComingSoonMessage}
-          showEventsSectionLink={!isEventsSectionVisible}
+          showComingSoonMessage={showComingSoonMessage}
+          showEventsSectionLink={isEventsSectionVisible}
         />
 
         {/* Added media queries for logos and redesign */}
@@ -124,6 +126,10 @@ const HomePage: NextPage<PageProps> = ({
           companiesByPackageType={companiesByPackageType}
         />
         {isEventsSectionVisible && <EventsSection t={t} events={events} />}
+
+        <LastYearPartners></LastYearPartners>
+        <TestimonialSection></TestimonialSection>
+
         <ContactSection />
       </main>
 
@@ -185,6 +191,7 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
       name: true,
       slug: true,
       packageType: true,
+      thisYearPartner: true,
       logo: {
         select: {
           id: true,
