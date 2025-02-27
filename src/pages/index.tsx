@@ -88,9 +88,8 @@ const HomePage: NextPage<PageProps> = ({
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Removed notification (traditionally)
       <ApplicationsDeadlineNotice />
-      {closeApplications && <ApplicationsClosedNotice />} */}
+      {closeApplications && <ApplicationsClosedNotice />}
 
       {/*Added a black box which appears when visits for the first time*/}
       <VisitBox></VisitBox>
