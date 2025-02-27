@@ -60,5 +60,10 @@
     "GOLD": "#e7cf9166",
     "SILVER": "#c2c2c266",
     "BRONZE": "#bd806566"
+  },
+  "testimonials": {
+    "carlo": "A very useful project, without which I wouldn't have found relevant information for employment.",
+    "mihai": "My experience at the career fair was very positive. I appreciated the involvement of the volunteers, the good and efficient organization, and the prompt communication that facilitated access to your next job. I believe this event is vital during the professional development period of any student at FMI, making it much easier to interact with potential employers in the IT field.",
+    "anca": "I was hired at Amiq, a company I learned about at Cariere. Cariere is a very useful event for students, I discovered many companies I wasn't familiar with and was able to learn about available jobs by speaking directly with company employees."
   }
 }

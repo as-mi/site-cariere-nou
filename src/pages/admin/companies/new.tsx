@@ -33,6 +33,7 @@ type AddCompanyFieldValues = {
   instagramUrl: string;
   linkedinUrl: string;
   facebookUrl: string;
+  thisYearPartner: boolean;
 };
 
 const AdminNewCompanyPage: NextPageWithLayout = () => {
@@ -204,6 +205,13 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
               </div>
             </fieldset>
           </div>
+
+          <CheckboxField
+            name="thisYearPartner"
+            label="Companie parteneră anul acesta"
+            register={register}
+            errors={errors}
+          />
 
           <CheckboxField
             name="useExternalUrlForPositions"
