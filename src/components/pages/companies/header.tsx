@@ -45,7 +45,7 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     </span>
   </a>
 );
-
+///todo
 type Company = {
   name: string;
   packageType: PackageType;
