@@ -61,7 +61,8 @@ CREATE TABLE "Company" (
     "packageType" "PackageType" NOT NULL,
     "logoImageId" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
-
+    "thisYearPartner" BOOLEAN NOT NULL DEFAULT false,
+    
     CONSTRAINT "Company_pkey" PRIMARY KEY ("id")
 );
 
