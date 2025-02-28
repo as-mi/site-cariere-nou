@@ -1,7 +1,7 @@
 import classNames from "classnames";
 
+import Image from "next/image";
 import { PackageType } from "@prisma/client";
-
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink } from "@fortawesome/free-solid-svg-icons";
@@ -33,7 +33,7 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     target="_blank"
     rel="noreferrer"
     className={classNames(
-      "mx-1 inline-flex h-8 w-8 items-center justify-center rounded-md bg-white p-1 text-center align-middle text-base text-black hover:bg-zinc-200 active:bg-zinc-300",
+      "mx-1 inline-flex h-8 w-8 items-center justify-center rounded-md bg-black p-1 text-center align-middle text-base text-white hover:bg-zinc-200 active:bg-zinc-300",
       linkClassName,
     )}
   >
@@ -64,14 +64,31 @@ type HeaderProps = {
   company: Company;
 };
 
+function getPackageImage(packageType: PackageType): string {
+  const packageImages: Record<PackageType, string> = {
+      PLATINUM: "/images/PLATINUM.png",
+      GOLD: "/images/GOLD.png",
+      SILVER: "/images/SILVER.png",
+      BRONZE: "/images/BRONZE.png",
+  };
+
+  return packageImages[packageType];
+}
+
 const Header: React.FC<HeaderProps> = ({ company }) => (
-  <header className="flex flex-col items-center justify-center bg-black py-8 text-white sm:py-12 md:py-20">
-    <div className="mx-10 mb-8 max-w-sm rounded-lg bg-white p-4 xs:mb-12 xs:p-8 sm:mb-16 sm:p-12">
+  <header className="flex bg-center flex-col items-center justify-center bg-about text-white">
+    <div className="mt-20">
+    <Image 
+      src={getPackageImage(company.packageType)}
+      alt={company.packageType}
+      width={400}
+      height={200}
+      />
+    </div>
+    <div className=" bg-white p-2 xs:mb-2">
       <CompanyLogo company={company} />
     </div>
-    <h1 className="mb-2 font-display text-3xl sm:text-5xl">{company.name}</h1>
-    <h2 className="font-display text-xl">Partener {company.packageType}</h2>
-
+    <h1 className="mb-2 font-display text-5xl sm:text-5xl">{company.name}</h1>
     <div className="mt-3 flex flex-wrap">
       {company.siteUrl && (
         <SocialMediaLink
