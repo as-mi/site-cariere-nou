@@ -72,6 +72,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       id: true,
       name: true,
       packageType: true,
+      thisYearPartner: true,
     },
     take: DEFAULT_PAGE_SIZE,
     orderBy: [{ id: "asc" }],

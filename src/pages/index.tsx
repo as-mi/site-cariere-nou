@@ -117,11 +117,7 @@ const HomePage: NextPage<PageProps> = ({
 
         <PartnersSection
           t={t}
-          showComingSoonMessage={
-            alwaysShowCompaniesForAdmin
-              ? !isAdmin && showComingSoonMessage
-              : showComingSoonMessage
-          }
+          showCompanies={true}
           companiesByPackageType={companiesByPackageType}
         />
         {isEventsSectionVisible && <EventsSection t={t} events={events} />}
