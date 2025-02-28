@@ -84,9 +84,9 @@ const CompanyPage: NextPage<PageProps> = ({
       <ApplicationsDeadlineNotice />
       {closeApplications && <ApplicationsClosedNotice />}
       <NavBar companyId={company.id} />
-      <main className="min-h-screen bg-black pt-32 md:pt-40 lg:pt-48">
+      <main className="min-h-screen bg-black">
         <Header company={company} />
-        <section className="bg-white p-4 xs:py-8 xs:px-6 sm:py-12 md:py-16">
+        <section className="bg-white p-4 xs:py-8 xs:px-6 sm:py-12 md:py-16 pt-28">
           <div className="prose mx-auto max-w-prose">
             {company.descriptionHtml ? (
               <div
