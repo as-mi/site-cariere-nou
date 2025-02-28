@@ -36,14 +36,14 @@ const Sidebar: React.FC = () => {
           showSidebar ? "" : "hidden"
         } sm:static sm:inline-block sm:h-full sm:w-auto`}
       >
-        <aside className="block h-full min-h-screen bg-zinc-700 xs:inline-block sm:pt-12">
+        <aside className="block h-full min-h-screen bg-zinc-800 xs:inline-block sm:pt-12">
           <ul>
             {links.map((link, index) => (
               <li key={index}>
                 <Link
                   href={link.href}
                   onClick={() => setShowSidebar(false)}
-                  className="flex items-center p-3 hover:bg-zinc-800"
+                  className="flex items-center p-3 hover:bg-green-800"
                 >
                   <FontAwesomeIcon icon={link.icon} className="h-6 w-6 pr-2" />
                   <span className="mr-6 flex-1 text-center xs:mr-0 xs:px-3 xs:text-start sm:px-6 md:px-8">
