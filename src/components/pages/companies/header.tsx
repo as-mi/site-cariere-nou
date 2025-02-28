@@ -66,10 +66,10 @@ type HeaderProps = {
 
 function getPackageImage(packageType: PackageType): string {
   const packageImages: Record<PackageType, string> = {
-      PLATINUM: "/images/PLATINUM.png",
-      GOLD: "/images/GOLD.png",
-      SILVER: "/images/SILVER.png",
-      BRONZE: "/images/BRONZE.png",
+    PLATINUM: "/images/PLATINUM.png",
+    GOLD: "/images/GOLD.png",
+    SILVER: "/images/SILVER.png",
+    BRONZE: "/images/BRONZE.png",
   };
 
   return packageImages[packageType];
@@ -78,11 +78,11 @@ function getPackageImage(packageType: PackageType): string {
 const Header: React.FC<HeaderProps> = ({ company }) => (
   <header className="flex bg-center flex-col items-center justify-center bg-about text-white">
     <div className="mt-20">
-    <Image 
-      src={getPackageImage(company.packageType)}
-      alt={company.packageType}
-      width={400}
-      height={200}
+      <Image
+        src={getPackageImage(company.packageType)}
+        alt={company.packageType}
+        width={400}
+        height={200}
       />
     </div>
     <div className=" bg-white p-2 xs:mb-2">
