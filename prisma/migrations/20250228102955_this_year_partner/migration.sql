@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE "Company" ALTER COLUMN     "thisYearPartner" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "Company" ADD COLUMN     "thisYearPartner" BOOLEAN NOT NULL DEFAULT false;
