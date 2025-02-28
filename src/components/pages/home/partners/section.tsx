@@ -18,7 +18,7 @@ export type CompaniesByPackageType = Partial<Record<PackageType, Company[]>>;
 
 type PartnersSectionProps = {
   t: TFunction;
-  showComingSoonMessage: boolean;
+  showCompanies: boolean;
   companiesByPackageType: CompaniesByPackageType;
 };
 
@@ -31,10 +31,10 @@ const PACKAGE_TYPES_IN_DESCENDING_ORDER = [
 
 const PartnersSection: React.FC<PartnersSectionProps> = ({
   t,
-  showComingSoonMessage,
+  showCompanies,
   companiesByPackageType,
 }) => {
-  showComingSoonMessage ||= _.isEmpty(companiesByPackageType);
+  showCompanies ||= _.isEmpty(companiesByPackageType);
 
   const isAdmin = useIsAdmin();
 
@@ -49,7 +49,7 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
           {t("partnersSection.title")}
         </h2>
       </header>
-      {showComingSoonMessage ? (
+      {showCompanies ? (
         <div className="text-md mx-auto max-w-xs space-y-4 text-center xs:text-lg sm:max-w-lg sm:space-y-8 sm:py-10 sm:text-xl md:text-2xl">
           <p>{t("partnersSection.comingSoon")}</p>
           <p>{t("partnersSection.followOurSocialMediaPages")}</p>

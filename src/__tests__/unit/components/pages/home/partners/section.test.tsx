@@ -31,7 +31,7 @@ describe("PartnersSection", () => {
     render(
       <PartnersSection
         t={tFunction as TFunction}
-        showComingSoonMessage={false}
+        showCompanies={false}
         companiesByPackageType={companiesByPackageType}
       />,
     );

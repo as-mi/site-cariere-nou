@@ -20,6 +20,7 @@ import {
   TextField,
 } from "~/components/pages/admin/forms";
 import CompanyLogo from "~/components/common/company-logo";
+import { isThisYear } from "date-fns";
 
 type PageProps = {
   companyId: number;
@@ -101,6 +102,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
       id: companyId,
       ...data,
     };
+    payload.thisYearPartner = data.thisYearPartner;
     if (!data.useExternalUrlForPositions) {
       payload.positionsExternalUrl = null;
     }
@@ -113,6 +115,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
         ...query.data,
         logo: undefined,
         useExternalUrlForPositions: !!query.data.positionsExternalUrl,
+        thisYearPartner: !!query.data.thisYearPartner,
       };
 
       reset(formData);

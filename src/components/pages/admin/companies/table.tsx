@@ -14,7 +14,10 @@ import type { PaginatedData } from "~/api/pagination";
 
 import AdminTable from "../common/table";
 
-export type Company = Pick<PrismaCompany, "id" | "name" | "packageType">;
+export type Company = Pick<
+  PrismaCompany,
+  "id" | "name" | "packageType" | "thisYearPartner"
+>;
 
 const columnHelper = createColumnHelper<Company>();
 
@@ -82,11 +85,12 @@ const AdminCompaniesTable: React.FC<AdminCompaniesTableProps> = ({
       columnHelper.accessor("name", {
         header: "Nume",
       }),
-      columnHelper.accessor("name", {
-        header: "Nume",
-      }),
       columnHelper.accessor("packageType", {
         header: "Pachet",
+      }),
+      columnHelper.accessor("thisYearPartner", {
+        header: "Partener anul acesta",
+        cell: (ctx) => (ctx.getValue() ? "Da" : "Nu"),
       }),
       columnHelper.display({
         id: "actions",

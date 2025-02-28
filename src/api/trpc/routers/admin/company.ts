@@ -24,6 +24,7 @@ const CreateInput = z.object({
   logoImageId: EntityId,
   description: z.string().default(""),
   positionsExternalUrl: z.string().nullable().default(null),
+  thisYearPartner: z.boolean().default(false),
 });
 const UpdateInput = z.object({
   id: EntityId,
@@ -36,6 +37,7 @@ const UpdateInput = z.object({
   packageType: AllPackageTypes,
   description: z.string().default(""),
   positionsExternalUrl: z.string().nullable().default(null),
+  thisYearPartner: z.boolean().default(false),
 });
 const DeleteInput = z.object({
   id: EntityId,
@@ -73,6 +75,7 @@ export const companyRouter = router({
         },
         description: true,
         positionsExternalUrl: true,
+        thisYearPartner: true,
       },
     });
     return company;
@@ -90,6 +93,7 @@ export const companyRouter = router({
         id: true,
         name: true,
         packageType: true,
+        thisYearPartner: true,
       },
       skip,
       take,
@@ -113,6 +117,7 @@ export const companyRouter = router({
       logoImageId,
       description,
       positionsExternalUrl,
+      thisYearPartner,
     } = input;
 
     await prisma.company.create({
@@ -127,6 +132,7 @@ export const companyRouter = router({
         logoImageId,
         description,
         positionsExternalUrl,
+        thisYearPartner,
       },
     });
 
@@ -146,6 +152,7 @@ export const companyRouter = router({
       packageType,
       description,
       positionsExternalUrl,
+      thisYearPartner,
     } = input;
 
     await prisma.company.update({
@@ -160,6 +167,7 @@ export const companyRouter = router({
         packageType,
         description,
         positionsExternalUrl,
+        thisYearPartner,
       },
     });
 
