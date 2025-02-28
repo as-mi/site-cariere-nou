@@ -49,7 +49,7 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
           {t("partnersSection.title")}
         </h2>
       </header>
-      {showCompanies ? (
+      {!showCompanies ? (
         <div className="text-md mx-auto max-w-xs space-y-4 text-center xs:text-lg sm:max-w-lg sm:space-y-8 sm:py-10 sm:text-xl md:text-2xl">
           <p>{t("partnersSection.comingSoon")}</p>
           <p>{t("partnersSection.followOurSocialMediaPages")}</p>
