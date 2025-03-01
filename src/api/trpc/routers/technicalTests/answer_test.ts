@@ -1,5 +1,5 @@
 import prisma from "~/lib/prisma";
-import { participantProcedure, router } from "../..";
+import { authenticatedProcedure, router } from "../..";
 import { z } from "zod";
 
 const CreateInput = z.object({
@@ -10,7 +10,7 @@ const CreateInput = z.object({
 });
 
 export const technicalTestAnswersRouter = router({
-  create: participantProcedure
+  create: authenticatedProcedure
     .input(CreateInput)
     .mutation(async ({ input }) => {
       const { userId, technicalTestId, answers, createdAt } = input;
