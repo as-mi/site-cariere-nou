@@ -18,6 +18,7 @@ const ReadOutput = z
     positionId: EntityId,
     title: z.string(),
     description: z.string(),
+    tallyLink: z.string(),
     questions: QuestionsSchema,
   })
   .strict()
@@ -36,6 +37,7 @@ const UpdateInput = z.object({
   id: EntityId,
   title: z.string(),
   description: z.string().default(""),
+  tallyLink: z.string(),
   questions: QuestionsSchema,
 });
 const DeleteInput = z.object({
