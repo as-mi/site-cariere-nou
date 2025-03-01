@@ -1,4 +1,4 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import showdown from "showdown";
@@ -20,6 +20,7 @@ import TechnicalTest from "~/components/pages/technical-tests/technical-test";
 import Tally_From from "~/components/pages/technical-tests/tally-embed";
 import { useTranslation } from "next-i18next";
 import Link from "next/link";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 type PageProps = {
   technicalTest: {
@@ -130,6 +131,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   res,
   resolvedUrl,
   params,
+  locale,
 }) => {
   const session = await getServerSession(req, res);
 
@@ -260,6 +262,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
       alreadyAnsweredAt,
       user_id,
       isAdmin,
+      ...(await serverSideTranslations(locale ?? "ro", ["common"])),
     },
   };
 };

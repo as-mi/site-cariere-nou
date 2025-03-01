@@ -136,7 +136,6 @@ export const getStaticProps: GetStaticProps<PageProps> = async ({ locale }) => {
     "alwaysShowCompaniesForAdmin",
   );
   const showProfileLink = await getSettingValue("showProfileLink");
-  console.log(showProfileLink);
   const hideProfileLink = !showProfileLink;
   const showEvents = await getSettingValue("showEvents");
   const alwaysShowEventsForAdmin = await getSettingValue(
