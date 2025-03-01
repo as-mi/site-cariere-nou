@@ -5,4 +5,4 @@
 
 */
 -- AlterTable
-ALTER TABLE "TechnicalTest" ADD COLUMN     "tallyLink" TEXT NOT NULL;
+ALTER TABLE "TechnicalTest" ADD COLUMN     "tallyLink" TEXT NOT NULL DEFAULT '';

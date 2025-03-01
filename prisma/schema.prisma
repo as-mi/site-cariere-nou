@@ -170,7 +170,7 @@ model TechnicalTest {
   participantStarts  ParticipantStartTechnicalTest[]
   activePosition     Position?                           @relation("ActiveTechnicalTest")
 
-  tallyLink String
+  tallyLink String @default("")
 }
 
 model ParticipantStartTechnicalTest {
