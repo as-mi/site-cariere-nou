@@ -1,8 +1,9 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Script from "next/script";
 import { trpc } from "~/lib/trpc";
 import { useRouter } from "next/router";
 import answers from "~/pages/api/technical-tests/[id]/answers";
+import Countdown from "./countdown";
 
 interface SubmissionPayload {
   id: string; // submission ID
@@ -59,6 +60,10 @@ export default function Tally_From({
 }: Tally_From_Props) {
   const router = useRouter();
 
+  const [time, setTime] = useState(100);
+  const [running, setRunning] = useState(true);
+  const [finished, setFinished] = useState(false);
+
   const mutation =
     trpc.technicalTestAnswers.technicalTestAnswers.create.useMutation({
       onSuccess: () => {
@@ -69,11 +74,10 @@ export default function Tally_From({
   useEffect(() => {
     const handleSumbitForm = async (e: MessageEvent) => {
       if (e?.data?.includes("Tally.FormSubmitted")) {
-        // unused
+        setRunning(false);
+        setFinished(true);
+
         const payload = JSON.parse(e.data).payload as SubmissionPayload;
-
-        console.log("Submited!");
-
         const userAnswer: AddTechnicalTestAnswer = {
           userId: userId,
           technicalTestId: technicalTestId,
@@ -94,19 +98,32 @@ export default function Tally_From({
   });
 
   return (
-    <div>
-      <iframe
-        data-tally-src={tallyLink}
-        loading="lazy"
-        width="100%"
-        height="200"
-        frameBorder={0}
-        marginHeight={0}
-        marginWidth={0}
-        title="Newsletter"
-      ></iframe>
+    <>
+      <div>
+        {running && (
+          <Countdown
+            time={time}
+            setTime={setTime}
+            running={running}
+            setRunning={setRunning}
+          />
+        )}
+        {(running || finished) && (
+          <iframe
+            data-tally-src={tallyLink}
+            loading="lazy"
+            width="100%"
+            height="200"
+            frameBorder={0}
+            marginHeight={0}
+            marginWidth={0}
+            title="Newsletter"
+          ></iframe>
+        )}
+        {!running && !finished && <h2>Time has run up!</h2>}
 
-      <Script src="https://tally.so/widgets/embed.js" />
-    </div>
+        <Script src="https://tally.so/widgets/embed.js" />
+      </div>
+    </>
   );
 }
