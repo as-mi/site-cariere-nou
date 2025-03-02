@@ -25,9 +25,6 @@ const EventsSection: React.FC<EventsSectionProps> = ({ t, events }) => {
     <section
       id="events"
       className="bg-white bg-repeat-y px-3 py-16 text-black sm:py-20 md:py-28"
-      style={{
-        backgroundImage: `url(${pattern.src})`,
-      }}
     >
       <header className="mb-10">
         <h2 className="text-center font-display text-2xl font-bold uppercase xs:text-3xl sm:text-4xl md:text-5xl">
@@ -48,7 +45,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({ t, events }) => {
           </div>
         ) : (
           <p className="text-2xl font-semibold">
-            Nu a fost adăugat încă niciun eveniment.
+            {t("eventsSection.noEvents")}
           </p>
         )}
         {isAdmin && (
