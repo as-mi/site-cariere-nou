@@ -51,7 +51,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({
       ></canvas>
       <GradientBackground cvid="background"></GradientBackground>
       <GalleryBackground src="./background.mp4"></GalleryBackground>
-      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-zinc-100 to-transparent opacity-100"></div>
+      
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-white to-transparent opacity-100"></div>
 
       <div className="relative z-10 text-center -mt-10">
         <Image
