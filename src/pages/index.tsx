@@ -130,7 +130,7 @@ const HomePage: NextPage<PageProps> = ({
             
           </OldPartners> */}
 
-        <TestimonialSection></TestimonialSection>
+        <TestimonialSection t={t}></TestimonialSection>
 
         <ContactSection />
       </main>

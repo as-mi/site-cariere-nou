@@ -20,9 +20,11 @@ const GradientBackground: React.FC<GradientBackgroundProps> = ({ cvid }) => {
                 gradients: [
                   ["#005a34", "#021710"],
                   ["#004022", "#012a1d"],
-                  ["#012a1d", "#005a34"],
+                  ["#004022", "#000000"],
+                  ["#000000", "#000000"],
+                  ["#000000", "#005a34"],
                 ],
-                transitionSpeed: 3333,
+                transitionSpeed: 2222,
               },
             },
           });
