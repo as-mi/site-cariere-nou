@@ -67,6 +67,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   }
 
   const companiesCount = await prisma.company.count();
+
   const companies = await prisma.company.findMany({
     select: {
       id: true,

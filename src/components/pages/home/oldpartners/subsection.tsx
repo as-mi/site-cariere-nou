@@ -19,11 +19,9 @@ type PartnersSectionSubsectionProps = {
   companies: Company[];
 };
 
-const PartnersSectionSubsection: React.FC<PartnersSectionSubsectionProps> = ({
-  t,
-  packageType,
-  companies,
-}) => (
+const OldPartnersSectionSubsection: React.FC<
+  PartnersSectionSubsectionProps
+> = ({ t, packageType, companies }) => (
   <section
     className="mx-0 px-0 bg-repeat-y bg-cover bg-center"
     style={{
@@ -32,17 +30,6 @@ const PartnersSectionSubsection: React.FC<PartnersSectionSubsectionProps> = ({
       )} 50%, #00000000 100%)`,
     }}
   >
-    <header className="pt-4 pb-2 flex text-center items-center justify-center selection:bg-transparent">
-      <Image
-        src={`/images/${t("partnersSection.subsectionHeader", {
-          packageType,
-        })}.png`}
-        alt={packageType}
-        width={500}
-        height={300}
-      />
-    </header>
-
     <div className="flex flex-row flex-wrap justify-center gap-4 px-4 sm:gap-6">
       {companies.map((company) => (
         <PartnerCard
@@ -55,4 +42,4 @@ const PartnersSectionSubsection: React.FC<PartnersSectionSubsectionProps> = ({
   </section>
 );
 
-export default PartnersSectionSubsection;
+export default OldPartnersSectionSubsection;

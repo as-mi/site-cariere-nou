@@ -5,7 +5,7 @@ import { PackageType } from "@prisma/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useIsAdmin } from "~/hooks/use-role";
-import PartnersSectionSubsection, { Company } from "./subsection";
+import OldPartnersSectionSubsection, { Company } from "./subsection";
 
 export type { Company };
 
@@ -13,7 +13,7 @@ export type CompaniesByPackageType = Partial<Record<PackageType, Company[]>>;
 
 type PartnersSectionProps = {
   t: TFunction;
-  showCompanies: boolean;
+  showOldCompanies: boolean;
   companiesByPackageType: CompaniesByPackageType;
 };
 
@@ -24,12 +24,12 @@ const PACKAGE_TYPES_IN_DESCENDING_ORDER = [
   PackageType.BRONZE,
 ];
 
-const PartnersSection: React.FC<PartnersSectionProps> = ({
+const OldPartnersSection: React.FC<PartnersSectionProps> = ({
   t,
-  showCompanies,
+  showOldCompanies: showOldCompanies,
   companiesByPackageType,
 }) => {
-  showCompanies ||= _.isEmpty(companiesByPackageType);
+  showOldCompanies ||= _.isEmpty(companiesByPackageType);
 
   const isAdmin = useIsAdmin();
 
@@ -38,13 +38,13 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
       id="partners"
       className="bg-partners bg-no-repeat bg-center bg-cover text-white"
     >
-      <div className="bg-gradient-to-b from-black to-transparent h-48" />
+      <div className="bg-gradient-to-t from-transparent to-white mt-12 h-36" />
       <header className="mb-10">
         <h2 className="text-center font-display text-2xl font-bold uppercase xs:text-3xl sm:text-4xl md:text-5xl">
           {t("partnersSection.title")}
         </h2>
       </header>
-      {!showCompanies ? (
+      {!showOldCompanies ? (
         <div className="text-md mx-auto max-w-xs space-y-4 text-center xs:text-lg sm:max-w-lg sm:space-y-8 sm:py-10 sm:text-xl md:text-2xl">
           <p>{t("partnersSection.comingSoon")}</p>
           <p>{t("partnersSection.followOurSocialMediaPages")}</p>
@@ -57,13 +57,13 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
 
             // Filter out companies where `thisYearPartner` is false
             const filteredCompanies = companies.filter(
-              (company) => company.thisYearPartner,
+              (company) => !company.thisYearPartner,
             );
 
             // Only render if there are companies left after filtering
             if (filteredCompanies.length === 0) return null;
             return (
-              <PartnersSectionSubsection
+              <OldPartnersSectionSubsection
                 key={packageType}
                 t={t}
                 packageType={packageType}
@@ -84,9 +84,8 @@ const PartnersSection: React.FC<PartnersSectionProps> = ({
           </Link>
         </div>
       )}
-      <div className="bg-gradient-to-b from-transparent to-white mt-12 h-36" />
     </section>
   );
 };
 
-export default PartnersSection;
+export default OldPartnersSection;

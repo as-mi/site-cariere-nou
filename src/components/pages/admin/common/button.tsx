@@ -15,7 +15,7 @@ const Button = <C extends React.ElementType = "button">({
   return (
     <Element
       {...otherProps}
-      className="inline-block rounded-md border-2 border-blue-600 bg-black py-2 px-3 hover:bg-blue-600 active:border-blue-400"
+      className="inline-block rounded-md border-2 border-green-800 bg-black py-2 px-3 hover:bg-green-800 active:border-green-700"
     >
       {children}
     </Element>

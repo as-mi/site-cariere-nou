@@ -27,7 +27,7 @@ const CheckboxField = <IFormValues extends FieldValues>({
           id={inputId}
           type="checkbox"
           {...register(name, { required })}
-          className="mr-2 inline"
+          className="mr-2 inline hover:cursor-pointer"
         />
         <label htmlFor={inputId} className="inline">
           {label}

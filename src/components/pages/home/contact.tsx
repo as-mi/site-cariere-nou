@@ -39,7 +39,7 @@ const ContactSection: React.FC = () => {
       <div className="mx-auto flex max-w-5xl flex-col sm:flex-row sm:flex-wrap sm:items-start sm:justify-around">
         <address className="mb-5 flex-1 not-italic">
           <div className="mb-5">
-            <p>Strada Academiei Nr. 14,</p>
+            <p>Strada Academiei Nr. 14, </p>
             <p>București</p>
           </div>
 
@@ -49,7 +49,7 @@ const ContactSection: React.FC = () => {
           </p>
           <p>
             <span className="font-bold">{t("contactSection.e-mail")}:</span>{" "}
-            <ExternalLink href="mailto:cd@asmi.ro">cd@asmi.ro</ExternalLink>
+            <ExternalLink href="mailto:cd@asmi.ro"> cd@asmi.ro </ExternalLink>
           </p>
         </address>
         <section className="mb-5 flex-1">
