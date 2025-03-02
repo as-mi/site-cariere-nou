@@ -28,8 +28,8 @@ const Logo: React.FC<LogoProps> = ({ href, src, alt, custom }) => (
 );
 
 const LogosSection: React.FC = () => (
-  <section className="bg-zinc-100" style={{ paddingTop: "6vh" }}>
-    <div className="mx-auto flex max-w-screen-lg flex-col items-center justify-between px-3 py-5 space-y-10 sm:flex-row sm:space-y-0 sm:space-x-24">
+  <section className="bg-white pt-6">
+    <div className="mx-auto flex max-w-screen-lg flex-col items-center justify-between px-3 space-y-10 sm:flex-row sm:space-y-0 sm:space-x-24">
       <Logo
         href="https://fmi.unibuc.ro"
         src={logoFmi}
