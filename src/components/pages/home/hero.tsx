@@ -47,7 +47,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
     >
       <canvas
         id="background"
-        className="absolute z-1 w-full h-full top-0 left-0 opacity-80"
+        className="absolute z-1 w-full h-full top-0 left-0 opacity-100"
       ></canvas>
       <GradientBackground cvid="background"></GradientBackground>
       <GalleryBackground src="./background.mp4"></GalleryBackground>
