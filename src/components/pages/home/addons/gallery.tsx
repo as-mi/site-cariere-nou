@@ -23,6 +23,13 @@ const GalleryBackground: React.FC<GalleryBackgroundProps> = ({ src }) => {
             width: "100%",
             height: "100%",
             objectFit: "cover",
+            userSelect: "none",
+            animationPlayState: "running",
+            msTouchSelect: "none",
+            touchAction: "none",
+            WebkitTouchCallout: "none",
+            WebkitUserSelect: "none",
+            WebkitTapHighlightColor: "rgba(0,0,0,0)",
           }}
         />
       ) : null}
