@@ -18,7 +18,7 @@ const Postcard: React.FC<PostcardProps> = ({
   t,
 }) => {
   return (
-    <div className="bg-pm bg-no-repeat bg-cover bg-center p-1 rounded-lg max-w-xs w-full aboutPostcard">
+    <div className="z-10 bg-pm bg-no-repeat bg-cover bg-center p-1 rounded-lg max-w-xs w-full aboutPostcard">
       <div className="p-2 border-2 mt-6 mb-2 avatarFramePostcard">
         <Image
           src={imageUrl}
@@ -50,7 +50,7 @@ interface PostcardsRow {
 
 const PostcardsRow: React.FC<PostcardsRow> = ({ t }) => {
   return (
-    <div className="sc:space-x-32 aboutPostcards w-full">
+    <div className="z-10 sc:space-x-32 aboutPostcards w-full mb-2">
       <Postcard
         t={t}
         imageUrl="/images/roxana.png"

@@ -52,11 +52,7 @@ export const SETTINGS = {
   showEvents: {
     key: "showEvents",
     label: `Afișează secțiunea cu evenimentele pe prima pagină`,
-    //schema: z.boolean().default(false),
-    schema: z
-      .boolean()
-      .transform(() => true)
-      .default(true),
+    schema: z.boolean().default(false),
   },
   alwaysShowEventsForAdmin: {
     key: "alwaysShowEventsForAdmin",

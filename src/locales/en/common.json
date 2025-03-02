@@ -5,5 +5,58 @@
     "placeholder": "Romanian Version",
     "current": "en",
     "behavior": "ro"
+  },
+  "cookieConsent": {
+    "disclaimer": "This site uses cookies to deliver functionalities.",
+    "findOutMore": "Find out more",
+    "ok": "OK"
+  },
+  "applicationsDeadlineNotice": {
+    "hurryUp": "Hurry up!",
+    "canApplyUntil": "You can apply until the end of the day",
+    "dismiss": "Dismiss"
+  },
+  "applicationsClosedNotice": {
+    "projectIsOver": "The project is over.",
+    "disclaimer": "No new applications are being accepted on the platform. Applications received so far have been sent to the partners."
+  },
+  "navbar": {
+    "show": "Open navigation menu",
+    "close": "Close navigation menu",
+    "home": "Home",
+    "about": "About",
+    "contact": "Contact",
+    "profile": "My Account",
+    "adminDashboard": "Admin Dashboard"
+  },
+  "forms": {
+    "required": "Required field",
+    "consentRequired": "You must give your consent",
+    "pattern": "Invalid format",
+    "minLength": "Must contain at least {{length}} characters",
+    "maxLength": "Must contain at most {{length}} characters"
+  },
+  "loading": "Loading...",
+  "errors": {
+    "loadingError": "Error loading data",
+    "errorCode": "error code {{code}}",
+    "networkError": "Network error",
+    "not-authenticated": "Access denied, you are not authenticated",
+    "user-exists": "a user with the same email is already registered",
+    "user-not-found": "user not found",
+    "email-sending-failed": "could not send the email",
+    "email-not-verified": "email address has not been confirmed yet"
+  },
+  "contactSection": {
+    "telephone": "Telephone",
+    "e-mail": "E-mail",
+    "usefulLinks": "Useful links",
+    "contactUs": "Contact us!",
+    "weWillReplyASAP": "We will reply as soon as possible."
+  },
+  "companyLogo": "Logo {{companyName}}",
+  "footer": {
+    "allRightsReserved": "All rights reserved.",
+    "madeWithLove": "Developed with 💙 by ASMI volunteers"
   }
 }

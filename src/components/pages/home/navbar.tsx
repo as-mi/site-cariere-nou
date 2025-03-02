@@ -55,7 +55,7 @@ const NavBar: React.FC<NavBarProps> = ({
         { targetId: "hero", label: t("navbar.home") },
         { targetId: "about", label: t("navbar.about") },
         { targetId: "partners", label: t("navbar.partners") },
-        hideEventsLink
+        !hideEventsLink
           ? undefined
           : { targetId: "events", label: t("navbar.events") },
         { targetId: "contact", label: t("navbar.contact") },

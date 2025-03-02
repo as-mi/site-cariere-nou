@@ -91,14 +91,14 @@ const HomePage: NextPage<PageProps> = ({
       <ApplicationsDeadlineNotice />
       {closeApplications && <ApplicationsClosedNotice />}
 
-      {/*Added a black box which appears when visits for the first time*/}
+      {/*Added a white cover which appears when visits for the first time - clear cache to see it*/}
       <VisitBox></VisitBox>
 
       <NavBar
         t={t}
-        hideEventsLink={isEventsSectionVisible} // Button 'events' is hidden until an event post is made
+        hideEventsLink={isEventsSectionVisible}
         hideProfileLink={hideProfileLink} // DeMorgan this if accounts don't work well
-        home={true} // True if you create from index
+        home={true}
       />
 
       <main>
@@ -108,9 +108,9 @@ const HomePage: NextPage<PageProps> = ({
           // Find where showComingSoonMessage is coming from, I am pretty sure that's from Prisma
           showComingSoonMessage={showComingSoonMessage}
           showEventsSectionLink={isEventsSectionVisible}
+          admin={isAdmin}
         />
 
-        {/* Added media queries for logos and redesign */}
         <LogosSection />
 
         <AboutSection t={t} />
@@ -120,6 +120,7 @@ const HomePage: NextPage<PageProps> = ({
           showCompanies={true}
           companiesByPackageType={companiesByPackageType}
         />
+
         {isEventsSectionVisible && <EventsSection t={t} events={events} />}
 
         {/*WIP: <OldPartners

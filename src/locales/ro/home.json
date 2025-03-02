@@ -49,7 +49,8 @@
       "date": "Data",
       "time": "Timp",
       "facebookEvent": "Eveniment pe Facebook"
-    }
+    },
+    "noEvents": "Nu a fost adăugat încă niciun eveniment."
   },
   "counter": {
     "main": "Evenimentul începe peste",
