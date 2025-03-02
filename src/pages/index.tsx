@@ -35,7 +35,7 @@ import PartnersSection, {
 import EventsSection, {
   SerializedEvent,
 } from "~/components/pages/home/events/section";
-import LastYearPartners from "~/components/pages/home/last-year-partners";
+import OldPartners from "~/components/pages/home/oldpartners/section";
 import TestimonialSection from "~/components/pages/home/testimonials";
 import CookieConsent from "~/components/common/cookie-consent";
 import Footer from "~/components/common/footer";
@@ -123,7 +123,13 @@ const HomePage: NextPage<PageProps> = ({
 
         {isEventsSectionVisible && <EventsSection t={t} events={events} />}
 
-        <LastYearPartners></LastYearPartners>
+        {/*WIP: <OldPartners
+          t={t}
+          showOldCompanies={true}
+          companiesByPackageType={companiesByPackageType}>
+            
+          </OldPartners> */}
+
         <TestimonialSection></TestimonialSection>
 
         <ContactSection />
