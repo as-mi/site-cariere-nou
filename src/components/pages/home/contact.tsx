@@ -76,13 +76,13 @@ const ContactSection: React.FC = () => {
               href="https://www.facebook.com/asmi.ub/"
               icon={faFacebookF}
               title="Facebook"
-              className="h-8 w-8 p-2"
+              className="bg-user h-8 w-8 p-2 rounded-full"
             />
             <SocialMediaLink
               href="https://www.instagram.com/asmi.ub/"
               icon={faInstagram}
               title="Instagram"
-              className="h-8 w-8 p-1.5"
+              className="bg-user h-8 w-8 p-1.5 rounded-full"
             />
           </div>
         </section>

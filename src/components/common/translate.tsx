@@ -26,7 +26,8 @@ const Translate: React.FC = () => {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-0 left-4 rounded-t-xl drop-shadow-md bg-white text-white p-2 pb-1 z-30"
+      style={{ bottom: "-0.25rem" }}
+      className="fixed left-4 rounded-t-xl drop-shadow-md bg-white text-white p-2 pb-2 z-30 hover:translate-y-[-5px] transition-transform duration-200"
     >
       <span title={t("translate.placeholder") || undefined}>
         <Flag code={t("translate.flag")} className="w-6 h-6" />

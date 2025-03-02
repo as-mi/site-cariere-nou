@@ -13,12 +13,14 @@ type HeroSectionProps = {
   t: TFunction;
   showComingSoonMessage: boolean;
   showEventsSectionLink: boolean;
+  admin: boolean;
 };
 
 const HeroSection: React.FC<HeroSectionProps> = ({
   t,
   showComingSoonMessage,
   showEventsSectionLink,
+  admin,
 }) => {
   const handleClick = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -47,9 +49,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({
         id="background"
         className="absolute z-1 w-full h-full top-0 left-0 opacity-80"
       ></canvas>
-      <GradientBackground></GradientBackground>
+      <GradientBackground cvid="background"></GradientBackground>
       <GalleryBackground src="./background.mp4"></GalleryBackground>
-      <div className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-white to-transparent opacity-80"></div>
+      <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-zinc-100 to-transparent opacity-100"></div>
 
       <div className="relative z-10 text-center -mt-10">
         <Image
@@ -81,11 +83,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({
           </p>
         )}
 
-        {/*custom cursor*/}
         <div className="mx-auto mt-16 mb-8 inline-flex flex-col items-center justify-center gap-4 px-4 md:inline-flex md:flex-row">
           {showEventsSectionLink && (
             <a
-              className="admin-button shadow-md"
+              className={`${admin ? "admin-button" : "button"} shadow-md`}
               href="#events"
               onClick={handleClick}
             >

@@ -1,10 +1,14 @@
 import React, { useEffect } from "react";
 import Granim from "granim";
 
-const GradientBackground: React.FC = () => {
+interface GradientBackgroundProps {
+  cvid: string;
+}
+
+const GradientBackground: React.FC<GradientBackgroundProps> = ({ cvid }) => {
   useEffect(() => {
     requestAnimationFrame(() => {
-      const element = document.getElementById("background");
+      const element = document.getElementById(cvid);
 
       if (element) {
         if (element instanceof HTMLCanvasElement) {
@@ -14,9 +18,9 @@ const GradientBackground: React.FC = () => {
             states: {
               "default-state": {
                 gradients: [
-                  ["#007e47", "#032117"],
-                  ["#005b34", "#01432a"],
-                  ["#01432a", "#007e47"],
+                  ["#005a34", "#021710"],
+                  ["#004022", "#012a1d"],
+                  ["#012a1d", "#005a34"],
                 ],
                 transitionSpeed: 3333,
               },
