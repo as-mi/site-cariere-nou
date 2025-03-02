@@ -55,7 +55,7 @@ const EventsSection: React.FC<EventsSectionProps> = ({ t, events }) => {
                 icon={faPlus}
                 className="mr-2 inline-block h-4 w-4"
               />
-              Adaugă un nou eveniment
+              {t("eventsSection.addEvent")}
             </Link>
           </div>
         )}

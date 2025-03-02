@@ -1,24 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 interface GalleryBackgroundProps {
   src: string;
 }
-
 const GalleryBackground: React.FC<GalleryBackgroundProps> = ({ src }) => {
+  const [hasWindow, setHasWindow] = useState(false);
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasWindow(true);
+    }
+  }, []);
   return (
     <div className="absolute z-0 w-full h-full top-0 left-0 opacity-40">
-      <video
-        src={src}
-        controls={false}
-        autoPlay={true}
-        loop={true}
-        muted={true}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-        }}
-      />
+      {hasWindow ? (
+        <video
+          src={src}
+          controls={false}
+          autoPlay={true}
+          loop={true}
+          muted={true}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+          }}
+        />
+      ) : null}
     </div>
   );
 };
