@@ -59,6 +59,7 @@ type Company = {
   facebookUrl: string;
   instagramUrl: string;
   linkedinUrl: string;
+  videoUrl?: string | null;
 };
 
 type HeaderProps = {
@@ -150,6 +151,14 @@ const Header: React.FC<HeaderProps> = ({ company }) => (
         </h3>
       )}
     </div>
+    {company.videoUrl && (
+      <iframe
+        className="relative w-96 h-80 pb-5 mt-5"
+        src={company.videoUrl.replace("watch?v=", "embed/")}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    )}
   </header>
 );
 
