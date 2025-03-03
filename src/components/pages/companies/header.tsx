@@ -21,7 +21,6 @@ type SocialMediaLinkProps = {
   iconClassName?: string;
 };
 
-
 const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
   href,
   icon,
@@ -121,14 +120,14 @@ const Header: React.FC<HeaderProps> = ({ company }) => (
         />
       )}
     </div>
-      {company.videoUrl && (
-            <iframe
-              className="relative w-96 h-80 pb-5 mt-5"
-              src={company.videoUrl.replace("watch?v=", "embed/")}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            ></iframe>
-      )}
+    {company.videoUrl && (
+      <iframe
+        className="relative w-96 h-80 pb-5 mt-5"
+        src={company.videoUrl.replace("watch?v=", "embed/")}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    )}
     {company.siteUrl && (
       <h3 className="mt-3 hidden max-w-sm truncate text-center font-display text-lg sm:block">
         Link:{" "}

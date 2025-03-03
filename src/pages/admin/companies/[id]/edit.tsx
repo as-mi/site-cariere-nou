@@ -107,7 +107,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
     if (!data.useExternalUrlForPositions) {
       payload.positionsExternalUrl = null;
     }
-    if (!data.videoUrl){
+    if (!data.videoUrl) {
       payload.videoUrl = null;
     }
     mutation.mutate(payload);
