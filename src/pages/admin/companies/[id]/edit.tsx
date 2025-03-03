@@ -190,7 +190,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
           />
           <TextField
             name="videoUrl"
-            label="video Url"
+            label="Videoclip de prezentare"
             placeholder="https://www.youtube.com"
             register={register}
             errors={errors}
@@ -219,6 +219,14 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
             register={register}
             errors={errors}
             className="min-h-[8rem] min-w-[24rem]"
+          />
+
+          <TextField
+            name="videoUrl"
+            label="Videoclip de prezentare"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
           />
 
           <div className="py-4">
