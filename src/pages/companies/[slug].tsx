@@ -48,6 +48,7 @@ type Company = {
   logo: Logo;
   positionsExternalUrl: string | null;
   positions: Position[];
+  videoUrl: string | null;
 };
 
 type PageProps = {
@@ -203,6 +204,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         },
       },
       positionsExternalUrl: true,
+      videoUrl: true,
       positions: {
         select: {
           id: true,
@@ -343,6 +345,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         descriptionHtml: converter.makeHtml(company.description),
         positionsExternalUrl: company.positionsExternalUrl,
         positions,
+        videoUrl: company.videoUrl,
       },
       showAvailablePositions,
       alwayShowAvailablePositionsForAdmin,
