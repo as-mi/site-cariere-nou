@@ -158,13 +158,7 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             register={register}
             errors={errors}
           />
-          <TextField
-            name="videoUrl"
-            label="video Url"
-            placeholder="https://www.example.com"
-            register={register}
-            errors={errors}
-          />
+
           <FileField
             name="logo"
             label="Logo"
@@ -180,6 +174,14 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             register={register}
             errors={errors}
             className="min-h-[8rem]"
+          />
+
+          <TextField
+            name="videoUrl"
+            label="Videoclip de prezentare"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
           />
 
           <div className="py-4">
