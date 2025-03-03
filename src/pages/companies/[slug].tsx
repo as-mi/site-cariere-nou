@@ -28,8 +28,7 @@ import PositionCard, {
   Position,
 } from "~/components/pages/companies/positions/position-card";
 
-import Translate from "~/components/common/translate";
-import { isThisYear } from "date-fns";
+// import Translate from "~/components/common/translate";
 
 type Logo = {
   id: number;
@@ -86,7 +85,7 @@ const CompanyPage: NextPage<PageProps> = ({
       <ApplicationsDeadlineNotice />
       {closeApplications && <ApplicationsClosedNotice />}
       <NavBar companyId={company.id} />
-      <main className="min-h-screen bg-black">
+      <main className="min-h-screen bg-black w-full">
         <Header company={company} />
         <section className="bg-white p-4 xs:py-8 xs:px-6 sm:py-12 md:py-16 pt-28">
           <div className="prose mx-auto max-w-prose">
@@ -110,10 +109,9 @@ const CompanyPage: NextPage<PageProps> = ({
               </h2>
             </header>
             {company.positionsExternalUrl !== null ? (
-              <div className="text-xl">
-                Aplică{" "}
+              <div className="text-xl button">
                 <ExternalLink href={company.positionsExternalUrl}>
-                  aici
+                  Aplică pentru o poziție
                 </ExternalLink>
               </div>
             ) : company.positions.length === 0 ? (
@@ -139,7 +137,7 @@ const CompanyPage: NextPage<PageProps> = ({
             {isAdmin && (
               <Link
                 href={`/admin/positions/new?companyId=${company.id}`}
-                className="mt-4 inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
+                className="mt-4 inline-block admin-button px-3 py-2"
               >
                 <FontAwesomeIcon
                   icon={faPlus}
@@ -151,8 +149,8 @@ const CompanyPage: NextPage<PageProps> = ({
           </section>
         )}
       </main>
-
-      <Translate />
+      {/* 
+      <Translate /> */}
       <Footer />
     </>
   );
