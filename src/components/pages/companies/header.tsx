@@ -33,7 +33,7 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     target="_blank"
     rel="noreferrer"
     className={classNames(
-      "mx-1 inline-flex h-8 w-8 items-center justify-center rounded-md bg-black p-1 text-center align-middle text-base text-white hover:bg-zinc-200 active:bg-zinc-300",
+      "mx-1 inline-flex h-8 w-8 items-center justify-center rounded-md bg-about p-1 text-center align-middle text-base text-black hover:bg-zinc-200 active:bg-zinc-300",
       linkClassName,
     )}
   >
@@ -58,6 +58,7 @@ type Company = {
   facebookUrl: string;
   instagramUrl: string;
   linkedinUrl: string;
+  videoUrl?: string | null;
 };
 
 type HeaderProps = {
@@ -74,9 +75,8 @@ function getPackageImage(packageType: PackageType): string {
 
   return packageImages[packageType];
 }
-
 const Header: React.FC<HeaderProps> = ({ company }) => (
-  <header className="flex bg-center flex-col items-center justify-center bg-about text-white">
+  <header className="flex bg-center flex-col items-center justify-center bg-about text-white left-0 right-0">
     <div className="mt-20">
       <Image
         src={getPackageImage(company.packageType)}
@@ -85,11 +85,11 @@ const Header: React.FC<HeaderProps> = ({ company }) => (
         height={200}
       />
     </div>
-    <div className=" bg-white p-2 xs:mb-2">
+    <div className="bg-white p-2 xs:mb-2">
       <CompanyLogo company={company} />
     </div>
     <h1 className="mb-2 font-display text-5xl sm:text-5xl">{company.name}</h1>
-    <div className="mt-3 flex flex-wrap">
+    <div className="mt-3 flex flex-wrap justify-center">
       {company.siteUrl && (
         <SocialMediaLink
           href={company.siteUrl}
@@ -120,6 +120,14 @@ const Header: React.FC<HeaderProps> = ({ company }) => (
         />
       )}
     </div>
+    {company.videoUrl && (
+      <iframe
+        className="relative w-96 h-80 pb-5 mt-5"
+        src={company.videoUrl.replace("watch?v=", "embed/")}
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      ></iframe>
+    )}
     {company.siteUrl && (
       <h3 className="mt-3 hidden max-w-sm truncate text-center font-display text-lg sm:block">
         Link:{" "}
