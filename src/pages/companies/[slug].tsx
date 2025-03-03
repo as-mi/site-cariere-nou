@@ -29,6 +29,7 @@ import PositionCard, {
 } from "~/components/pages/companies/positions/position-card";
 
 import Translate from "~/components/common/translate";
+import { isThisYear } from "date-fns";
 
 type Logo = {
   id: number;

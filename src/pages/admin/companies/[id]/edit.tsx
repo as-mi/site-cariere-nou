@@ -39,6 +39,7 @@ type EditCompanyFieldValues = {
   linkedinUrl: string;
   facebookUrl: string;
   thisYearPartner: boolean;
+  videoUrl: string | null;
 };
 
 const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
@@ -106,6 +107,9 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
     if (!data.useExternalUrlForPositions) {
       payload.positionsExternalUrl = null;
     }
+    if (!data.videoUrl){
+      payload.videoUrl = null;
+    }
     mutation.mutate(payload);
   };
 
@@ -116,6 +120,7 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
         logo: undefined,
         useExternalUrlForPositions: !!query.data.positionsExternalUrl,
         thisYearPartner: !!query.data.thisYearPartner,
+        videoUrl: query.data.videoUrl == undefined ? null : query.data.videoUrl,
       };
 
       reset(formData);
@@ -180,6 +185,13 @@ const AdminEditCompanyPage: NextPageWithLayout<PageProps> = ({ companyId }) => {
               { value: PackageType.GOLD, label: "Gold" },
               { value: PackageType.PLATINUM, label: "Platinum" },
             ]}
+            register={register}
+            errors={errors}
+          />
+          <TextField
+            name="videoUrl"
+            label="video Url"
+            placeholder="https://www.youtube.com"
             register={register}
             errors={errors}
           />

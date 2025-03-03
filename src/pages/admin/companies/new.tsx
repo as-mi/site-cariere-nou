@@ -34,6 +34,7 @@ type AddCompanyFieldValues = {
   linkedinUrl: string;
   facebookUrl: string;
   thisYearPartner: boolean;
+  videoUrl: string;
 };
 
 const AdminNewCompanyPage: NextPageWithLayout = () => {
@@ -157,7 +158,13 @@ const AdminNewCompanyPage: NextPageWithLayout = () => {
             register={register}
             errors={errors}
           />
-
+          <TextField
+            name="videoUrl"
+            label="video Url"
+            placeholder="https://www.example.com"
+            register={register}
+            errors={errors}
+          />
           <FileField
             name="logo"
             label="Logo"
