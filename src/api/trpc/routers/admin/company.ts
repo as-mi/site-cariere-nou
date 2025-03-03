@@ -25,6 +25,7 @@ const CreateInput = z.object({
   description: z.string().default(""),
   positionsExternalUrl: z.string().nullable().default(null),
   thisYearPartner: z.boolean().default(false),
+  videoUrl: z.string().nullable().default(null),
 });
 const UpdateInput = z.object({
   id: EntityId,
@@ -38,6 +39,7 @@ const UpdateInput = z.object({
   description: z.string().default(""),
   positionsExternalUrl: z.string().nullable().default(null),
   thisYearPartner: z.boolean().default(false),
+  videoUrl: z.string().nullable().default(null),
 });
 const DeleteInput = z.object({
   id: EntityId,
@@ -76,6 +78,7 @@ export const companyRouter = router({
         description: true,
         positionsExternalUrl: true,
         thisYearPartner: true,
+        videoUrl: true,
       },
     });
     return company;
@@ -118,6 +121,7 @@ export const companyRouter = router({
       description,
       positionsExternalUrl,
       thisYearPartner,
+      videoUrl,
     } = input;
 
     await prisma.company.create({
@@ -133,6 +137,7 @@ export const companyRouter = router({
         description,
         positionsExternalUrl,
         thisYearPartner,
+        videoUrl,
       },
     });
 
@@ -153,6 +158,7 @@ export const companyRouter = router({
       description,
       positionsExternalUrl,
       thisYearPartner,
+      videoUrl,
     } = input;
 
     await prisma.company.update({
@@ -168,6 +174,7 @@ export const companyRouter = router({
         description,
         positionsExternalUrl,
         thisYearPartner,
+        videoUrl,
       },
     });
 

@@ -76,7 +76,6 @@ function getPackageImage(packageType: PackageType): string {
 
   return packageImages[packageType];
 }
-
 const Header: React.FC<HeaderProps> = ({ company }) => (
   <header className="relative flex flex-col items-center justify-center bg-partners bg-no-repeat bg-center bg-cover text-white h-full">
     <canvas
@@ -105,7 +104,6 @@ const Header: React.FC<HeaderProps> = ({ company }) => (
         height={200}
       />
     </div>
-
     <div className="mt-3 flex flex-wrap z-10">
       {/* {company.siteUrl && (
         <SocialMediaLink
