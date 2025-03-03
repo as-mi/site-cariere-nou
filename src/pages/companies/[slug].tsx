@@ -28,7 +28,7 @@ import PositionCard, {
   Position,
 } from "~/components/pages/companies/positions/position-card";
 
-import Translate from "~/components/common/translate";
+// import Translate from "~/components/common/translate";
 
 type Logo = {
   id: number;
@@ -85,7 +85,7 @@ const CompanyPage: NextPage<PageProps> = ({
       <ApplicationsDeadlineNotice />
       {closeApplications && <ApplicationsClosedNotice />}
       <NavBar companyId={company.id} />
-      <main className="min-h-screen bg-black">
+      <main className="min-h-screen bg-black w-full">
         <Header company={company} />
         <section className="bg-white p-4 xs:py-8 xs:px-6 sm:py-12 md:py-16 pt-28">
           <div className="prose mx-auto max-w-prose">
@@ -150,8 +150,8 @@ const CompanyPage: NextPage<PageProps> = ({
           </section>
         )}
       </main>
-
-      <Translate />
+      {/* 
+      <Translate /> */}
       <Footer />
     </>
   );

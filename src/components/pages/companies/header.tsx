@@ -12,6 +12,7 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 
 import CompanyLogo from "~/components/common/company-logo";
+import GradientBackground from "../home/addons/background";
 
 type SocialMediaLinkProps = {
   href: string;
@@ -33,7 +34,7 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     target="_blank"
     rel="noreferrer"
     className={classNames(
-      "mx-1 inline-flex h-8 w-8 items-center justify-center rounded-md bg-black p-1 text-center align-middle text-base text-white hover:bg-zinc-200 active:bg-zinc-300",
+      "mx-1 inline-flex h-8 w-8 items-center justify-center rounded-md bg-black p-1 text-center align-middle text-base text-white hover:bg-green-800 active:bg-zinc-300",
       linkClassName,
     )}
   >
@@ -45,7 +46,7 @@ const SocialMediaLink: React.FC<SocialMediaLinkProps> = ({
     </span>
   </a>
 );
-///todo
+
 type Company = {
   name: string;
   packageType: PackageType;
@@ -76,28 +77,43 @@ function getPackageImage(packageType: PackageType): string {
 }
 
 const Header: React.FC<HeaderProps> = ({ company }) => (
-  <header className="flex bg-center flex-col items-center justify-center bg-about text-white">
-    <div className="mt-20">
+  <header className="relative flex flex-col items-center justify-center bg-partners bg-no-repeat bg-center bg-cover text-white h-full">
+    <canvas
+      id="slug-background"
+      className="absolute z-0 w-full h-full top-0 left-0 opacity-30"
+    ></canvas>
+    <GradientBackground cvid="slug-background" />
+
+    {/* bg-frame around CompanyLogo */}
+    <div className="pt-10 flex justify-center pm-3 z-10">
+      <div className="bg-frame bg-center bg-cover bg-no-repeat p-8 w-full max-w-xs">
+        <CompanyLogo
+          company={company}
+          className="p-4 w-auto h-65 min-w-65 max-h-65"
+        />
+      </div>
+    </div>
+    <h1 className="mb-2 font-display text-5xl sm:text-5xl z-10">
+      {company.name}
+    </h1>
+    <div className="z-10 mt-5">
       <Image
         src={getPackageImage(company.packageType)}
         alt={company.packageType}
-        width={400}
+        width={300}
         height={200}
       />
     </div>
-    <div className=" bg-white p-2 xs:mb-2">
-      <CompanyLogo company={company} />
-    </div>
-    <h1 className="mb-2 font-display text-5xl sm:text-5xl">{company.name}</h1>
-    <div className="mt-3 flex flex-wrap">
-      {company.siteUrl && (
+
+    <div className="mt-3 flex flex-wrap z-10">
+      {/* {company.siteUrl && (
         <SocialMediaLink
           href={company.siteUrl}
           icon={faLink}
           title="Website Link"
           linkClassName="sm:hidden"
         />
-      )}
+      )} */}
       {company.instagramUrl && (
         <SocialMediaLink
           href={company.instagramUrl}
@@ -120,19 +136,20 @@ const Header: React.FC<HeaderProps> = ({ company }) => (
         />
       )}
     </div>
-    {company.siteUrl && (
-      <h3 className="mt-3 hidden max-w-sm truncate text-center font-display text-lg sm:block">
-        Link:{" "}
-        <a
-          href={company.siteUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="hover:text-zinc-200 active:text-zinc-300"
-        >
-          {company.siteUrl}
-        </a>
-      </h3>
-    )}
+    <div className="flex flex-row justify-center items-center z-10">
+      {company.siteUrl && (
+        <h3 className="mt-3 max-w-sm text-center font-display text-lg sm:block mb-8">
+          <a
+            href={company.siteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="button"
+          >
+            Pagina companiei
+          </a>
+        </h3>
+      )}
+    </div>
   </header>
 );
 
