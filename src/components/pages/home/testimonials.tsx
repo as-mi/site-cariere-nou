@@ -41,7 +41,6 @@ const Testimonials: React.FC<TestimonialsProps> = ({ t }) => {
               </p>
             </div>
           </div>
-
           <div className="flex flex-col-reverse sm:flex-row items-center sm:w-3/5 mb-10 gap-4 sm:ml-0 sm:mr-0 mr-4 ml-4">
             <div className="w-full bg-green-300 bg-opacity-20 text-white rounded-lg shadow-2xl mr-4 ml-4 sm:mr-0 sm:ml-0">
               <p className="text-l text-justify italic p-4 sm:text-xl sm:text-pretty">
