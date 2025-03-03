@@ -109,10 +109,9 @@ const CompanyPage: NextPage<PageProps> = ({
               </h2>
             </header>
             {company.positionsExternalUrl !== null ? (
-              <div className="text-xl">
-                Aplică{" "}
+              <div className="text-xl button">
                 <ExternalLink href={company.positionsExternalUrl}>
-                  aici
+                  Aplică pentru o poziție
                 </ExternalLink>
               </div>
             ) : company.positions.length === 0 ? (
@@ -138,7 +137,7 @@ const CompanyPage: NextPage<PageProps> = ({
             {isAdmin && (
               <Link
                 href={`/admin/positions/new?companyId=${company.id}`}
-                className="mt-4 inline-block rounded-md bg-blue-700 px-3 py-2 text-white hover:bg-blue-800 active:bg-blue-900"
+                className="mt-4 inline-block admin-button px-3 py-2"
               >
                 <FontAwesomeIcon
                   icon={faPlus}
