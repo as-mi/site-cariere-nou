@@ -100,14 +100,14 @@ export default function Tally_From({
   return (
     <>
       <div>
-        {running && (
+        {/* {running && (
           <Countdown
             time={time}
             setTime={setTime}
             running={running}
             setRunning={setRunning}
           />
-        )}
+        )} */}
         {(running || finished) && (
           <iframe
             data-tally-src={tallyLink}

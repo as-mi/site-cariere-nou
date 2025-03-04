@@ -7,7 +7,11 @@ import { SettingKey, SETTINGS, SettingValueType } from ".";
 export const getSettingValue = async <K extends SettingKey>(
   key: K,
 ): Promise<SettingValueType<K>> => {
-  const hardCodedSettings = ["showProfileLink", "registrationEnabled"];
+  const hardCodedSettings = [
+    "showProfileLink",
+    "registrationEnabled",
+    "showAvailablePositions",
+  ];
   if (hardCodedSettings.includes(key)) {
     return true;
   }
