@@ -32,15 +32,16 @@ const CompanyLogo: React.FC<CompanyLogoProps> = ({
 }) => {
   const { t } = useTranslation("common");
   return (
-    <UploadedImage
-      imageId={logo.id}
-      width={200}
-      height={150}
-      queryString={queryString}
-      alt={t("companyLogo", { companyName })}
-      className={className}
-      style={{ maxHeight: "150px" }}
-    />
+    <div className="flex items-center justify-center p-4 m-4">
+      <UploadedImage
+        imageId={logo.id}
+        width={200}
+        height={200}
+        queryString={queryString}
+        alt={t("companyLogo", { companyName })}
+        className={className}
+      />
+    </div>
   );
 };
 

@@ -19,10 +19,7 @@ const ExternalLink: React.FC<ExternalLinkProps> = ({
     href={href}
     target="_blank"
     rel="noopener"
-    className={classNames(
-      "cursor-pointer text-green-800 hover:text-green-600",
-      className,
-    )}
+    className={classNames("cursor-pointer", className)}
     style={style}
   >
     {children}

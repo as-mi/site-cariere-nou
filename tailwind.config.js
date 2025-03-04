@@ -39,6 +39,7 @@ module.exports = {
         gold: "url('/images/bg-gold.png')",
         silver: "url('/images/bg-silver.png')",
         bronze: "url('/images/bg-bronze.png')",
+        frame: "url('/images/bg-frame.png')",
       },
     },
   },

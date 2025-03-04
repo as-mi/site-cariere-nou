@@ -103,6 +103,7 @@ model Company {
   instagramUrl         String      @default("")
   linkedinUrl          String      @default("")
   thisYearPartner      Boolean     @default(false)
+  videoUrl             String?     @default("")
 }
 
 model Image {
