@@ -99,8 +99,7 @@ export default function Tally_From({
 
   return (
     <>
-      <div>
-        {/* {running && (
+      {/* {running && (
           <Countdown
             time={time}
             setTime={setTime}
@@ -108,22 +107,21 @@ export default function Tally_From({
             setRunning={setRunning}
           />
         )} */}
-        {(running || finished) && (
-          <iframe
-            data-tally-src={tallyLink}
-            loading="lazy"
-            width="100%"
-            height="200"
-            frameBorder={0}
-            marginHeight={0}
-            marginWidth={0}
-            title="Newsletter"
-          ></iframe>
-        )}
-        {!running && !finished && <h2>Time has run up!</h2>}
+      {(running || finished) && (
+        <iframe
+          className="w-96"
+          data-tally-src={tallyLink}
+          loading="lazy"
+          height="200"
+          frameBorder={0}
+          marginHeight={0}
+          marginWidth={0}
+          title="Newsletter"
+        ></iframe>
+      )}
+      {!running && !finished && <h2>Time has run up!</h2>}
 
-        <Script src="https://tally.so/widgets/embed.js" />
-      </div>
+      <Script src="https://tally.so/widgets/embed.js" />
     </>
   );
 }
