@@ -99,7 +99,15 @@ const AdminEditTechnicalTestPage: NextPageWithLayout<PageProps> = ({
               className="min-h-[8rem]"
             />
 
-            <QuestionsEditor />
+            <TextField
+              name="tallyLink"
+              label="Tally Link"
+              required
+              register={register}
+              errors={errors}
+            />
+
+            {/* <QuestionsEditor /> */}
           </div>
 
           <SubmitButton

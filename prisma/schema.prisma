@@ -171,6 +171,8 @@ model TechnicalTest {
   participantAnswers ParticipantAnswersToTechnicalTest[]
   participantStarts  ParticipantStartTechnicalTest[]
   activePosition     Position?                           @relation("ActiveTechnicalTest")
+
+  tallyLink String @default("")
 }
 
 model ParticipantStartTechnicalTest {
@@ -181,6 +183,8 @@ model ParticipantStartTechnicalTest {
   technicalTest   TechnicalTest @relation(fields: [technicalTestId], references: [id], onDelete: Cascade)
 
   startTime DateTime @default(now())
+
+  // hasAnswered Boolean @default(false)
 
   @@id([userId, technicalTestId])
 }

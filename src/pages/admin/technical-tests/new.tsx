@@ -53,7 +53,8 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
       positionId,
       title: data.title,
       description: data.description,
-      questions: data.questions,
+      questions: [],
+      tallyLink: data.tallyLink,
     };
     mutation.mutate(payload);
   };
@@ -167,6 +168,14 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
               errors={errors}
             />
 
+            <TextField
+              name="tallyLink"
+              label="Tally Link"
+              required
+              register={register}
+              errors={errors}
+            />
+
             <TextAreaField
               name="description"
               label="Descriere"
@@ -175,7 +184,7 @@ const AdminNewTechnicalTestPage: NextPageWithLayout = () => {
               className="min-h-[8rem]"
             />
 
-            <QuestionsEditor />
+            {/* <QuestionsEditor /> */}
           </div>
 
           <SubmitButton

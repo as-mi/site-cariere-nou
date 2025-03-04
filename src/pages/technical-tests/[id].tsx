@@ -1,9 +1,11 @@
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 
 import showdown from "showdown";
 
 import { Role } from "@prisma/client";
+import tally_form from "~/components/pages/technical-tests/tally-embed";
+import { getBaseUrl } from "~/lib/base-url";
 
 import { getServerSession, redirectToLoginPage } from "~/lib/auth";
 import prisma from "~/lib/prisma";
@@ -13,8 +15,12 @@ import {
   RenderedQuestion,
 } from "~/lib/technical-tests-schema";
 
+import CommonNavBar from "~/components/common/navbar";
 import TechnicalTest from "~/components/pages/technical-tests/technical-test";
-import Navbar from "~/components/pages/home/navbar";
+import Tally_From from "~/components/pages/technical-tests/tally-embed";
+import { useTranslation } from "next-i18next";
+import Link from "next/link";
+import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
 type PageProps = {
   technicalTest: {
@@ -29,11 +35,11 @@ type PageProps = {
       };
     };
     questions: RenderedQuestion[];
+    tallyLink: string;
   };
-  alreadyAnsweredAt: {
-    date: string;
-    time: string;
-  } | null;
+  alreadyAnsweredAt: boolean | null;
+  user_id: number;
+  isAdmin: boolean;
 };
 
 const TechnicalTestPage: NextPage<PageProps> = ({
@@ -46,10 +52,14 @@ const TechnicalTestPage: NextPage<PageProps> = ({
       company: { name: companyName, slug: companySlug },
     },
     questions,
+    tallyLink,
   },
   alreadyAnsweredAt,
+  user_id,
+  isAdmin,
 }) => {
-  const pageTitle = `${title} - ${companyName} - Cariere v14.0`;
+  const pageTitle = `${title} - ${companyName} - Cariere v13.0`;
+  const { t } = useTranslation("common");
 
   return (
     <>
@@ -57,23 +67,57 @@ const TechnicalTestPage: NextPage<PageProps> = ({
         <title>{pageTitle}</title>
       </Head>
 
-      <div className="min-h-screen bg-black px-4 py-6 text-white xs:py-10 sm:py-20 md:py-32 lg:py-40">
-        <main className="mx-auto max-w-prose text-center">
-          <h1 className="font-display text-3xl font-bold">{title}</h1>
-          {description && <p className="my-3">{description}</p>}
-          {alreadyAnsweredAt === null ? (
-            <TechnicalTest
-              companySlug={companySlug}
-              positionId={positionId}
-              technicalTestId={id}
-              questions={questions}
-            />
-          ) : (
-            <p className="my-4 mx-auto max-w-sm">
-              Deja ai trimis răspunsurile la acest test tehnic la data de{" "}
-              {alreadyAnsweredAt.date}, ora {alreadyAnsweredAt.time}.
-            </p>
-          )}
+      <CommonNavBar
+        renderLinks={() => (
+          <>
+            <li className="md:inline-block">
+              <Link href="/" className="block px-5 py-3">
+                {t("navbar.home")}
+              </Link>
+            </li>
+            <li className="md:inline-block">
+              <Link href="/profile" className="block px-5 py-3">
+                {t("navbar.profile")}
+              </Link>
+            </li>
+          </>
+        )}
+        autoHideLogo={false}
+      />
+
+      <div
+        className={`min-h-screen pt-28 px-4 py-6 text-white  bg-[url(/images/bg-gradient.svg)] bg-no-repeat bg-cover`}
+      >
+        <main className="mx-auto h-full ">
+          <div className="min-w-full text-white">
+            <h1 className="font-display text-5xl font-bold uppercase mb-3">
+              {title}
+            </h1>
+            <hr className="border-gray-600 mb-3"></hr>
+            {description && (
+              <div className=" ">
+                <h2 className="text-white text-4xl">Test Description</h2>
+                <p className="my-3">{description}</p>
+              </div>
+            )}
+            <div className="flex justify-center items-center">
+              {!alreadyAnsweredAt || isAdmin ? (
+                <div className="bg-white/[.5] p-8 px-10 rounded-xl">
+                  <Tally_From
+                    tallyLink={tallyLink}
+                    userId={user_id}
+                    technicalTestId={id}
+                  />
+                </div>
+              ) : (
+                <div className="bg-white/[.5] p-8 px-10 rounded-xl">
+                  <p className="my-4 mx-auto max-w-sm">
+                    Deja ai trimis răspunsurile la acest test tehnic.
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </main>
       </div>
     </>
@@ -87,6 +131,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   res,
   resolvedUrl,
   params,
+  locale,
 }) => {
   const session = await getServerSession(req, res);
 
@@ -121,6 +166,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   }
 
   const userId = user.id;
+  const isAdmin = user.role == "ADMIN";
 
   const technicalTest = await prisma.technicalTest.findUnique({
     where: { id: technicalTestId },
@@ -146,6 +192,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
           createdAt: true,
         },
       },
+      tallyLink: true,
     },
   });
 
@@ -155,21 +202,20 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     };
   }
 
-  let alreadyAnsweredAt = null;
-  if (technicalTest.participantAnswers.length > 0) {
-    const answerTime = technicalTest.participantAnswers[0].createdAt;
-    alreadyAnsweredAt = {
-      date: answerTime.toLocaleDateString("ro", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
-      time: answerTime.toLocaleTimeString("ro", {
-        hour: "numeric",
-        minute: "numeric",
-      }),
-    };
-  }
+  const alreadyAnsweredAt =
+    (await prisma.participantAnswersToTechnicalTest.count({
+      where: {
+        AND: {
+          userId: {
+            equals: userId,
+          },
+          technicalTestId: {
+            equals: technicalTestId,
+          },
+        },
+      },
+    })) != 0;
+  console.log(alreadyAnsweredAt);
 
   const result = QuestionsSchema.safeParse(technicalTest.questions);
   if (!result.success) {
@@ -204,6 +250,8 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     });
   }
 
+  const user_id = userId;
+
   return {
     props: {
       technicalTest: {
@@ -212,6 +260,9 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
         participantAnswers: null,
       },
       alreadyAnsweredAt,
+      user_id,
+      isAdmin,
+      ...(await serverSideTranslations(locale ?? "ro", ["common"])),
     },
   };
 };
