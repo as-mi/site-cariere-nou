@@ -102,7 +102,7 @@ const TechnicalTestPage: NextPage<PageProps> = ({
             )}
             <div className="flex justify-center items-center">
               {!alreadyAnsweredAt || isAdmin ? (
-                <div className="bg-white/[.5] p-8 px-10 rounded-xl">
+                <div className="w-3/4 bg-white/[.5] p-8 px-10 rounded-xl">
                   <Tally_From
                     tallyLink={tallyLink}
                     userId={user_id}

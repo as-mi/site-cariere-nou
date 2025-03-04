@@ -109,7 +109,7 @@ export default function Tally_From({
         )} */}
       {(running || finished) && (
         <iframe
-          className="w-96"
+          className="w-full"
           data-tally-src={tallyLink}
           loading="lazy"
           height="200"
