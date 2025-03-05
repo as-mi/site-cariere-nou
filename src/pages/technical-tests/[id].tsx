@@ -58,7 +58,7 @@ const TechnicalTestPage: NextPage<PageProps> = ({
   user_id,
   isAdmin,
 }) => {
-  const pageTitle = `${title} - ${companyName} - Cariere v13.0`;
+  const pageTitle = `${title} - ${companyName} - Cariere v14.0`;
   const { t } = useTranslation("common");
 
   return (
@@ -102,7 +102,7 @@ const TechnicalTestPage: NextPage<PageProps> = ({
             )}
             <div className="flex justify-center items-center">
               {!alreadyAnsweredAt || isAdmin ? (
-                <div className="w-3/4 bg-white/[.5] p-8 px-10 rounded-xl">
+                <div className="w-3/4 bg-white/[.5] sm:p-8 sm:px-10 px-2 p-4 rounded-xl sm:text-xl text-lg">
                   <Tally_From
                     tallyLink={tallyLink}
                     userId={user_id}
