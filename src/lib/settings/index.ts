@@ -6,11 +6,7 @@ export const SETTINGS = {
     key: "showComingSoonMessage",
     label: `Afișează mesajul de „În curând” pe prima pagină`,
     hint: `Pe prima pagină se va afișa un mesaj că proiectul va avea loc „În curând” și va fi ascunsă lista cu companiile.`,
-    // schema: z.boolean().default(true),
-    schema: z
-      .boolean()
-      .transform(() => true)
-      .default(true),
+    schema: z.boolean().default(true),
   },
   alwaysShowCompaniesForAdmin: {
     key: "alwaysShowCompaniesForAdmin",

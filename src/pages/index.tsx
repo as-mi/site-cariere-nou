@@ -104,8 +104,6 @@ const HomePage: NextPage<PageProps> = ({
       <main>
         <HeroSection
           t={t}
-          // Change this to false after the events ends (from Prisma)
-          // Find where showComingSoonMessage is coming from, I am pretty sure that's from Prisma
           showComingSoonMessage={showComingSoonMessage}
           showEventsSectionLink={isEventsSectionVisible}
           admin={isAdmin}

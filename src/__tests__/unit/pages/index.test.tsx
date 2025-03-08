@@ -15,7 +15,7 @@ describe("Home", () => {
     render(
       <HomePage
         baseUrl="http://localhost:3000/"
-        showComingSoonMessage={true}
+        showComingSoonMessage={false}
         alwaysShowCompaniesForAdmin={true}
         hideProfileLink={false}
         showEvents={true}
